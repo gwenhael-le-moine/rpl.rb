@@ -3,6 +3,8 @@
 
 require 'readline'
 
+require_relative "./lib/parser"
+
 def run_REPL( stack )
   Readline.completion_proc = proc do |s|
     directory_list = Dir.glob("#{s}*")
@@ -27,33 +29,6 @@ def run_REPL( stack )
   end
 end
 
-def parse_input( input )
-  splitted_input = input.split( " " )
-  parsed_input = []
-
-  regrouping = false
-  splitted_input.each do |elt|
-    if regrouping
-      partial_elt = parsed_input.pop
-      elt = "#{partial_elt} #{elt}"
-    end
-
-    if regrouping
-      regrouping = false if (elt[0] == '\'' and elt[-1] == '\'') or (elt[0] == '"' and elt[-1] == '"') or (elt[0] == '«' and elt[-1] == '»')
-    else
-      regrouping = true if elt[0] == '\'' or elt[0] == '"' or elt[0] == '«'
-    end
-
-    # 'xx' is a name (no space allowed)
-    # "xx x x xx" is a string
-    # « xx xx xx » is a program (must have inner spaces)
-
-    parsed_input << elt
-  end
-
-  parsed_input
-end
-
 def process_input( stack, input )
   parse_input( input ).each do |elt|
     stack << elt
@@ -64,7 +39,7 @@ end
 
 def display_stack( stack )
   stack_size = stack.size
-  stack.each_with_index { |v, i| puts "#{stack_size - i}: #{v}"}
+  stack.each_with_index { |elt, i| puts "#{stack_size - i}: #{elt['value']}"}
 
   stack
 end
