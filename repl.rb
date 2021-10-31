@@ -1,9 +1,9 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'readline'
+require "readline"
 
-require_relative "./lib/parser"
+require "./lib/parser.rb"
 
 def run_REPL( stack )
   Readline.completion_proc = proc do |s|
@@ -39,7 +39,7 @@ end
 
 def display_stack( stack )
   stack_size = stack.size
-  stack.each_with_index { |elt, i| puts "#{stack_size - i}: #{elt['value']}"}
+  stack.each_with_index { |elt, i| puts "#{stack_size - i}: #{elt["value"]}"}
 
   stack
 end
