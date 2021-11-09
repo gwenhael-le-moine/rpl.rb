@@ -38,7 +38,7 @@ module Rpn
 
     def process_input( input )
       @parser.parse_input( input ).each do |elt|
-        @stack << elt
+        @stack << elt           # TODO: (parse and) evaluate elt if needed
       end
     end
 

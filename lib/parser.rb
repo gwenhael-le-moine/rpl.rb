@@ -10,57 +10,68 @@ module Rpn
       false
     end
 
-    def sanitize_input( input )
-      input.gsub( '«', ' « ').gsub( '»', ' » ')
-    end
-
     def parse_input( input )
-      splitted_input = sanitize_input( input ).split(' ')
-      parsed_tree = []
+      splitted_input = input.split(' ')
 
       opened_programs = 0
       closed_programs = 0
       string_delimiters = 0
       regrouping = false
 
+      # 2-passes:
+      # 1. regroup strings and programs
+      regrouped_input = []
       splitted_input.each do |elt|
+        if elt[0] == '«'
+          opened_programs += 1
+          elt.gsub!( '«', '« ') if elt.length > 1 && elt[1] != ' '
+        end
+        string_delimiters += 1 if elt[0] == '"'
+
+        elt = "#{regrouped_input.pop} #{elt}".strip if regrouping
+
+        regrouped_input << elt
+
+        regrouping = (string_delimiters % 2 != 0) || (opened_programs > closed_programs )
+
+        if elt[-1] == '»'
+          closed_programs += 1
+          elt.gsub!( '»', ' »') if elt.length > 1 && elt[-2] != ' '
+        end
+        string_delimiters += 1 if elt.length > 1 && elt[-1] == '"'
+      end
+
+      # 2. parse
+      parsed_tree = []
+      regrouped_input.each do |elt|
         parsed_entry = { value: elt }
 
         opened_programs += 1 if elt[0] == '«'
         string_delimiters += 1 if elt[0] == '"'
 
-        if regrouping
-          parsed_entry = parsed_tree.pop
-
-          parsed_entry[:value] = "#{parsed_entry[:value]} #{elt}".strip
-        else
-          parsed_entry[:type] = case elt[0]
-                                when '«'
-                                  :program
-                                when '"'
-                                  :string
-                                when "'"
-                                  :name # TODO: check for forbidden space
+        parsed_entry[:type] = case elt[0]
+                              when '«'
+                                :program
+                              when '"'
+                                :string
+                              when "'"
+                                :name # TODO: check for forbidden space
+                              else
+                                if numeric?( elt )
+                                  :numeric
                                 else
-                                  if numeric?( elt )
-                                    :numeric
-                                  else
-                                    :word
-                                  end
+                                  :word
                                 end
+                              end
 
-          if parsed_entry[:type] == :word
-            if false
-              # TODO: run word if known
-            else
-              parsed_entry[:type] = :name
-              parsed_entry[:value] = "'#{parsed_entry[:value]}'" if parsed_entry[:value][0] != "'"
-            end
+        if parsed_entry[:type] == :word
+          if false
+          # TODO: run word if known
+          else
+            parsed_entry[:type] = :name
+            parsed_entry[:value] = "'#{parsed_entry[:value]}'" if parsed_entry[:value][0] != "'"
           end
         end
-
-        regrouping = ( (parsed_entry[:type] == :string && string_delimiters % 2 != 0) ||
-                       (parsed_entry[:type] == :program && opened_programs > closed_programs ) )
 
         if parsed_entry[:type] == :numeric
           i = parsed_entry[:value].to_i
@@ -68,9 +79,6 @@ module Rpn
 
           parsed_entry[:value] = i == f ? i : f
         end
-
-        closed_programs += 1 if elt[-1] == '»'
-        string_delimiters += 1 if elt.length > 1 && elt[-1] == '"'
 
         parsed_tree << parsed_entry
       end
