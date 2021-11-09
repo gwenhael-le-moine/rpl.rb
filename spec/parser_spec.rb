@@ -1,54 +1,67 @@
 # coding: utf-8
+# frozen_string_literal: true
 
-require "test/unit"
+require 'test/unit'
 
-require_relative "../lib/parser"
+require_relative '../lib/parser'
 
 class TestParser < Test::Unit::TestCase
-    def test_parse_input_number
-        result = parse_input( "1" )
-        assert_equal [ { "value" => 1, "type" => "NUMBER" } ], result
-    end
+  def test_number
+    result = Rpn::Parser.new.parse_input( '1' )
+    assert_equal [{ value: 1, type: :numeric }], result
+  end
 
-    def test_parse_input_word
-        result = parse_input( "dup" )
-        assert_equal [ { "value" => "dup", "type" => "WORD" } ], result
-    end
+  def test_word
+    result = Rpn::Parser.new.parse_input( 'dup' )
+    assert_equal [{ value: 'dup', type: :word }], result
+  end
 
-    def test_parse_input_string
-        result = parse_input( "\"test\"" )
-        assert_equal [ { "value" => "test", "type" => "STRING" } ], result
-    end
+  def test_string
+    result = Rpn::Parser.new.parse_input( '"test"' )
+    assert_equal [{ value: '"test"', type: :string }], result
 
-    def test_parse_input_name
-        result = parse_input( "'test'" )
-        assert_equal [ { "value" => "test", "type" => "NAME" } ], result
-    end
+    result = Rpn::Parser.new.parse_input( '" test"' )
+    assert_equal [{ value: '" test"', type: :string }], result
 
-    def test_parse_input_program
-        result = parse_input( "« test »" )
-        assert_equal [ { "value" => "test", "type" => "PROGRAM" } ], result
+    result = Rpn::Parser.new.parse_input( '"test "' )
+    assert_equal [{ value: '"test "', type: :string }], result
 
-        result = parse_input( "«test »" )
-        assert_equal [ { "value" => "test", "type" => "PROGRAM" } ], result
+    result = Rpn::Parser.new.parse_input( '" test "' )
+    assert_equal [{ value: '" test "', type: :string }], result
+  end
 
-        result = parse_input( "« test»" )
-        assert_equal [ { "value" => "test", "type" => "PROGRAM" } ], result
+  def test_name
+    result = Rpn::Parser.new.parse_input( "'test'" )
+    assert_equal [{ value: "'test'", type: :name }], result
+  end
 
-        result = parse_input( "« test test »" )
-        assert_equal [ { "value" => "test test", "type" => "PROGRAM" } ], result
+  def test_program
+    result = Rpn::Parser.new.parse_input( '« test »' )
+    assert_equal [{ value: '« test »', type: :program }], result
 
-        result = parse_input( "« test \"test\" test »" )
-        assert_equal [ { "value" => "test \"test\" test", "type" => "PROGRAM" } ], result
-    end
+    result = Rpn::Parser.new.parse_input( '«test »' )
+    assert_equal [{ value: '«test »', type: :program }], result
 
-    def test_parse_input_number_number
-        result = parse_input( "2 3" )
-        assert_equal [ { "value" => 2, "type" => "NUMBER" }, { "value" => 3, "type" => "NUMBER" } ], result
-    end
+    result = Rpn::Parser.new.parse_input( '« test»' )
+    assert_equal [{ value: '« test»', type: :program }], result
 
-    def test_parse_input_number_string
-        result = parse_input( "4 \"test\"" )
-        assert_equal [ { "value" => 4, "type" => "NUMBER" }, { "value" => "test", "type" => "STRING" } ], result
-    end
+    result = Rpn::Parser.new.parse_input( '« test test »' )
+    assert_equal [{ value: '« test test »', type: :program }], result
+
+    result = Rpn::Parser.new.parse_input( '« test « test » »' )
+    assert_equal [{ value: '« test « test » »', type: :program }], result
+
+    result = Rpn::Parser.new.parse_input( '« test "test" test »' )
+    assert_equal [{ value: '« test "test" test »', type: :program }], result
+  end
+
+  def test_number_number
+    result = Rpn::Parser.new.parse_input( '2 3' )
+    assert_equal [{ value: 2, type: :numeric }, { value: 3, type: :numeric }], result
+  end
+
+  def test_number_string
+    result = Rpn::Parser.new.parse_input( '4 "test"' )
+    assert_equal [{ value: 4, type: :numeric }, { value: '"test"', type: :string }], result
+  end
 end

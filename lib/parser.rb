@@ -1,62 +1,68 @@
 # coding: utf-8
 
-class String
-  def numeric?
-    Float(self) != nil rescue false
-  end
-end
+module Rpn
+  class Parser
+    def initialize; end
 
-def parse_input( input )
-  splitted_input = input.split(" ")
-  parsed_tree = []
-
-  regrouping = false
-  splitted_input.each do |elt|
-    next if elt.length == 1 && elt[0] == "»"
-
-    parsed_entry = { "value" => elt }
-
-    if regrouping
-      parsed_entry = parsed_tree.pop
-
-      parsed_entry["value"] = "#{parsed_entry["value"]} #{elt}".strip
-    else
-      parsed_entry["type"] = case elt[0]
-                             when "«"
-                               "PROGRAM"
-                             when "\""
-                               "STRING"
-                             when "'"
-                               "NAME"
-                             else
-                               if elt.numeric?
-                                 "NUMBER"
-                               else
-                                 "WORD" # TODO: if word isn"t known then it"s a NAME
-                               end
-                             end
-
-      parsed_entry["value"] = elt[1..] if %W[PROGRAM STRING NAME].include?( parsed_entry["type"] )
+    def numeric?( elt )
+      !Float(elt).nil?
+    rescue ArgumentError
+      false
     end
 
-    regrouping = ( (parsed_entry["type"] == "NAME" && elt[-1] != "'") ||
-                   (parsed_entry["type"] == "STRING" && elt[-1] != "\"") ||
-                   (parsed_entry["type"] == "PROGRAM"  && elt[-1] != "»") )
+    def parse_input( input )
+      splitted_input = input.split(' ')
+      parsed_tree = []
 
-    parsed_entry["value"] = if ( (parsed_entry["type"] == "NAME" && elt[-1] == "'") ||
-                                 (parsed_entry["type"] == "STRING"  && elt[-1] == "\"") ||
-                                 (parsed_entry["type"] == "PROGRAM" && elt[-1] == "»") )
-                              (parsed_entry["value"][..-2]).strip
-                            elsif parsed_entry["type"] == "NUMBER"
-                              parsed_entry["value"].to_f
-                            elsif parsed_entry["type"] == "WORD"
-                              parsed_entry["value"]
-                            else
-                              parsed_entry["value"]
-                            end
+      regrouping = false
+      splitted_input.each do |elt|
+        parsed_entry = { value: elt }
 
-    parsed_tree << parsed_entry
+        if regrouping
+          parsed_entry = parsed_tree.pop
+
+          parsed_entry[:value] = "#{parsed_entry[:value]} #{elt}".strip
+        else
+          parsed_entry[:type] = case elt[0]
+                                when '«'
+                                  :program
+                                when '"'
+                                  :string
+                                when "'"
+                                  :name # TODO: check for forbidden space
+                                else
+                                  if numeric?( elt )
+                                    :numeric
+                                  else
+                                    :word
+                                  end
+                                end
+
+          if parsed_entry[:type] == :word
+            if false
+              # TODO: run word if known
+            else
+              parsed_entry[:type] = :name
+              parsed_entry[:value] = "'#{parsed_entry[:value]}'" if parsed_entry[:value][0] != "'"
+            end
+          end
+          # parsed_entry[:value] = elt[1..] if [:program, :string, :name].include?( parsed_entry[:type] )
+        end
+
+        regrouping = ( (parsed_entry[:type] == :string && elt.size == 1 && elt[-1] != '"') ||
+                       (parsed_entry[:type] == :program && elt[-1] != '»') )
+
+        if parsed_entry[:type] == :numeric
+          i = parsed_entry[:value].to_i
+          f = parsed_entry[:value].to_f
+
+          parsed_entry[:value] = i == f ? i : f
+        end
+
+        parsed_tree << parsed_entry
+      end
+
+      parsed_tree
+    end
   end
-
-  parsed_tree
 end
