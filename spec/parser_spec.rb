@@ -13,7 +13,7 @@ class TestParser < Test::Unit::TestCase
 
   def test_word
     result = Rpn::Parser.new.parse_input( 'dup' )
-    assert_equal [{ value: 'dup', type: :word }], result
+    assert_equal [{ value: "'dup'", type: :name }], result
   end
 
   def test_string

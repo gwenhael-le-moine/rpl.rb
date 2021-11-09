@@ -14,9 +14,16 @@ module Rpn
       splitted_input = input.split(' ')
       parsed_tree = []
 
+      opened_programs = 0
+      closed_programs = 0
+      string_delimiters = 0
       regrouping = false
+
       splitted_input.each do |elt|
         parsed_entry = { value: elt }
+
+        opened_programs += 1 if elt[0] == '«'
+        string_delimiters += 1 if elt[0] == '"'
 
         if regrouping
           parsed_entry = parsed_tree.pop
@@ -46,11 +53,10 @@ module Rpn
               parsed_entry[:value] = "'#{parsed_entry[:value]}'" if parsed_entry[:value][0] != "'"
             end
           end
-          # parsed_entry[:value] = elt[1..] if [:program, :string, :name].include?( parsed_entry[:type] )
         end
 
-        regrouping = ( (parsed_entry[:type] == :string && elt.size == 1 && elt[-1] != '"') ||
-                       (parsed_entry[:type] == :program && elt[-1] != '»') )
+        regrouping = ( (parsed_entry[:type] == :string && string_delimiters % 2 != 0) ||
+                       (parsed_entry[:type] == :program && opened_programs > closed_programs ) )
 
         if parsed_entry[:type] == :numeric
           i = parsed_entry[:value].to_i
@@ -58,6 +64,9 @@ module Rpn
 
           parsed_entry[:value] = i == f ? i : f
         end
+
+        closed_programs += 1 if elt[-1] == '»'
+        string_delimiters += 1 if elt.length > 1 && elt[-1] == '"'
 
         parsed_tree << parsed_entry
       end
