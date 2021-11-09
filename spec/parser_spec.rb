@@ -40,10 +40,13 @@ class TestParser < Test::Unit::TestCase
     assert_equal [{ value: '« test »', type: :program }], result
 
     result = Rpn::Parser.new.parse_input( '«test »' )
-    assert_equal [{ value: '«test »', type: :program }], result
+    assert_equal [{ value: '« test »', type: :program }], result
 
     result = Rpn::Parser.new.parse_input( '« test»' )
-    assert_equal [{ value: '« test»', type: :program }], result
+    assert_equal [{ value: '« test »', type: :program }], result
+
+    result = Rpn::Parser.new.parse_input( '«test»' )
+    assert_equal [{ value: '« test »', type: :program }], result
 
     result = Rpn::Parser.new.parse_input( '« test test »' )
     assert_equal [{ value: '« test test »', type: :program }], result

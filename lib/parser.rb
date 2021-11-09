@@ -10,8 +10,12 @@ module Rpn
       false
     end
 
+    def sanitize_input( input )
+      input.gsub( '«', ' « ').gsub( '»', ' » ')
+    end
+
     def parse_input( input )
-      splitted_input = input.split(' ')
+      splitted_input = sanitize_input( input ).split(' ')
       parsed_tree = []
 
       opened_programs = 0
