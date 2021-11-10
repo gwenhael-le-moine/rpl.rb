@@ -19,6 +19,7 @@ module Rpn
       closed_programs = 0
       string_delimiters = 0
       regrouping = false
+
       regrouped_input = []
       splitted_input.each do |elt|
         # TODO: handle buried-in-elt « and » (surround by ' ' and re-split)
@@ -63,15 +64,6 @@ module Rpn
                                   :word
                                 end
                               end
-
-        if parsed_entry[:type] == :word
-          if false
-          # TODO: run word if known
-          else
-            parsed_entry[:type] = :name
-            parsed_entry[:value] = "'#{parsed_entry[:value]}'" if parsed_entry[:value][0] != "'"
-          end
-        end
 
         if parsed_entry[:type] == :numeric
           i = parsed_entry[:value].to_i

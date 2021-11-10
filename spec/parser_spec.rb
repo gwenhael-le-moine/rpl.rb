@@ -13,7 +13,7 @@ class TestParser < Test::Unit::TestCase
 
   def test_word
     result = Rpn::Parser.new.parse_input( 'dup' )
-    assert_equal [{ value: "'dup'", type: :name }], result
+    assert_equal [{ value: 'dup', type: :word }], result
   end
 
   def test_string
@@ -61,6 +61,13 @@ class TestParser < Test::Unit::TestCase
   def test_number_number
     result = Rpn::Parser.new.parse_input( '2 3' )
     assert_equal [{ value: 2, type: :numeric }, { value: 3, type: :numeric }], result
+  end
+
+  def test_number_number_word
+    result = Rpn::Parser.new.parse_input( '2 3 +' )
+    assert_equal [{ value: 2, type: :numeric },
+                  { value: 3, type: :numeric },
+                  { value: '+', type: :word }], result
   end
 
   def test_number_string

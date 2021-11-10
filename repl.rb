@@ -1,15 +1,19 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require "readline"
+require 'readline'
 
-require "./lib/parser.rb"
+require './lib/dictionary'
+require './lib/parser'
+require './lib/runner'
 
 module Rpn
   class Repl
     def initialize
-      @parser = Parser.new
       @stack = []
+      @dictionary = Dictionary.new
+      @parser = Parser.new
+      @runner = Runner.new
     end
 
     def run
@@ -21,39 +25,24 @@ module Rpn
           Readline::HISTORY.grep(/^#{Regexp.escape(s)}/)
         end
       end
-      Readline.completion_append_character = " "
+      Readline.completion_append_character = ' '
 
       loop do
-        input = Readline.readline( " ", true )
-        break if input.nil? || input == "exit"
+        input = Readline.readline( ' ', true )
+        break if input.nil? || input == 'exit'
 
         # Remove blank lines from history
         Readline::HISTORY.pop if input.empty?
 
-        process_input( input )
+        @stack, @dictionary = @runner.run_input( @stack, @dictionary,
+                                                 @parser.parse_input( input ) )
 
         print_stack
       end
     end
 
-    def process_input( input )
-      @parser.parse_input( input ).each do |elt|
-        @stack << elt           # TODO: (parse and) evaluate elt if needed
-      end
-    end
-
     def format_element( elt )
-      pp elt
-      # case elt[:type]
-      # when :program
-      #   "« #{elt[:value]} »"
-      # when :string
-      #   "\"#{elt[:value]}\""
-      # when :name
-      #   "'#{elt[:value]}'"
-      # else
-        elt[:value]
-      # end
+      elt[:value]
     end
 
     def print_stack
