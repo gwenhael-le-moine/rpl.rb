@@ -3,6 +3,7 @@
 
 require 'readline'
 
+require './lib/core'
 require './lib/dictionary'
 require './lib/parser'
 require './lib/runner'
@@ -29,7 +30,7 @@ module Rpn
 
       loop do
         input = Readline.readline( ' ', true )
-        break if input.nil? || input == 'exit'
+        break if input.nil? || input == 'quit'
 
         # Remove blank lines from history
         Readline::HISTORY.pop if input.empty?
