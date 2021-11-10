@@ -13,13 +13,12 @@ module Rpn
     def parse_input( input )
       splitted_input = input.split(' ')
 
+      # 2-passes:
+      # 1. regroup strings and programs
       opened_programs = 0
       closed_programs = 0
       string_delimiters = 0
       regrouping = false
-
-      # 2-passes:
-      # 1. regroup strings and programs
       regrouped_input = []
       splitted_input.each do |elt|
         # TODO: handle buried-in-elt « and » (surround by ' ' and re-split)
@@ -33,7 +32,7 @@ module Rpn
 
         regrouped_input << elt
 
-        regrouping = (string_delimiters % 2 != 0) || (opened_programs > closed_programs )
+        regrouping = string_delimiters.odd? || (opened_programs > closed_programs )
 
         if elt[-1] == '»'
           closed_programs += 1
