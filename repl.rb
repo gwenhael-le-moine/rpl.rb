@@ -19,18 +19,17 @@ module Rpn
 
     def run
       Readline.completion_proc = proc do |s|
-        directory_list = Dir.glob("#{s}*")
-        if directory_list.positive?
-          directory_list
-        else
-          Readline::HISTORY.grep(/^#{Regexp.escape(s)}/)
-        end
+        Readline::HISTORY.grep(/^#{Regexp.escape(s)}/)
       end
       Readline.completion_append_character = ' '
 
       loop do
         input = Readline.readline( ' ', true )
         break if input.nil? || input == 'quit'
+
+        pp Readline::HISTORY if input == 'history'
+
+        input = '"rpn.rb version 0.0"' if %w[version uname].include?( input )
 
         # Remove blank lines from history
         Readline::HISTORY.pop if input.empty?
