@@ -14,6 +14,22 @@ module Rpn
       add( 'uname',   proc { |stack| Rpn::Core.__todo( stack ) } ) # show rpn complete identification string
       add( 'history', proc { |stack| Rpn::Core.__todo( stack ) } ) # see commands history
 
+      # STACK
+      add( 'swap',    proc { |stack| Rpn::Core::Stack.swap( stack ) } )
+      add( 'drop',    proc { |stack| Rpn::Core::Stack.drop( stack ) } )
+      add( 'drop2',   proc { |stack| Rpn::Core::Stack.drop2( stack ) } )
+      add( 'dropn',   proc { |stack| Rpn::Core::Stack.dropn( stack ) } )
+      add( 'del',     proc { |stack| Rpn::Core::Stack.del( stack ) } )
+      add( 'rot',     proc { |stack| Rpn::Core::Stack.rot( stack ) } )
+      add( 'dup',     proc { |stack| Rpn::Core::Stack.dup( stack ) } )
+      add( 'dup2',    proc { |stack| Rpn::Core::Stack.dup2( stack ) } )
+      add( 'dupn',    proc { |stack| Rpn::Core::Stack.dupn( stack ) } )
+      add( 'pick',    proc { |stack| Rpn::Core::Stack.pick( stack ) } )
+      add( 'depth',   proc { |stack| Rpn::Core::Stack.depth( stack ) } )
+      add( 'roll',    proc { |stack| Rpn::Core::Stack.roll( stack ) } )
+      add( 'rolld',   proc { |stack| Rpn::Core::Stack.rolld( stack ) } )
+      add( 'over',    proc { |stack| Rpn::Core::Stack.over( stack ) } )
+
       # USUAL OPERATIONS ON REALS AND COMPLEXES
       add( '+',       proc { |stack| Rpn::Core::Operations.add( stack ) } )
       add( '-',       proc { |stack| Rpn::Core::Operations.subtract( stack ) } )
@@ -76,22 +92,6 @@ module Rpn
       add( 'xor',     proc { |stack| Rpn::Core.__todo( stack ) } ) # boolean operator xor
       add( 'not',     proc { |stack| Rpn::Core.__todo( stack ) } ) # boolean operator not
       add( 'same',    proc { |stack| Rpn::Core.__todo( stack ) } ) # boolean operator same (equal)
-
-      # STACK
-      add( 'swap',    proc { |stack| Rpn::Core::Stack.swap( stack ) } )
-      add( 'drop',    proc { |stack| Rpn::Core::Stack.drop( stack ) } )
-      add( 'drop2',   proc { |stack| Rpn::Core::Stack.drop2( stack ) } )
-      add( 'dropn',   proc { |stack| Rpn::Core::Stack.dropn( stack ) } )
-      add( 'del',     proc { |stack| Rpn::Core::Stack.del( stack ) } )
-      add( 'rot',     proc { |stack| Rpn::Core::Stack.rot( stack ) } )
-      add( 'dup',     proc { |stack| Rpn::Core::Stack.dup( stack ) } )
-      add( 'dup2',    proc { |stack| Rpn::Core::Stack.dup2( stack ) } )
-      add( 'dupn',    proc { |stack| Rpn::Core::Stack.dupn( stack ) } )
-      add( 'pick',    proc { |stack| Rpn::Core::Stack.pick( stack ) } )
-      add( 'depth',   proc { |stack| Rpn::Core::Stack.depth( stack ) } )
-      add( 'roll',    proc { |stack| Rpn::Core::Stack.roll( stack ) } )
-      add( 'rolld',   proc { |stack| Rpn::Core::Stack.rolld( stack ) } )
-      add( 'over',    proc { |stack| Rpn::Core::Stack.over( stack ) } )
 
       # STRING
       add( '->str',   proc { |stack| Rpn::Core.__todo( stack ) } ) # convert an object into a string
