@@ -10,8 +10,10 @@ require_relative '../lib/runner'
 
 class TestParser < Test::Unit::TestCase
   def test_eval
-    stack, _dico = Rpn::Core::Program.eval( [{ value: '« 2 dup * »', type: :program }], Rpn::Dictionary.new )
-    assert_equal [{ value: 4, type: :numeric }],
+    stack = Rpn::Core::Program.eval( [{ value: '« 2 dup * dup »', type: :program }], Rpn::Dictionary.new )
+
+    assert_equal [{ value: 4, type: :numeric },
+                  { value: 4, type: :numeric }],
                  stack
   end
 end

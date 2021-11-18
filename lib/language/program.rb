@@ -10,8 +10,9 @@ module Rpn
         # we trim enclosing «»
         parsed_input = Rpn::Parser.new.parse_input( args[0][:value][1..-2] )
 
-        stack, dictionary = Rpn::Runner.new.run_input( stack, dictionary, parsed_input )
+        stack, _dictionary = Rpn::Runner.new.run_input( stack, dictionary, parsed_input )
         # TODO: check that STO actually updates dictionary
+
         stack
       end
     end
