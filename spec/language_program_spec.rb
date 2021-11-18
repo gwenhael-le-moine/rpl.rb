@@ -15,5 +15,19 @@ class TestParser < Test::Unit::TestCase
     assert_equal [{ value: 4, type: :numeric },
                   { value: 4, type: :numeric }],
                  stack
+
+    stack = Rpn::Core::Program.eval( [{ value: 4, type: :numeric },
+                                      { value: "'dup'", type: :name }], Rpn::Dictionary.new )
+
+    assert_equal [{ value: 4, type: :numeric },
+                  { value: 4, type: :numeric }],
+                 stack
+
+    stack = Rpn::Core::Program.eval( [{ value: 4, type: :numeric },
+                                      { value: 'dup', type: :word }], Rpn::Dictionary.new )
+
+    assert_equal [{ value: 4, type: :numeric },
+                  { value: 4, type: :numeric }],
+                 stack
   end
 end

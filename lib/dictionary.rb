@@ -133,7 +133,7 @@ module Rpn
       add( 'sinv',    proc { |stack| Rpn::Core.__todo( stack ) } ) # inverse a variable. ex: 1 'name' sinv
 
       # PROGRAM
-      add( 'eval',    proc { |stack| Rpn::Core::Program.eval( stack, self ) } ) # evaluate (run) a program, or recall a variable. ex: 'my_prog' eval
+      add( 'eval',    proc { |stack| Rpn::Core::Program.eval( stack, self ) } )
       add( '->',      proc { |stack| Rpn::Core.__todo( stack ) } ) # load program local variables. ex: << -> n m << 0 n m for i i + next >> >>
 
       # TRIG ON REALS AND COMPLEXES
