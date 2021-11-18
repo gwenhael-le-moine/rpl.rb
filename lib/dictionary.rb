@@ -39,13 +39,13 @@ module Rpn
       add( 'inv',     proc { |stack| Rpn::Core::Operations.inverse( stack ) } )
       add( '^',       proc { |stack| Rpn::Core::Operations.power( stack ) } )
       add( 'sqrt',    proc { |stack| Rpn::Core::Operations.sqrt( stack ) } )
-      add( 'sq',      proc { |stack| Rpn::Core.__todo( stack ) } ) # rpn_square
-      add( 'abs',     proc { |stack| Rpn::Core.__todo( stack ) } ) # absolute value
+      add( 'sq',      proc { |stack| Rpn::Core::Operations.sq( stack ) } )
+      add( 'abs',     proc { |stack| Rpn::Core::Operations.abs( stack ) } )
       add( 'dec',     proc { |stack| Rpn::Core.__todo( stack ) } ) # decimal representation
       add( 'hex',     proc { |stack| Rpn::Core.__todo( stack ) } ) # hexadecimal representation
       add( 'bin',     proc { |stack| Rpn::Core.__todo( stack ) } ) # binary representation
       add( 'base',    proc { |stack| Rpn::Core.__todo( stack ) } ) # arbitrary base representation
-      add( 'sign',    proc { |stack| Rpn::Core.__todo( stack ) } ) # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
+      add( 'sign',    proc { |stack| Rpn::Core::Operations.sign( stack ) } )
 
       # OPERATIONS ON REALS
       add( '%',       proc { |stack| Rpn::Core.__todo( stack ) } ) # percent

@@ -96,6 +96,37 @@ module Rpn
         stack << { type: :numeric,
                    value: BigMath.sqrt( BigDecimal( args[0][:value] ), Rpn::Core.precision ) }
       end
+
+      # rpn_square
+      def sq( stack )
+        stack, args = Rpn::Core.stack_extract( stack, [%i[numeric]] )
+
+        stack << { type: :numeric,
+                   value: args[0][:value] * args[0][:value] }
+      end
+
+      # absolute value
+      def abs( stack )
+        stack, args = Rpn::Core.stack_extract( stack, [%i[numeric]] )
+
+        stack << { type: :numeric,
+                   value: args[0][:value].abs }
+      end
+
+      # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
+      def sign( stack )
+        stack, args = Rpn::Core.stack_extract( stack, [%i[numeric]] )
+        value = if args[0][:value].positive?
+                  1
+                elsif args[0][:value].negative?
+                  -1
+                else
+                  0
+                end
+
+        stack << { type: :numeric,
+                   value: value }
+      end
     end
   end
 end
