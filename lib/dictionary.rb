@@ -38,7 +38,7 @@ module Rpn
       add( '/',       proc { |stack| Rpn::Core::Operations.divide( stack ) } )
       add( 'inv',     proc { |stack| Rpn::Core::Operations.inverse( stack ) } )
       add( '^',       proc { |stack| Rpn::Core::Operations.power( stack ) } )
-      add( 'sqrt',    proc { |stack| Rpn::Core.__todo( stack ) } ) # rpn_square root
+      add( 'sqrt',    proc { |stack| Rpn::Core::Operations.sqrt( stack ) } )
       add( 'sq',      proc { |stack| Rpn::Core.__todo( stack ) } ) # rpn_square
       add( 'abs',     proc { |stack| Rpn::Core.__todo( stack ) } ) # absolute value
       add( 'dec',     proc { |stack| Rpn::Core.__todo( stack ) } ) # decimal representation
@@ -75,10 +75,10 @@ module Rpn
       add( 'std',     proc { |stack| Rpn::Core.__todo( stack ) } ) # standard floating numbers representation. ex: std
       add( 'fix',     proc { |stack| Rpn::Core.__todo( stack ) } ) # fixed point representation. ex: 6 fix
       add( 'sci',     proc { |stack| Rpn::Core.__todo( stack ) } ) # scientific floating point representation. ex: 20 sci
-      add( 'prec',    proc { |stack| Rpn::Core.__todo( stack ) } ) # set float precision in bits. ex: 256 prec
+      add( 'prec',    proc { |stack| Rpn::Core::Mode.prec( stack ) } )
       add( 'round',   proc { |stack| Rpn::Core.__todo( stack ) } ) # set float rounding mode. ex: ["nearest", "toward zero", "toward +inf", "toward -inf", "away from zero"] round
-      add( 'default', proc { |stack| Rpn::Core.__todo( stack ) } ) # set float representation and precision to default
-      add( 'type',    proc { |stack| Rpn::Core.__todo( stack ) } ) # show type of stack first entry
+      add( 'default', proc { |stack| Rpn::Core::Mode.default( stack ) } )
+      add( 'type',    proc { |stack| Rpn::Core::Mode.type( stack ) } )
 
       # TEST
       add( '>',       proc { |stack| Rpn::Core.__todo( stack ) } ) # binary operator >
@@ -165,9 +165,9 @@ module Rpn
       add( 'atanh',   proc { |stack| Rpn::Core.__todo( stack ) } ) # inverse hyperbolic tangent
 
       # TIME AND DATE
-      add( 'time',    proc { |stack| Rpn::Core.__todo( stack ) } ) # time in local format
-      add( 'date',    proc { |stack| Rpn::Core.__todo( stack ) } ) # date in local format
-      add( 'ticks',   proc { |stack| Rpn::Core.__todo( stack ) } ) # system tick in µs
+      add( 'time',    proc { |stack| Rpn::Core::TimeDate.time( stack ) } )
+      add( 'date',    proc { |stack| Rpn::Core::TimeDate.date( stack ) } )
+      add( 'ticks',   proc { |stack| Rpn::Core::TimeDate.ticks( stack ) } )
     end
 
     def add( name, implementation )

@@ -88,6 +88,14 @@ module Rpn
         stack << { type: :numeric,
                    value: args[0][:value]**args[1][:value] }
       end
+
+      # rpn_square root
+      def sqrt( stack )
+        stack, args = Rpn::Core.stack_extract( stack, [%i[numeric]] )
+
+        stack << { type: :numeric,
+                   value: BigMath.sqrt( BigDecimal( args[0][:value] ), Rpn::Core.precision ) }
+      end
     end
   end
 end
