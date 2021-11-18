@@ -1,5 +1,6 @@
 require_relative './language/general'
 require_relative './language/operations'
+require_relative './language/program'
 require_relative './language/stack'
 
 module Rpn
