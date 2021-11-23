@@ -5,7 +5,7 @@ require 'test/unit'
 
 require_relative '../lib/core'
 
-class TestParser < Test::Unit::TestCase
+class TestLanguageTimeDate < Test::Unit::TestCase
   def test_time
     now = Time.now.to_s
     stack = Rpn::Core::TimeDate.time( [] )

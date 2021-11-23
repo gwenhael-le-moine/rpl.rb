@@ -8,7 +8,7 @@ require_relative '../lib/dictionary'
 require_relative '../lib/parser'
 require_relative '../lib/runner'
 
-class TestParser < Test::Unit::TestCase
+class TestLanguageProgram < Test::Unit::TestCase
   def test_eval
     stack = Rpn::Core::Program.eval( [{ value: '« 2 dup * dup »', type: :program }], Rpn::Dictionary.new )
 

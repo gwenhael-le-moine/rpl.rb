@@ -5,8 +5,8 @@ require 'test/unit'
 
 require_relative '../lib/core'
 
-class TestParser < Test::Unit::TestCase
-  def test_plus
+class TesttLanguageOperations < Test::Unit::TestCase
+  def test_add
     stack = Rpn::Core::Operations.add [{ value: 1, type: :numeric },
                                        { value: 2, type: :numeric }]
     assert_equal [{ value: 3, type: :numeric }],

@@ -5,7 +5,7 @@ require 'test/unit'
 
 require_relative '../lib/core'
 
-class TestParser < Test::Unit::TestCase
+class TestLanguageStack < Test::Unit::TestCase
   def test_swap
     stack = Rpn::Core::Stack.swap [{ value: 1, type: :numeric },
                                    { value: 2, type: :numeric }]
