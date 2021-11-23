@@ -7,7 +7,11 @@ module Rpl
     def numeric?( elt )
       !Float(elt).nil?
     rescue ArgumentError
-      false
+      begin
+        !Integer(elt).nil?
+      rescue ArgumentError
+        false
+      end
     end
 
     def parse_input( input )
@@ -68,10 +72,11 @@ module Rpl
         if parsed_entry[:type] == :numeric
           parsed_entry[:base] = 10 # TODO: parse others possible bases 0x...
 
-          i = parsed_entry[:value].to_i
-          f = parsed_entry[:value].to_f
-
-          parsed_entry[:value] = i == f ? i : f
+          begin
+            parsed_entry[:value] = Float( parsed_entry[:value] )
+          rescue ArgumentError
+            parsed_entry[:value] = Integer( parsed_entry[:value] )
+          end
         end
 
         parsed_tree << parsed_entry
