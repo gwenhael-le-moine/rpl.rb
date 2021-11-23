@@ -33,6 +33,8 @@ module Rpl
                          args[0][:value] + args[1][:value]
                        end
 
+      result[:base] = 10 if result[:type] == :numeric # TODO: what if operands have other bases ?
+
       stack << result
     end
 
@@ -40,7 +42,7 @@ module Rpl
     def subtract( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value] - args[1][:value] }
     end
 
@@ -48,7 +50,7 @@ module Rpl
     def negate( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value] * -1 }
     end
 
@@ -56,7 +58,7 @@ module Rpl
     def multiply( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value] * args[1][:value] }
     end
 
@@ -66,7 +68,7 @@ module Rpl
 
       raise 'Division by 0' if args[0][:value].zero?
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value] / args[1][:value] }
     end
 
@@ -76,7 +78,7 @@ module Rpl
 
       raise 'Division by 0' if args[0][:value].zero?
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: 1.0 / args[0][:value] }
     end
 
@@ -84,7 +86,7 @@ module Rpl
     def power( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value]**args[1][:value] }
     end
 
@@ -92,7 +94,7 @@ module Rpl
     def sqrt( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: BigMath.sqrt( BigDecimal( args[0][:value] ), Rpl::Core.precision ) }
     end
 
@@ -100,7 +102,7 @@ module Rpl
     def sq( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value] * args[0][:value] }
     end
 
@@ -108,8 +110,32 @@ module Rpl
     def abs( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: args[0][:value].abs }
+    end
+
+    # decimal representation
+    def dec( stack )
+      base( stack << { type: :numeric, base: 10, value: 10 } )
+    end
+
+    # hexadecimal representation
+    def hex( stack )
+      base( stack << { type: :numeric, base: 10, value: 16 } )
+    end
+
+    # binary representation
+    def bin( stack )
+      base( stack << { type: :numeric, base: 10, value: 2 } )
+    end
+
+    # arbitrary base representation
+    def base( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+
+      args[0][:base] = args[1][:value]
+
+      stack << args[0]
     end
 
     # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
@@ -123,7 +149,7 @@ module Rpl
                 0
               end
 
-      stack << { type: :numeric,
+      stack << { type: :numeric, base: 10,
                  value: value }
     end
   end

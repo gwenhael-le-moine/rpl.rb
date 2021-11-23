@@ -12,22 +12,22 @@ class TestLanguageProgram < Test::Unit::TestCase
   def test_eval
     stack = Rpl::Core.eval( [{ value: '« 2 dup * dup »', type: :program }], Rpl::Dictionary.new )
 
-    assert_equal [{ value: 4, type: :numeric },
-                  { value: 4, type: :numeric }],
+    assert_equal [{ value: 4, type: :numeric, base: 10 },
+                  { value: 4, type: :numeric, base: 10 }],
                  stack
 
-    stack = Rpl::Core.eval( [{ value: 4, type: :numeric },
+    stack = Rpl::Core.eval( [{ value: 4, type: :numeric, base: 10 },
                              { value: "'dup'", type: :name }], Rpl::Dictionary.new )
 
-    assert_equal [{ value: 4, type: :numeric },
-                  { value: 4, type: :numeric }],
+    assert_equal [{ value: 4, type: :numeric, base: 10 },
+                  { value: 4, type: :numeric, base: 10 }],
                  stack
 
-    stack = Rpl::Core.eval( [{ value: 4, type: :numeric },
+    stack = Rpl::Core.eval( [{ value: 4, type: :numeric, base: 10 },
                              { value: 'dup', type: :word }], Rpl::Dictionary.new )
 
-    assert_equal [{ value: 4, type: :numeric },
-                  { value: 4, type: :numeric }],
+    assert_equal [{ value: 4, type: :numeric, base: 10 },
+                  { value: 4, type: :numeric, base: 10 }],
                  stack
   end
 end

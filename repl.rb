@@ -42,6 +42,20 @@ module Rpl
     end
 
     def format_element( elt )
+      if elt[:type] == :numeric && elt[:base] != 10
+        prefix = case elt[:base]
+                 when 2
+                   '0b'
+                 when 8
+                   '0o'
+                 when 16
+                   '0x'
+                 else
+                   "0#{elt[:base]}_"
+                 end
+        return "#{prefix}#{elt[:value].to_s( elt[:base] )}"
+      end
+
       elt[:value]
     end
 

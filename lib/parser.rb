@@ -66,6 +66,8 @@ module Rpl
                               end
 
         if parsed_entry[:type] == :numeric
+          parsed_entry[:base] = 10 # TODO: parse others possible bases 0x...
+
           i = parsed_entry[:value].to_i
           f = parsed_entry[:value].to_f
 

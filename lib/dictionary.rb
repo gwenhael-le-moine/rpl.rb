@@ -41,10 +41,10 @@ module Rpl
       add( 'sqrt',    proc { |stack| Rpl::Core.sqrt( stack ) } )
       add( 'sq',      proc { |stack| Rpl::Core.sq( stack ) } )
       add( 'abs',     proc { |stack| Rpl::Core.abs( stack ) } )
-      add( 'dec',     proc { |stack| Rpl::Core.__todo( stack ) } ) # decimal representation
-      add( 'hex',     proc { |stack| Rpl::Core.__todo( stack ) } ) # hexadecimal representation
-      add( 'bin',     proc { |stack| Rpl::Core.__todo( stack ) } ) # binary representation
-      add( 'base',    proc { |stack| Rpl::Core.__todo( stack ) } ) # arbitrary base representation
+      add( 'dec',     proc { |stack| Rpl::Core.dec( stack ) } )
+      add( 'hex',     proc { |stack| Rpl::Core.hex( stack ) } )
+      add( 'bin',     proc { |stack| Rpl::Core.bin( stack ) } )
+      add( 'base',    proc { |stack| Rpl::Core.base( stack ) } )
       add( 'sign',    proc { |stack| Rpl::Core.sign( stack ) } )
 
       # OPERATIONS ON REALS

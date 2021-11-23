@@ -8,7 +8,7 @@ require_relative '../lib/parser'
 class TestParser < Test::Unit::TestCase
   def test_number
     result = Rpl::Parser.new.parse_input( '1' )
-    assert_equal [{ value: 1, type: :numeric }], result
+    assert_equal [{ value: 1, type: :numeric, base: 10 }], result
   end
 
   def test_word
@@ -60,18 +60,18 @@ class TestParser < Test::Unit::TestCase
 
   def test_number_number
     result = Rpl::Parser.new.parse_input( '2 3' )
-    assert_equal [{ value: 2, type: :numeric }, { value: 3, type: :numeric }], result
+    assert_equal [{ value: 2, type: :numeric, base: 10 }, { value: 3, type: :numeric, base: 10 }], result
   end
 
   def test_number_number_word
     result = Rpl::Parser.new.parse_input( '2 3 +' )
-    assert_equal [{ value: 2, type: :numeric },
-                  { value: 3, type: :numeric },
+    assert_equal [{ value: 2, type: :numeric, base: 10 },
+                  { value: 3, type: :numeric, base: 10 },
                   { value: '+', type: :word }], result
   end
 
   def test_number_string
     result = Rpl::Parser.new.parse_input( '4 "test"' )
-    assert_equal [{ value: 4, type: :numeric }, { value: '"test"', type: :string }], result
+    assert_equal [{ value: 4, type: :numeric, base: 10 }, { value: '"test"', type: :string }], result
   end
 end

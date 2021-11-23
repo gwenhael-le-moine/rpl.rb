@@ -11,12 +11,12 @@ module Rpl
 
     # drop first stack entry
     def drop( stack )
-      dropn( stack << { type: :numeric, value: 1 } )
+      dropn( stack << { type: :numeric, base: 10, value: 1 } )
     end
 
     # drop 2 first stack entries
     def drop2( stack )
-      dropn( stack << { type: :numeric, value: 2 } )
+      dropn( stack << { type: :numeric, base: 10, value: 2 } )
     end
 
     # drop n first stack entries
@@ -41,12 +41,12 @@ module Rpl
 
     # duplicate first stack entry
     def dup( stack )
-      dupn( stack << { type: :numeric, value: 1 } )
+      dupn( stack << { type: :numeric, base: 10, value: 1 } )
     end
 
     # duplicate 2 first stack entries
     def dup2( stack )
-      dupn( stack << { type: :numeric, value: 2 } )
+      dupn( stack << { type: :numeric, base: 10, value: 2 } )
     end
 
     # duplicate n first stack entries
@@ -80,7 +80,7 @@ module Rpl
 
     # give stack depth
     def depth( stack )
-      stack << { type: :numeric, value: stack.size }
+      stack << { type: :numeric, base: 10, value: stack.size }
     end
 
     # move a stack entry to the top of the stack
@@ -114,7 +114,7 @@ module Rpl
 
     # push a copy of the element in stack level 2 onto the stack
     def over( stack )
-      pick( stack << { type: :numeric, value: 2 } )
+      pick( stack << { type: :numeric, base: 10, value: 2 } )
     end
   end
 end
