@@ -14,15 +14,11 @@ module Rpn
     include BigMath
 
     def precision
-      @precision
+      @precision or 12
     end
 
     def precision=( value )
       @precision = value
-    end
-
-    def init
-      @precision = 12           # default precision for math operations
     end
 
     def stack_extract( stack, needs )

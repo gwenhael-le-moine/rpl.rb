@@ -15,8 +15,6 @@ module Rpn
       @dictionary = Dictionary.new
       @parser = Parser.new
       @runner = Runner.new
-
-      Rpn::Core.init
     end
 
     def run
