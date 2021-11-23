@@ -8,7 +8,7 @@ require './lib/dictionary'
 require './lib/parser'
 require './lib/runner'
 
-module Rpn
+module Rpl
   class Repl
     def initialize
       @stack = []
@@ -55,4 +55,4 @@ module Rpn
   end
 end
 
-Rpn::Repl.new.run
+Rpl::Repl.new.run

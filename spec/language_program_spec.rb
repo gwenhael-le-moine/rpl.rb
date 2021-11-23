@@ -10,21 +10,21 @@ require_relative '../lib/runner'
 
 class TestLanguageProgram < Test::Unit::TestCase
   def test_eval
-    stack = Rpn::Core::Program.eval( [{ value: '« 2 dup * dup »', type: :program }], Rpn::Dictionary.new )
+    stack = Rpl::Core.eval( [{ value: '« 2 dup * dup »', type: :program }], Rpl::Dictionary.new )
 
     assert_equal [{ value: 4, type: :numeric },
                   { value: 4, type: :numeric }],
                  stack
 
-    stack = Rpn::Core::Program.eval( [{ value: 4, type: :numeric },
-                                      { value: "'dup'", type: :name }], Rpn::Dictionary.new )
+    stack = Rpl::Core.eval( [{ value: 4, type: :numeric },
+                             { value: "'dup'", type: :name }], Rpl::Dictionary.new )
 
     assert_equal [{ value: 4, type: :numeric },
                   { value: 4, type: :numeric }],
                  stack
 
-    stack = Rpn::Core::Program.eval( [{ value: 4, type: :numeric },
-                                      { value: 'dup', type: :word }], Rpn::Dictionary.new )
+    stack = Rpl::Core.eval( [{ value: 4, type: :numeric },
+                             { value: 'dup', type: :word }], Rpl::Dictionary.new )
 
     assert_equal [{ value: 4, type: :numeric },
                   { value: 4, type: :numeric }],

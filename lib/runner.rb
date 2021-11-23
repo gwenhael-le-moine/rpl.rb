@@ -1,6 +1,6 @@
 # coding: utf-8
 
-module Rpn
+module Rpl
   class Runner
     def initialize; end
 

@@ -1,6 +1,6 @@
 # coding: utf-8
 
-module Rpn
+module Rpl
   class Parser
     def initialize; end
 

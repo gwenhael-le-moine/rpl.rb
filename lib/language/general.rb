@@ -1,12 +1,10 @@
-module Rpn
+module Rpl
   module Core
-    module General
-      module_function
+    module_function
 
-      # no operation
-      def nop( stack )
-        stack
-      end
+    # no operation
+    def nop( stack )
+      stack
     end
   end
 end

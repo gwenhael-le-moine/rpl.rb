@@ -7,7 +7,7 @@ require_relative './language/program'
 require_relative './language/stack'
 require_relative './language/time-date'
 
-module Rpn
+module Rpl
   module Core
     module_function
 
