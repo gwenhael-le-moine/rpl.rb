@@ -1,5 +1,6 @@
 require 'bigdecimal/math'
 
+require_relative './language/branch'
 require_relative './language/general'
 require_relative './language/mode'
 require_relative './language/operations'

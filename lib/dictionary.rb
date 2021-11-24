@@ -101,8 +101,8 @@ module Rpl
       add( 'xor',     proc { |stack| Rpl::Core.xor( stack ) } )
       add( 'not',     proc { |stack| Rpl::Core.not( stack ) } )
       add( 'same',    proc { |stack| Rpl::Core.same( stack ) } )
-      add( 'true',    proc { |stack| Rpl::Core.true( stack ) } )
-      add( 'false',   proc { |stack| Rpl::Core.false( stack ) } )
+      add( 'true',    proc { |stack| Rpl::Core.true( stack ) } ) # specific
+      add( 'false',   proc { |stack| Rpl::Core.false( stack ) } ) # specific
 
       # STRING
       add( '->str',   proc { |stack| Rpl::Core.to_string( stack ) } )
@@ -124,8 +124,8 @@ module Rpl
       add( 'for',     proc { |stack| Rpl::Core.__todo( stack ) } ) # <start> <end> for <variable> <instructions> next|<step> step
       add( 'next',    proc { |stack| Rpl::Core.__todo( stack ) } ) # used with start and for
       add( 'step',    proc { |stack| Rpl::Core.__todo( stack ) } ) # used with start and for
-      add( 'ift',     proc { |stack| Rpl::Core.__todo( stack ) } ) # similar to if-then-end, <test-instruction> <true-instruction> ift
-      add( 'ifte',    proc { |stack| Rpl::Core.__todo( stack ) } ) # similar to if-then-else-end, <test-instruction> <true-instruction> <false-instruction> ifte
+      add( 'ift',     proc { |stack| Rpl::Core.ift( stack, self ) } )
+      add( 'ifte',    proc { |stack| Rpl::Core.ifte( stack, self ) } )
       add( 'do',      proc { |stack| Rpl::Core.__todo( stack ) } ) # do <instructions> until <condition> end
       add( 'until',   proc { |stack| Rpl::Core.__todo( stack ) } ) # used with do
       add( 'while',   proc { |stack| Rpl::Core.__todo( stack ) } ) # while <test-instruction> repeat <loop-instructions> end
