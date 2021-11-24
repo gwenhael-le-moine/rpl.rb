@@ -95,11 +95,11 @@ module Rpl
 
       # STRING
       add( '->str',   proc { |stack| Rpl::Core.to_string( stack ) } )
-      add( 'str->',   proc { |stack| Rpl::Core.__todo( stack ) } ) # convert a string into an object
-      add( 'chr',     proc { |stack| Rpl::Core.__todo( stack ) } ) # convert ASCII character code in stack level 1 into a string
-      add( 'num',     proc { |stack| Rpl::Core.__todo( stack ) } ) # return ASCII code of the first character of the string in stack level 1 as a real number
+      add( 'str->',   proc { |stack| Rpl::Core.from_string( stack ) } )
+      add( 'chr',     proc { |stack| Rpl::Core.chr( stack ) } )
+      add( 'num',     proc { |stack| Rpl::Core.num( stack ) } )
       add( 'size',    proc { |stack| Rpl::Core.size( stack ) } )
-      add( 'pos',     proc { |stack| Rpl::Core.__todo( stack ) } ) # seach for the string in level 1 within the string in level 2
+      add( 'pos',     proc { |stack| Rpl::Core.pos( stack ) } )
       add( 'sub',     proc { |stack| Rpl::Core.sub( stack ) } )
 
       # BRANCH
