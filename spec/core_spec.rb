@@ -15,13 +15,13 @@ class TestParser < Test::Unit::TestCase
     assert_equal [{ value: 2, type: :numeric }],
                  args
 
-    stack, args = Rpl::Core.stack_extract [{ value: 1, type: :numeric },
+    stack, args = Rpl::Core.stack_extract [{ value: "test", type: :string },
                                            { value: 2, type: :numeric }],
                                           [:any, [:numeric]]
     assert_equal [],
                  stack
-    assert_equal [{ value: 1, type: :numeric },
-                  { value: 2, type: :numeric }],
+    assert_equal [{ value: 2, type: :numeric },
+                  { value: "test", type: :string }],
                  args
   end
 end
