@@ -133,6 +133,7 @@ module Rpl
 
       # STORE
       add( 'sto',     proc { |stack| Rpl::Core.__todo( stack ) } ) # store a variable. ex: 1 'name' sto
+      add( '▶',       proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
       add( 'rcl',     proc { |stack| Rpl::Core.__todo( stack ) } ) # recall a variable. ex: 'name' rcl
       add( 'purge',   proc { |stack| Rpl::Core.__todo( stack ) } ) # delete a variable. ex: 'name' purge
       add( 'vars',    proc { |stack| Rpl::Core.__todo( stack ) } ) # list all variables
