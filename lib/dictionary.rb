@@ -35,7 +35,9 @@ module Rpl
       add( '-',       proc { |stack| Rpl::Core.subtract( stack ) } )
       add( 'chs',     proc { |stack| Rpl::Core.negate( stack ) } )
       add( '*',       proc { |stack| Rpl::Core.multiply( stack ) } )
+      add( '×',       proc { |stack| Rpl::Core.multiply( stack ) } ) # alias
       add( '/',       proc { |stack| Rpl::Core.divide( stack ) } )
+      add( '÷',       proc { |stack| Rpl::Core.divide( stack ) } ) # alias
       add( 'inv',     proc { |stack| Rpl::Core.inverse( stack ) } )
       add( '^',       proc { |stack| Rpl::Core.power( stack ) } )
       add( 'sqrt',    proc { |stack| Rpl::Core.sqrt( stack ) } )
@@ -67,9 +69,13 @@ module Rpl
       add( 'conj',    proc { |stack| Rpl::Core.__todo( stack ) } ) # complex conjugate
       add( 'arg',     proc { |stack| Rpl::Core.__todo( stack ) } ) # complex argument in radians
       add( 'c->r',    proc { |stack| Rpl::Core.__todo( stack ) } ) # transform a complex in 2 reals
+      add( 'c→r',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
       add( 'r->c',    proc { |stack| Rpl::Core.__todo( stack ) } ) # transform 2 reals in a complex
+      add( 'r→c',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
       add( 'p->r',    proc { |stack| Rpl::Core.__todo( stack ) } ) # cartesian to polar
+      add( 'p→r',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
       add( 'r->p',    proc { |stack| Rpl::Core.__todo( stack ) } ) # polar to cartesian
+      add( 'r→p',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
 
       # MODE
       add( 'std',     proc { |stack| Rpl::Core.__todo( stack ) } ) # standard floating numbers representation. ex: std
@@ -81,21 +87,28 @@ module Rpl
       add( 'type',    proc { |stack| Rpl::Core.type( stack ) } )
 
       # TEST
-      add( '>',       proc { |stack| Rpl::Core.__todo( stack ) } ) # binary operator >
-      add( '>=',      proc { |stack| Rpl::Core.__todo( stack ) } ) # binary operator >=
-      add( '<',       proc { |stack| Rpl::Core.__todo( stack ) } ) # binary operator <
-      add( '<=',      proc { |stack| Rpl::Core.__todo( stack ) } ) # binary operator <=
-      add( '!=',      proc { |stack| Rpl::Core.__todo( stack ) } ) # binary operator != (different)
-      add( '==',      proc { |stack| Rpl::Core.__todo( stack ) } ) # binary operator == (equal)
-      add( 'and',     proc { |stack| Rpl::Core.__todo( stack ) } ) # boolean operator and
-      add( 'or',      proc { |stack| Rpl::Core.__todo( stack ) } ) # boolean operator or
-      add( 'xor',     proc { |stack| Rpl::Core.__todo( stack ) } ) # boolean operator xor
-      add( 'not',     proc { |stack| Rpl::Core.__todo( stack ) } ) # boolean operator not
-      add( 'same',    proc { |stack| Rpl::Core.__todo( stack ) } ) # boolean operator same (equal)
+      add( '>',       proc { |stack| Rpl::Core.greater_than( stack ) } )
+      add( '>=',      proc { |stack| Rpl::Core.greater_or_equal_than( stack ) } )
+      add( '≥',       proc { |stack| Rpl::Core.greater_or_equal_than( stack ) } ) # alias
+      add( '<',       proc { |stack| Rpl::Core.less_than( stack ) } )
+      add( '<=',      proc { |stack| Rpl::Core.less_or_equal_than( stack ) } )
+      add( '≤',       proc { |stack| Rpl::Core.less_or_equal_than( stack ) } ) # alias
+      add( '!=',      proc { |stack| Rpl::Core.different( stack ) } )
+      add( '≠',       proc { |stack| Rpl::Core.different( stack ) } ) # alias
+      add( '==',      proc { |stack| Rpl::Core.same( stack ) } ) # alias
+      add( 'and',     proc { |stack| Rpl::Core.and( stack ) } )
+      add( 'or',      proc { |stack| Rpl::Core.or( stack ) } )
+      add( 'xor',     proc { |stack| Rpl::Core.xor( stack ) } )
+      add( 'not',     proc { |stack| Rpl::Core.not( stack ) } )
+      add( 'same',    proc { |stack| Rpl::Core.same( stack ) } )
+      add( 'true',    proc { |stack| Rpl::Core.true( stack ) } )
+      add( 'false',   proc { |stack| Rpl::Core.false( stack ) } )
 
       # STRING
       add( '->str',   proc { |stack| Rpl::Core.to_string( stack ) } )
+      add( '→str',    proc { |stack| Rpl::Core.to_string( stack ) } ) # alias
       add( 'str->',   proc { |stack| Rpl::Core.from_string( stack ) } )
+      add( 'str→',    proc { |stack| Rpl::Core.from_string( stack ) } ) # alias
       add( 'chr',     proc { |stack| Rpl::Core.chr( stack ) } )
       add( 'num',     proc { |stack| Rpl::Core.num( stack ) } )
       add( 'size',    proc { |stack| Rpl::Core.size( stack ) } )
@@ -135,6 +148,7 @@ module Rpl
       # PROGRAM
       add( 'eval',    proc { |stack| Rpl::Core.eval( stack, self ) } )
       add( '->',      proc { |stack| Rpl::Core.__todo( stack ) } ) # load program local variables. ex: << -> n m << 0 n m for i i + next >> >>
+      add( '→',       proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
 
       # TRIG ON REALS AND COMPLEXES
       add( 'pi',      proc { |stack| Rpl::Core.__todo( stack ) } ) # pi constant
@@ -145,7 +159,9 @@ module Rpl
       add( 'tan',     proc { |stack| Rpl::Core.__todo( stack ) } ) # tangent
       add( 'atan',    proc { |stack| Rpl::Core.__todo( stack ) } ) # arg tangent
       add( 'd->r',    proc { |stack| Rpl::Core.__todo( stack ) } ) # convert degrees to radians
+      add( 'd→r',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
       add( 'r->d',    proc { |stack| Rpl::Core.__todo( stack ) } ) # convert radians to degrees
+      add( 'r→d',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
 
       # LOGS ON REALS AND COMPLEXES
       add( 'e',       proc { |stack| Rpl::Core.__todo( stack ) } ) # Euler constant

@@ -6,6 +6,7 @@ require_relative './language/operations'
 require_relative './language/program'
 require_relative './language/stack'
 require_relative './language/string'
+require_relative './language/test'
 require_relative './language/time-date'
 
 module Rpl
