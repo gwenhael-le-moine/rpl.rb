@@ -6,7 +6,7 @@ module Rpl
     def swap( stack )
       stack, args = Rpl::Core.stack_extract( stack, %i[any any] )
 
-      stack << args[1] << args[0]
+      stack << args[0] << args[1]
     end
 
     # drop first stack entry
@@ -36,7 +36,7 @@ module Rpl
     def rot( stack )
       stack, args = Rpl::Core.stack_extract( stack, %i[any any any] )
 
-      stack << args[1] << args[2] << args[0]
+      stack << args[1] << args[0] << args[2]
     end
 
     # duplicate first stack entry
@@ -55,6 +55,8 @@ module Rpl
       n = args[0][:value]
       stack, args = Rpl::Core.stack_extract( stack, %i[any] * args[0][:value] )
 
+      args.reverse!
+
       2.times do
         n.times.each do |i|
           stack << args[ i ]
@@ -69,6 +71,8 @@ module Rpl
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
       n = args[0][:value]
       stack, args = Rpl::Core.stack_extract( stack, %i[any] * args[0][:value] )
+
+      args.reverse!
 
       n.times.each do |i|
         stack << args[ i ]
@@ -89,6 +93,8 @@ module Rpl
       n = args[0][:value]
       stack, args = Rpl::Core.stack_extract( stack, %i[any] * args[0][:value] )
 
+      args.reverse!
+
       (1..(n - 1)).each do |i|
         stack << args[ i ]
       end
@@ -102,6 +108,8 @@ module Rpl
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
       n = args[0][:value]
       stack, args = Rpl::Core.stack_extract( stack, %i[any] * args[0][:value] )
+
+      args.reverse!
 
       stack << args[n - 1]
 

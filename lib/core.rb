@@ -5,6 +5,7 @@ require_relative './language/mode'
 require_relative './language/operations'
 require_relative './language/program'
 require_relative './language/stack'
+require_relative './language/string'
 require_relative './language/time-date'
 
 module Rpl
@@ -33,7 +34,7 @@ module Rpl
         args << elt
       end
 
-      [stack, args.reverse]
+      [stack, args]
     end
 
     def __todo( stack )

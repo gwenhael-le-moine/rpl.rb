@@ -7,13 +7,13 @@ module Rpl
       addable = %i[numeric string name]
       stack, args = Rpl::Core.stack_extract( stack, [addable, addable] )
 
-      result = { type: case args[0][:type]
+      result = { type: case args[1][:type]
                        when :name
                          :name
                        when :string
                          :string
                        when :numeric
-                         if args[1][:type] == :numeric
+                         if args[0][:type] == :numeric
                            :numeric
                          else
                            :string
@@ -26,11 +26,11 @@ module Rpl
 
       result[:value] = case result[:type]
                        when :name
-                         "'#{args[0][:value]}#{args[1][:value]}'"
+                         "'#{args[1][:value]}#{args[0][:value]}'"
                        when :string
-                         "\"#{args[0][:value]}#{args[1][:value]}\""
+                         "\"#{args[1][:value]}#{args[0][:value]}\""
                        when :numeric
-                         args[0][:value] + args[1][:value]
+                         args[1][:value] + args[0][:value]
                        end
 
       result[:base] = 10 if result[:type] == :numeric # TODO: what if operands have other bases ?
@@ -43,7 +43,7 @@ module Rpl
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
       stack << { type: :numeric, base: 10,
-                 value: args[0][:value] - args[1][:value] }
+                 value: args[1][:value] - args[0][:value] }
     end
 
     # negation
@@ -59,7 +59,7 @@ module Rpl
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
       stack << { type: :numeric, base: 10,
-                 value: args[0][:value] * args[1][:value] }
+                 value: args[1][:value] * args[0][:value] }
     end
 
     # division
@@ -69,7 +69,7 @@ module Rpl
       raise 'Division by 0' if args[0][:value].zero?
 
       stack << { type: :numeric, base: 10,
-                 value: args[0][:value] / args[1][:value] }
+                 value: args[1][:value] / args[0][:value] }
     end
 
     # inverse
@@ -87,7 +87,7 @@ module Rpl
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
       stack << { type: :numeric, base: 10,
-                 value: args[0][:value]**args[1][:value] }
+                 value: args[1][:value]**args[0][:value] }
     end
 
     # rpn_square root
@@ -133,9 +133,9 @@ module Rpl
     def base( stack )
       stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
-      args[0][:base] = args[1][:value]
+      args[1][:base] = args[0][:value]
 
-      stack << args[0]
+      stack << args[1]
     end
 
     # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0

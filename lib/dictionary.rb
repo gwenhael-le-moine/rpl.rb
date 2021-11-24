@@ -94,13 +94,13 @@ module Rpl
       add( 'same',    proc { |stack| Rpl::Core.__todo( stack ) } ) # boolean operator same (equal)
 
       # STRING
-      add( '->str',   proc { |stack| Rpl::Core.__todo( stack ) } ) # convert an object into a string
+      add( '->str',   proc { |stack| Rpl::Core.to_string( stack ) } )
       add( 'str->',   proc { |stack| Rpl::Core.__todo( stack ) } ) # convert a string into an object
       add( 'chr',     proc { |stack| Rpl::Core.__todo( stack ) } ) # convert ASCII character code in stack level 1 into a string
       add( 'num',     proc { |stack| Rpl::Core.__todo( stack ) } ) # return ASCII code of the first character of the string in stack level 1 as a real number
-      add( 'size',    proc { |stack| Rpl::Core.__todo( stack ) } ) # return the length of the string
+      add( 'size',    proc { |stack| Rpl::Core.size( stack ) } )
       add( 'pos',     proc { |stack| Rpl::Core.__todo( stack ) } ) # seach for the string in level 1 within the string in level 2
-      add( 'sub',     proc { |stack| Rpl::Core.__todo( stack ) } ) # return a substring of the string in level 3
+      add( 'sub',     proc { |stack| Rpl::Core.sub( stack ) } )
 
       # BRANCH
       add( 'if',      proc { |stack| Rpl::Core.__todo( stack ) } ) # if <test-instruction> then <true-instructions> else <false-instructions> end
