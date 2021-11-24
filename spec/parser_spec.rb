@@ -74,4 +74,13 @@ class TestParser < Test::Unit::TestCase
     result = Rpl::Parser.new.parse_input( '4 "test"' )
     assert_equal [{ value: 4, type: :numeric, base: 10 }, { value: '"test"', type: :string }], result
   end
+
+  def test_program_name
+    result = Rpl::Parser.new.parse_input( "« 2 dup * » 'carré' sto" )
+
+    assert_equal [{ value: '« 2 dup * »', type: :program },
+                  { value: "'carré'", type: :name },
+                  { value: 'sto', type: :word }],
+                 result
+  end
 end

@@ -37,13 +37,13 @@ module Rpl
 
         regrouped_input << elt
 
-        regrouping = string_delimiters.odd? || (opened_programs > closed_programs )
-
         if elt[-1] == '»'
           closed_programs += 1
           elt.gsub!( '»', ' »') if elt.length > 1 && elt[-2] != ' '
         end
         string_delimiters += 1 if elt.length > 1 && elt[-1] == '"'
+
+        regrouping = string_delimiters.odd? || (opened_programs > closed_programs )
       end
 
       # 2. parse
