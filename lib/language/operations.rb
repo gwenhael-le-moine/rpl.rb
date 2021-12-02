@@ -152,5 +152,91 @@ module Rpl
       stack << { type: :numeric, base: 10,
                  value: value }
     end
+
+    # OPERATIONS ON REALS
+
+    # percent
+    def percent( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+
+      stack << { type: :numeric,
+                 base: 10,
+                 value: args[0][:value] * ( args[1][:value] / 100.0 ) }
+
+      stack
+    end
+
+    # inverse percent
+    def inverse_percent( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+
+      stack << { type: :numeric,
+                 base: 10,
+                 value: 100.0 * ( args[0][:value] / args[1][:value] ) }
+
+      stack
+    end
+
+    # modulo
+    def mod( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+
+      stack << { type: :numeric,
+                 base: 10,
+                 value: args[1][:value] % args[0][:value] }
+
+      stack
+    end
+
+    # n! for integer n or Gamma(x+1) for fractional x
+    def fact( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+
+      stack << { type: :numeric,
+                 base: 10,
+                 value: Math.gamma( args[0][:value] ) }
+
+      stack
+    end
+
+    # largest number <=
+    def floor( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+
+      stack << { type: :numeric,
+                 base: 10,
+                 value: args[0][:value].floor }
+
+      stack
+    end
+
+    # smallest number >=
+    def ceil( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+
+      stack << { type: :numeric,
+                 base: 10,
+                 value: args[0][:value].ceil }
+
+      stack
+    end
+
+    # min of 2 real numbers
+    def min( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+
+      stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
+
+      stack
+    end
+
+    # max of 2 real numbers
+    def max( stack )
+      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+
+      stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
+
+      stack
+    end
   end
 end

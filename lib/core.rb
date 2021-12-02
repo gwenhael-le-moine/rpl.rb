@@ -9,6 +9,8 @@ require_relative './language/stack'
 require_relative './language/string'
 require_relative './language/test'
 require_relative './language/time-date'
+require_relative './language/trig'
+require_relative './language/logs'
 
 module Rpl
   module Core

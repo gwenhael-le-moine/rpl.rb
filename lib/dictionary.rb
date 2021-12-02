@@ -50,18 +50,18 @@ module Rpl
       add( 'sign',    proc { |stack| Rpl::Core.sign( stack ) } )
 
       # OPERATIONS ON REALS
-      add( '%',       proc { |stack| Rpl::Core.__todo( stack ) } ) # percent
-      add( '%CH',     proc { |stack| Rpl::Core.__todo( stack ) } ) # inverse percent
-      add( 'mod',     proc { |stack| Rpl::Core.__todo( stack ) } ) # modulo
-      add( 'fact',    proc { |stack| Rpl::Core.__todo( stack ) } ) # n! for integer n or Gamma(x+1) for fractional x
+      add( '%',       proc { |stack| Rpl::Core.percent( stack ) } )
+      add( '%CH',     proc { |stack| Rpl::Core.inverse_percent( stack ) } )
+      add( 'mod',     proc { |stack| Rpl::Core.mod( stack ) } )
+      add( 'fact',    proc { |stack| Rpl::Core.fact( stack ) } )
       add( 'mant',    proc { |stack| Rpl::Core.__todo( stack ) } ) # mantissa of a real number
       add( 'xpon',    proc { |stack| Rpl::Core.__todo( stack ) } ) # exponant of a real number
-      add( 'floor',   proc { |stack| Rpl::Core.__todo( stack ) } ) # largest number <=
-      add( 'ceil',    proc { |stack| Rpl::Core.__todo( stack ) } ) # smallest number >=
+      add( 'floor',   proc { |stack| Rpl::Core.floor( stack ) } )
+      add( 'ceil',    proc { |stack| Rpl::Core.ceil( stack ) } )
       add( 'ip',      proc { |stack| Rpl::Core.__todo( stack ) } ) # integer part
       add( 'fp',      proc { |stack| Rpl::Core.__todo( stack ) } ) # fractional part
-      add( 'min',     proc { |stack| Rpl::Core.__todo( stack ) } ) # min of 2 real numbers
-      add( 'max',     proc { |stack| Rpl::Core.__todo( stack ) } ) # max of 2 real numbers
+      add( 'min',     proc { |stack| Rpl::Core.min( stack ) } )
+      add( 'max',     proc { |stack| Rpl::Core.max( stack ) } )
 
       # OPERATIONS ON COMPLEXES
       add( 're',      proc { |stack| Rpl::Core.__todo( stack ) } ) # complex real part
@@ -133,7 +133,7 @@ module Rpl
 
       # STORE
       add( 'sto',     proc { |stack| Rpl::Core.__todo( stack ) } ) # store a variable. ex: 1 'name' sto
-      add( '▶',       proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
+      add( '▶',       proc { |stack| Rpl::Core.sto( stack ) } ) # alias
       add( 'rcl',     proc { |stack| Rpl::Core.__todo( stack ) } ) # recall a variable. ex: 'name' rcl
       add( 'purge',   proc { |stack| Rpl::Core.__todo( stack ) } ) # delete a variable. ex: 'name' purge
       add( 'vars',    proc { |stack| Rpl::Core.__todo( stack ) } ) # list all variables
@@ -152,7 +152,8 @@ module Rpl
       add( '→',       proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
 
       # TRIG ON REALS AND COMPLEXES
-      add( 'pi',      proc { |stack| Rpl::Core.__todo( stack ) } ) # pi constant
+      add( 'pi',      proc { |stack| Rpl::Core.pi( stack ) } )
+      add( '𝛑',       proc { |stack| Rpl::Core.pi( stack ) } )     # alias
       add( 'sin',     proc { |stack| Rpl::Core.__todo( stack ) } ) # sinus
       add( 'asin',    proc { |stack| Rpl::Core.__todo( stack ) } ) # arg sinus
       add( 'cos',     proc { |stack| Rpl::Core.__todo( stack ) } ) # cosinus
@@ -165,7 +166,8 @@ module Rpl
       add( 'r→d',     proc { |stack| Rpl::Core.__todo( stack ) } ) # alias
 
       # LOGS ON REALS AND COMPLEXES
-      add( 'e',       proc { |stack| Rpl::Core.__todo( stack ) } ) # Euler constant
+      add( 'e',       proc { |stack| Rpl::Core.e( stack ) } )
+      add( 'ℇ',       proc { |stack| Rpl::Core.e( stack ) } ) # alias
       add( 'ln',      proc { |stack| Rpl::Core.__todo( stack ) } ) # logarithm base e
       add( 'lnp1',    proc { |stack| Rpl::Core.__todo( stack ) } ) # ln(1+x) which is useful when x is close to 0
       add( 'exp',     proc { |stack| Rpl::Core.__todo( stack ) } ) # exponential
