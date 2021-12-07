@@ -1,14 +1,15 @@
 require 'bigdecimal/math'
 
-require_relative './language/branch'
-require_relative './language/general'
-require_relative './language/mode'
-require_relative './language/operations'
-require_relative './language/program'
-require_relative './language/stack'
-require_relative './language/string'
-require_relative './language/test'
-require_relative './language/time-date'
+require_relative './core/branch'
+require_relative './core/general'
+require_relative './core/mode'
+require_relative './core/operations'
+require_relative './core/program'
+require_relative './core/stack'
+require_relative './core/store'
+require_relative './core/string'
+require_relative './core/test'
+require_relative './core/time-date'
 
 module Rpl
   module Lang

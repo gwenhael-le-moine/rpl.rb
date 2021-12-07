@@ -1,11 +1,11 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Rpl
   module Lang
     class Runner
       def initialize; end
 
-      def run_input( stack, dictionary, input )
+      def run_input( input, stack, dictionary )
         input.each do |elt|
           case elt[:type]
           when :word

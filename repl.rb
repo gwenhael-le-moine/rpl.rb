@@ -3,28 +3,9 @@
 
 require 'readline'
 
-require './lib/core'
-require './lib/dictionary'
-require './lib/parser'
-require './lib/runner'
+require './language'
 
 module Rpl
-  class Language
-    attr_reader :stack
-
-    def initialize
-      @stack = []
-      @dictionary = Dictionary.new
-      @parser = Parser.new
-      @runner = Runner.new
-    end
-
-    def run( input )
-      @stack, @dictionary = @runner.run_input( @stack, @dictionary,
-                                               @parser.parse_input( input ) )
-    end
-  end
-
   class Repl
     def initialize
       @lang = Rpl::Language.new
@@ -47,8 +28,7 @@ module Rpl
         # Remove blank lines from history
         Readline::HISTORY.pop if input.empty?
 
-        @stack, @dictionary = @runner.run_input( @stack, @dictionary,
-                                                 @parser.parse_input( input ) )
+        @lang.run( input )
 
         print_stack
       end
@@ -73,9 +53,9 @@ module Rpl
     end
 
     def print_stack
-      stack_size = @stack.size
+      stack_size = @lang.stack.size
 
-      @stack.each_with_index do |elt, i|
+      @lang.stack.each_with_index do |elt, i|
         puts "#{stack_size - i}: #{format_element( elt )}"
       end
     end
