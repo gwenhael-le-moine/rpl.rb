@@ -12,6 +12,8 @@ require_relative './core/store'
 require_relative './core/string'
 require_relative './core/test'
 require_relative './core/time-date'
+require_relative './core/trig'
+require_relative './core/logs'
 
 module Rpl
   module Lang
