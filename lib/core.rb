@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bigdecimal/math'
 
 require_relative './core/branch'
