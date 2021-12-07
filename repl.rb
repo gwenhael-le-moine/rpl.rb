@@ -9,12 +9,25 @@ require './lib/parser'
 require './lib/runner'
 
 module Rpl
-  class Repl
+  class Language
+    attr_reader :stack
+
     def initialize
       @stack = []
       @dictionary = Dictionary.new
       @parser = Parser.new
       @runner = Runner.new
+    end
+
+    def run( input )
+      @stack, @dictionary = @runner.run_input( @stack, @dictionary,
+                                               @parser.parse_input( input ) )
+    end
+  end
+
+  class Repl
+    def initialize
+      @lang = Rpl::Language.new
     end
 
     def run

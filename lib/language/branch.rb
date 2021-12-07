@@ -1,19 +1,21 @@
 module Rpl
-  module Core
-    module_function
+  module Lang
+    module Core
+      module_function
 
-    # similar to if-then-end, <test-instruction> <true-instruction> ift
-    def ift( stack, dictionary )
-      ifte( stack << { type: :word, value: 'nop' }, dictionary )
-    end
+      # similar to if-then-end, <test-instruction> <true-instruction> ift
+      def ift( stack, dictionary )
+        ifte( stack << { type: :word, value: 'nop' }, dictionary )
+      end
 
-    # similar to if-then-else-end, <test-instruction> <true-instruction> <false-instruction> ifte
-    def ifte( stack, dictionary )
-      stack, args = Rpl::Core.stack_extract( stack, [%i[program word], %i[program word], %i[boolean]] )
+      # similar to if-then-else-end, <test-instruction> <true-instruction> <false-instruction> ifte
+      def ifte( stack, dictionary )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[program word], %i[program word], %i[boolean]] )
 
-      stack << args[ args[2][:value] ? 1 : 0 ]
+        stack << args[ args[2][:value] ? 1 : 0 ]
 
-      Rpl::Core.eval( stack, dictionary )
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
     end
   end
 end

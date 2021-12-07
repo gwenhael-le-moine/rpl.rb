@@ -7,76 +7,76 @@ require_relative '../lib/parser'
 
 class TestParser < Test::Unit::TestCase
   def test_number
-    result = Rpl::Parser.new.parse_input( '1' )
+    result = Rpl::Lang::Parser.new.parse_input( '1' )
     assert_equal [{ value: 1, type: :numeric, base: 10 }], result
   end
 
   def test_word
-    result = Rpl::Parser.new.parse_input( 'dup' )
+    result = Rpl::Lang::Parser.new.parse_input( 'dup' )
     assert_equal [{ value: 'dup', type: :word }], result
   end
 
   def test_string
-    result = Rpl::Parser.new.parse_input( '"test"' )
+    result = Rpl::Lang::Parser.new.parse_input( '"test"' )
     assert_equal [{ value: '"test"', type: :string }], result
 
-    result = Rpl::Parser.new.parse_input( '" test"' )
+    result = Rpl::Lang::Parser.new.parse_input( '" test"' )
     assert_equal [{ value: '" test"', type: :string }], result
 
-    result = Rpl::Parser.new.parse_input( '"test "' )
+    result = Rpl::Lang::Parser.new.parse_input( '"test "' )
     assert_equal [{ value: '"test "', type: :string }], result
 
-    result = Rpl::Parser.new.parse_input( '" test "' )
+    result = Rpl::Lang::Parser.new.parse_input( '" test "' )
     assert_equal [{ value: '" test "', type: :string }], result
   end
 
   def test_name
-    result = Rpl::Parser.new.parse_input( "'test'" )
+    result = Rpl::Lang::Parser.new.parse_input( "'test'" )
     assert_equal [{ value: "'test'", type: :name }], result
   end
 
   def test_program
-    result = Rpl::Parser.new.parse_input( '« test »' )
+    result = Rpl::Lang::Parser.new.parse_input( '« test »' )
     assert_equal [{ value: '« test »', type: :program }], result
 
-    result = Rpl::Parser.new.parse_input( '«test »' )
+    result = Rpl::Lang::Parser.new.parse_input( '«test »' )
     assert_equal [{ value: '« test »', type: :program }], result
 
-    result = Rpl::Parser.new.parse_input( '« test»' )
+    result = Rpl::Lang::Parser.new.parse_input( '« test»' )
     assert_equal [{ value: '« test »', type: :program }], result
 
-    result = Rpl::Parser.new.parse_input( '«test»' )
+    result = Rpl::Lang::Parser.new.parse_input( '«test»' )
     assert_equal [{ value: '« test »', type: :program }], result
 
-    result = Rpl::Parser.new.parse_input( '« test test »' )
+    result = Rpl::Lang::Parser.new.parse_input( '« test test »' )
     assert_equal [{ value: '« test test »', type: :program }], result
 
-    result = Rpl::Parser.new.parse_input( '« test « test » »' )
+    result = Rpl::Lang::Parser.new.parse_input( '« test « test » »' )
     assert_equal [{ value: '« test « test » »', type: :program }], result
 
-    result = Rpl::Parser.new.parse_input( '« test "test" test »' )
+    result = Rpl::Lang::Parser.new.parse_input( '« test "test" test »' )
     assert_equal [{ value: '« test "test" test »', type: :program }], result
   end
 
   def test_number_number
-    result = Rpl::Parser.new.parse_input( '2 3' )
+    result = Rpl::Lang::Parser.new.parse_input( '2 3' )
     assert_equal [{ value: 2, type: :numeric, base: 10 }, { value: 3, type: :numeric, base: 10 }], result
   end
 
   def test_number_number_word
-    result = Rpl::Parser.new.parse_input( '2 3 +' )
+    result = Rpl::Lang::Parser.new.parse_input( '2 3 +' )
     assert_equal [{ value: 2, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
                   { value: '+', type: :word }], result
   end
 
   def test_number_string
-    result = Rpl::Parser.new.parse_input( '4 "test"' )
+    result = Rpl::Lang::Parser.new.parse_input( '4 "test"' )
     assert_equal [{ value: 4, type: :numeric, base: 10 }, { value: '"test"', type: :string }], result
   end
 
   def test_program_name
-    result = Rpl::Parser.new.parse_input( "« 2 dup * » 'carré' sto" )
+    result = Rpl::Lang::Parser.new.parse_input( "« 2 dup * » 'carré' sto" )
 
     assert_equal [{ value: '« 2 dup * »', type: :program },
                   { value: "'carré'", type: :name },

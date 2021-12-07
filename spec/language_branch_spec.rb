@@ -10,18 +10,18 @@ require_relative '../lib/runner'
 
 class TestLanguageBranch < Test::Unit::TestCase
   def test_ifte
-    stack = Rpl::Core.ifte( [{ type: :boolean, value: true },
-                             { type: :program, value: '« 2 3 + »' },
-                             { type: :program, value: '« 2 3 - »' }],
-                            Rpl::Dictionary.new )
+    stack = Rpl::Lang::Core.ifte( [{ type: :boolean, value: true },
+                                   { type: :program, value: '« 2 3 + »' },
+                                   { type: :program, value: '« 2 3 - »' }],
+                                  Rpl::Lang::Dictionary.new )
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
                  stack
 
-    stack = Rpl::Core.ifte( [{ type: :boolean, value: false },
-                             { type: :program, value: '« 2 3 + »' },
-                             { type: :program, value: '« 2 3 - »' }],
-                            Rpl::Dictionary.new )
+    stack = Rpl::Lang::Core.ifte( [{ type: :boolean, value: false },
+                                   { type: :program, value: '« 2 3 + »' },
+                                   { type: :program, value: '« 2 3 - »' }],
+                                  Rpl::Lang::Dictionary.new )
 
     assert_equal [{ value: -1, type: :numeric, base: 10 }],
                  stack

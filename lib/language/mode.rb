@@ -1,31 +1,33 @@
 module Rpl
-  module Core
-    module_function
+  module Lang
+    module Core
+      module_function
 
-    # set float precision in bits. ex: 256 prec
-    def prec( stack )
-      stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+      # set float precision in bits. ex: 256 prec
+      def prec( stack )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
-      Rpl::Core.precision = args[0][:value]
+        Rpl::Lang::Core.precision = args[0][:value]
 
-      stack
-    end
+        stack
+      end
 
-    # set float representation and precision to default
-    def default( stack )
-      Rpl::Core.precision = 12
+      # set float representation and precision to default
+      def default( stack )
+        Rpl::Lang::Core.precision = 12
 
-      stack
-    end
+        stack
+      end
 
-    # show type of stack first entry
-    def type( stack )
-      stack, args = Rpl::Core.stack_extract( stack, [:any] )
+      # show type of stack first entry
+      def type( stack )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
-      stack << args[0]
-      stack << { type: :string,
-                 value: args[0][:type].to_s }
-      stack
+        stack << args[0]
+        stack << { type: :string,
+                   value: args[0][:type].to_s }
+        stack
+      end
     end
   end
 end
