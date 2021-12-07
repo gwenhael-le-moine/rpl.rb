@@ -3,11 +3,12 @@ module Rpl
     module_function
 
     # Euler constant
-    def e( stack )
+    def e( stack, dictionary )
       stack << { type: :numeric,
                  base: 10,
                  value: BigMath.E( Rpl::Core.precision ) }
-      stack
+
+      [stack, dictionary]
     end
   end
 end

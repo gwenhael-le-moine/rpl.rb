@@ -6,8 +6,8 @@ module Rpl
       module_function
 
       # no operation
-      def nop( stack )
-        stack
+      def nop( stack, dictionary )
+        [stack, dictionary]
       end
     end
   end

@@ -14,7 +14,7 @@ module Rpl
             if command.nil?
               stack << { type: :name, value: "'#{elt[:value]}'" }
             else
-              stack = command.call( stack )
+              stack, dictionary = command.call( stack, dictionary )
             end
           else
             stack << elt

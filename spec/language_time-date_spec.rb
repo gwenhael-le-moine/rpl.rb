@@ -3,12 +3,13 @@
 
 require 'test/unit'
 
-require_relative '../lib/core'
+require_relative '../language'
 
 class TestLanguageTimeDate < Test::Unit::TestCase
   def test_time
     now = Time.now.to_s
-    stack = Rpl::Lang::Core.time( [] )
+    stack, _dictionary = Rpl::Lang::Core.time( [],
+                                               Rpl::Lang::Dictionary.new )
 
     assert_equal [{ value: now, type: :string }],
                  stack
@@ -16,14 +17,16 @@ class TestLanguageTimeDate < Test::Unit::TestCase
 
   def test_date
     now = Date.today.to_s
-    stack = Rpl::Lang::Core.date( [] )
+    stack, _dictionary = Rpl::Lang::Core.date( [],
+                                               Rpl::Lang::Dictionary.new )
 
     assert_equal [{ value: now, type: :string }],
                  stack
   end
 
   def test_ticks
-    stack = Rpl::Lang::Core.ticks( [] )
+    stack, _dictionary = Rpl::Lang::Core.ticks( [],
+                                                Rpl::Lang::Dictionary.new )
 
     # TODO: better test, but how?
     assert_equal :numeric,

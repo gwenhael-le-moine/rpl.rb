@@ -13,11 +13,11 @@ module Rpl
         preparsed_input = args[0][:type] == :word ? args[0][:value] : args[0][:value][1..-2]
         parsed_input = Rpl::Lang::Parser.new.parse_input( preparsed_input )
 
-        stack, _dictionary = Rpl::Lang::Runner.new.run_input( parsed_input,
-                                                              stack, dictionary )
+        stack, dictionary = Rpl::Lang::Runner.new.run_input( parsed_input,
+                                                             stack, dictionary )
         # TODO: check that STO actually updates dictionary
 
-        stack
+        [stack, dictionary]
       end
     end
   end

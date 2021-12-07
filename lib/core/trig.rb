@@ -3,11 +3,12 @@ module Rpl
     module_function
 
     # pi constant
-    def pi( stack )
+    def pi( stack, dictionary )
       stack << { type: :numeric,
                  base: 10,
                  value: BigMath.PI( Rpl::Core.precision ) }
-      stack
+
+      [stack, dictionary]
     end
   end
 end

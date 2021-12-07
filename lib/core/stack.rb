@@ -6,54 +6,58 @@ module Rpl
       module_function
 
       # swap 2 first stack entries
-      def swap( stack )
+      def swap( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << args[0] << args[1]
+
+        [stack, dictionary]
       end
 
       # drop first stack entry
-      def drop( stack )
-        dropn( stack << { type: :numeric, base: 10, value: 1 } )
+      def drop( stack, dictionary )
+        dropn( stack << { type: :numeric, base: 10, value: 1 }, dictionary )
       end
 
       # drop 2 first stack entries
-      def drop2( stack )
-        dropn( stack << { type: :numeric, base: 10, value: 2 } )
+      def drop2( stack, dictionary )
+        dropn( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
       end
 
       # drop n first stack entries
-      def dropn( stack )
+      def dropn( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
         stack, _args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
 
-        stack
+        [stack, dictionary]
       end
 
       # drop all stack entries
-      def del( _stack )
-        []
+      def del( _stack, dictionary )
+        [[], dictionary]
       end
 
       # rotate 3 first stack entries
-      def rot( stack )
+      def rot( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any any] )
 
         stack << args[1] << args[0] << args[2]
+
+        [stack, dictionary]
       end
 
       # duplicate first stack entry
-      def dup( stack )
-        dupn( stack << { type: :numeric, base: 10, value: 1 } )
+      def dup( stack, dictionary )
+        dupn( stack << { type: :numeric, base: 10, value: 1 }, dictionary )
       end
 
       # duplicate 2 first stack entries
-      def dup2( stack )
-        dupn( stack << { type: :numeric, base: 10, value: 2 } )
+      def dup2( stack, dictionary )
+        dupn( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
       end
 
       # duplicate n first stack entries
-      def dupn( stack )
+      def dupn( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value]
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
@@ -66,11 +70,11 @@ module Rpl
           end
         end
 
-        stack
+        [stack, dictionary]
       end
 
       # push a copy of the given stack level onto the stack
-      def pick( stack )
+      def pick( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value]
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
@@ -82,16 +86,18 @@ module Rpl
         end
         stack << args[0]
 
-        stack
+        [stack, dictionary]
       end
 
       # give stack depth
-      def depth( stack )
+      def depth( stack, dictionary )
         stack << { type: :numeric, base: 10, value: stack.size }
+
+        [stack, dictionary]
       end
 
       # move a stack entry to the top of the stack
-      def roll( stack )
+      def roll( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value]
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
@@ -103,11 +109,11 @@ module Rpl
         end
         stack << args[0]
 
-        stack
+        [stack, dictionary]
       end
 
       # move the element on top of the stack to a higher stack position
-      def rolld( stack )
+      def rolld( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value]
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
@@ -120,12 +126,12 @@ module Rpl
           stack << args[ i ]
         end
 
-        stack
+        [stack, dictionary]
       end
 
       # push a copy of the element in stack level 2 onto the stack
-      def over( stack )
-        pick( stack << { type: :numeric, base: 10, value: 2 } )
+      def over( stack, dictionary )
+        pick( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
       end
     end
   end

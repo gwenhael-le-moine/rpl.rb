@@ -11,7 +11,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] > args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # binary operator >=
@@ -20,7 +21,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] >= args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # binary operator <
@@ -29,7 +31,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] < args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # binary operator <=
@@ -38,7 +41,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] <= args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # boolean operator != (different)
@@ -47,7 +51,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] != args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # boolean operator and
@@ -56,7 +61,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] && args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # boolean operator or
@@ -65,7 +71,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] || args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # boolean operator xor
@@ -74,7 +81,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] ^ args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # boolean operator not
@@ -83,7 +91,8 @@ module Rpl
 
         stack << { type: :boolean,
                    value: !args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # boolean operator same (equal)
@@ -92,21 +101,24 @@ module Rpl
 
         stack << { type: :boolean,
                    value: args[1][:value] == args[0][:value] }
-        stack
+
+        [stack, dictionary]
       end
 
       # true boolean
       def true( stack )
         stack << { type: :boolean,
                    value: true }
-        stack
+
+        [stack, dictionary]
       end
 
       # false boolean
       def false( stack )
         stack << { type: :boolean,
                    value: false }
-        stack
+
+        [stack, dictionary]
       end
     end
   end

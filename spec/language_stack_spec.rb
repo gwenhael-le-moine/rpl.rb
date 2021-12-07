@@ -3,52 +3,58 @@
 
 require 'test/unit'
 
-require_relative '../lib/core'
+require_relative '../language'
 
 class TestLanguageStack < Test::Unit::TestCase
   def test_swap
-    stack = Rpl::Lang::Core.swap [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.swap [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 2, type: :numeric, base: 10 },
                   { value: 1, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_drop
-    stack = Rpl::Lang::Core.drop [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.drop [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_drop2
-    stack = Rpl::Lang::Core.drop2 [{ value: 1, type: :numeric, base: 10 },
-                                   { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.drop2 [{ value: 1, type: :numeric, base: 10 },
+                                                { value: 2, type: :numeric, base: 10 }],
+                                               Rpl::Lang::Dictionary.new
     assert_equal [],
                  stack
   end
 
   def test_dropn
-    stack = Rpl::Lang::Core.dropn [{ value: 1, type: :numeric, base: 10 },
-                                   { value: 2, type: :numeric, base: 10 },
-                                   { value: 3, type: :numeric, base: 10 },
-                                   { value: 4, type: :numeric, base: 10 },
-                                   { value: 3, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.dropn [{ value: 1, type: :numeric, base: 10 },
+                                                { value: 2, type: :numeric, base: 10 },
+                                                { value: 3, type: :numeric, base: 10 },
+                                                { value: 4, type: :numeric, base: 10 },
+                                                { value: 3, type: :numeric, base: 10 }],
+                                               Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_del
-    stack = Rpl::Lang::Core.del [{ value: 1, type: :numeric, base: 10 },
-                                 { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.del [{ value: 1, type: :numeric, base: 10 },
+                                              { value: 2, type: :numeric, base: 10 }],
+                                             Rpl::Lang::Dictionary.new
     assert_equal [],
                  stack
   end
 
   def test_rot
-    stack = Rpl::Lang::Core.rot [{ value: 1, type: :numeric, base: 10 },
-                                 { value: 2, type: :numeric, base: 10 },
-                                 { value: 3, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.rot [{ value: 1, type: :numeric, base: 10 },
+                                              { value: 2, type: :numeric, base: 10 },
+                                              { value: 3, type: :numeric, base: 10 }],
+                                             Rpl::Lang::Dictionary.new
     assert_equal [{ value: 2, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
                   { value: 1, type: :numeric, base: 10 }],
@@ -56,8 +62,9 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_dup
-    stack = Rpl::Lang::Core.dup [{ value: 1, type: :numeric, base: 10 },
-                                 { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.dup [{ value: 1, type: :numeric, base: 10 },
+                                              { value: 2, type: :numeric, base: 10 }],
+                                             Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 }],
@@ -65,8 +72,9 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_dup2
-    stack = Rpl::Lang::Core.dup2 [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.dup2 [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 1, type: :numeric, base: 10 },
@@ -75,11 +83,12 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_dupn
-    stack = Rpl::Lang::Core.dupn [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 },
-                                  { value: 4, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.dupn [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 },
+                                               { value: 4, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
@@ -91,11 +100,12 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_pick
-    stack = Rpl::Lang::Core.pick [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 },
-                                  { value: 4, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.pick [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 },
+                                               { value: 4, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
@@ -105,12 +115,14 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_depth
-    stack = Rpl::Lang::Core.depth []
+    stack, _dictionary = Rpl::Lang::Core.depth [],
+                                               Rpl::Lang::Dictionary.new
     assert_equal [{ value: 0, type: :numeric, base: 10 }],
                  stack
 
-    stack = Rpl::Lang::Core.depth [{ value: 1, type: :numeric, base: 10 },
-                                   { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.depth [{ value: 1, type: :numeric, base: 10 },
+                                                { value: 2, type: :numeric, base: 10 }],
+                                               Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 }],
@@ -118,11 +130,12 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_roll
-    stack = Rpl::Lang::Core.roll [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 },
-                                  { value: 4, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.roll [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 },
+                                               { value: 4, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
                   { value: 4, type: :numeric, base: 10 },
@@ -131,11 +144,12 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_rolld
-    stack = Rpl::Lang::Core.rolld [{ value: 1, type: :numeric, base: 10 },
-                                   { value: 2, type: :numeric, base: 10 },
-                                   { value: 4, type: :numeric, base: 10 },
-                                   { value: 3, type: :numeric, base: 10 },
-                                   { value: 2, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.rolld [{ value: 1, type: :numeric, base: 10 },
+                                                { value: 2, type: :numeric, base: 10 },
+                                                { value: 4, type: :numeric, base: 10 },
+                                                { value: 3, type: :numeric, base: 10 },
+                                                { value: 2, type: :numeric, base: 10 }],
+                                               Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
@@ -144,10 +158,11 @@ class TestLanguageStack < Test::Unit::TestCase
   end
 
   def test_over
-    stack = Rpl::Lang::Core.over [{ value: 1, type: :numeric, base: 10 },
-                                  { value: 2, type: :numeric, base: 10 },
-                                  { value: 3, type: :numeric, base: 10 },
-                                  { value: 4, type: :numeric, base: 10 }]
+    stack, _dictionary = Rpl::Lang::Core.over [{ value: 1, type: :numeric, base: 10 },
+                                               { value: 2, type: :numeric, base: 10 },
+                                               { value: 3, type: :numeric, base: 10 },
+                                               { value: 4, type: :numeric, base: 10 }],
+                                              Rpl::Lang::Dictionary.new
     assert_equal [{ value: 1, type: :numeric, base: 10 },
                   { value: 2, type: :numeric, base: 10 },
                   { value: 3, type: :numeric, base: 10 },
