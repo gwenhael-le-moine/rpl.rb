@@ -8,7 +8,7 @@ module Rpl
       # addition
       def add( stack )
         addable = %i[numeric string name]
-        stack, args = Rpl::Core.stack_extract( stack, [addable, addable] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [addable, addable] )
 
         result = { type: case args[1][:type]
                          when :name
@@ -43,7 +43,7 @@ module Rpl
 
       # substraction
       def subtract( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << { type: :numeric, base: 10,
                    value: args[1][:value] - args[0][:value] }
@@ -51,7 +51,7 @@ module Rpl
 
       # negation
       def negate( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric, base: 10,
                    value: args[0][:value] * -1 }
@@ -59,7 +59,7 @@ module Rpl
 
       # multiplication
       def multiply( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << { type: :numeric, base: 10,
                    value: args[1][:value] * args[0][:value] }
@@ -67,7 +67,7 @@ module Rpl
 
       # division
       def divide( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         raise 'Division by 0' if args[0][:value].zero?
 
@@ -77,7 +77,7 @@ module Rpl
 
       # inverse
       def inverse( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         raise 'Division by 0' if args[0][:value].zero?
 
@@ -87,7 +87,7 @@ module Rpl
 
       # power
       def power( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << { type: :numeric, base: 10,
                    value: args[1][:value]**args[0][:value] }
@@ -95,15 +95,15 @@ module Rpl
 
       # rpn_square root
       def sqrt( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric, base: 10,
-                   value: BigMath.sqrt( BigDecimal( args[0][:value] ), Rpl::Core.precision ) }
+                   value: BigMath.sqrt( BigDecimal( args[0][:value] ), Rpl::Lang::Core.precision ) }
       end
 
       # rpn_square
       def sq( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric, base: 10,
                    value: args[0][:value] * args[0][:value] }
@@ -111,7 +111,7 @@ module Rpl
 
       # absolute value
       def abs( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric, base: 10,
                    value: args[0][:value].abs }
@@ -134,7 +134,7 @@ module Rpl
 
       # arbitrary base representation
       def base( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         args[1][:base] = args[0][:value]
 
@@ -143,7 +143,7 @@ module Rpl
 
       # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
       def sign( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
         value = if args[0][:value].positive?
                   1
                 elsif args[0][:value].negative?
@@ -160,7 +160,7 @@ module Rpl
 
       # percent
       def percent( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -171,7 +171,7 @@ module Rpl
 
       # inverse percent
       def inverse_percent( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -182,7 +182,7 @@ module Rpl
 
       # modulo
       def mod( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -193,7 +193,7 @@ module Rpl
 
       # n! for integer n or Gamma(x+1) for fractional x
       def fact( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -204,7 +204,7 @@ module Rpl
 
       # largest number <=
       def floor( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -215,7 +215,7 @@ module Rpl
 
       # smallest number >=
       def ceil( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -226,7 +226,7 @@ module Rpl
 
       # min of 2 real numbers
       def min( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
 
@@ -235,7 +235,7 @@ module Rpl
 
       # max of 2 real numbers
       def max( stack )
-        stack, args = Rpl::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
         stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
 

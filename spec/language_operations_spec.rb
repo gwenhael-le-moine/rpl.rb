@@ -179,73 +179,73 @@ class TesttLanguageOperations < Test::Unit::TestCase
   end
 
   def test_percent
-    stack = Rpl::Core.percent [{ value: 2, type: :numeric, base: 10 },
-                               { value: 33, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.percent [{ value: 2, type: :numeric, base: 10 },
+                                     { value: 33, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 0.66, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_inverse_percent
-    stack = Rpl::Core.inverse_percent [{ value: 2, type: :numeric, base: 10 },
-                                       { value: 0.66, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.inverse_percent [{ value: 2, type: :numeric, base: 10 },
+                                             { value: 0.66, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 33, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_mod
-    stack = Rpl::Core.mod [{ value: 9, type: :numeric, base: 10 },
-                           { value: 4, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.mod [{ value: 9, type: :numeric, base: 10 },
+                                 { value: 4, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 1, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_fact
-    stack = Rpl::Core.fact [{ value: 5, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.fact [{ value: 5, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 24, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_floor
-    stack = Rpl::Core.floor [{ value: 5.23, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.floor [{ value: 5.23, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_ceil
-    stack = Rpl::Core.ceil [{ value: 5.23, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.ceil [{ value: 5.23, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 6, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_min
-    stack = Rpl::Core.min [{ value: 1, type: :numeric, base: 10 },
-                           { value: 2, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.min [{ value: 1, type: :numeric, base: 10 },
+                                 { value: 2, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 1, type: :numeric, base: 10 }],
                  stack
 
-    stack = Rpl::Core.min [{ value: 2, type: :numeric, base: 10 },
-                           { value: 1, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.min [{ value: 2, type: :numeric, base: 10 },
+                                 { value: 1, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 1, type: :numeric, base: 10 }],
                  stack
   end
 
   def test_max
-    stack = Rpl::Core.max [{ value: 1, type: :numeric, base: 10 },
-                           { value: 2, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.max [{ value: 1, type: :numeric, base: 10 },
+                                 { value: 2, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 2, type: :numeric, base: 10 }],
                  stack
 
-    stack = Rpl::Core.max [{ value: 2, type: :numeric, base: 10 },
-                           { value: 1, type: :numeric, base: 10 }]
+    stack = Rpl::Lang::Core.max [{ value: 2, type: :numeric, base: 10 },
+                                 { value: 1, type: :numeric, base: 10 }]
 
     assert_equal [{ value: 2, type: :numeric, base: 10 }],
                  stack
