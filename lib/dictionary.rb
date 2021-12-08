@@ -148,6 +148,7 @@ module Rpl
         add( 'sto+',    proc { |stack, dictionary| Rpl::Lang::Core.sto_add( stack, dictionary ) } )
         add( 'sto-',    proc { |stack, dictionary| Rpl::Lang::Core.sto_subtract( stack, dictionary ) } )
         add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } )
+        add( 'sto×',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } ) # alias
         add( 'sto/',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } )
         add( 'sto÷',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } ) # alias
         add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.sto_negate( stack, dictionary ) } )
