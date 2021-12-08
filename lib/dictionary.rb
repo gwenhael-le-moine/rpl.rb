@@ -213,7 +213,7 @@ module Rpl
         @vars = {}
       end
 
-      def []( name )
+      def lookup( name )
         word = @words[ name ]
         word ||= @vars[ name ]
 

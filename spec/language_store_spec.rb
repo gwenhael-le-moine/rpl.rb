@@ -25,7 +25,7 @@ class TestLanguageProgram < Test::Unit::TestCase
   def test_purge
     lang = Rpl::Language.new
     lang.run '« 2 dup * » \'quatre\' sto \'quatre\' purge'
-    assert_nil lang.dictionary['quatre']
+    assert_nil lang.dictionary.lookup( 'quatre' )
   end
 
   def test_vars

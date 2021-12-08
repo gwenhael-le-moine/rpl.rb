@@ -27,7 +27,7 @@ module Rpl
       def rcl( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name]] )
 
-        word = dictionary[ args[0][:value][1..-2] ]
+        word = dictionary.lookup( args[0][:value][1..-2] )
 
         stack, dictionary = word.call( stack, dictionary, true ) unless word.nil?
 
