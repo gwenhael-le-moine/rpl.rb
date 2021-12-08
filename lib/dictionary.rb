@@ -45,6 +45,7 @@ module Rpl
         add( 'inv',     proc { |stack, dictionary| Rpl::Lang::Core.inverse( stack, dictionary ) } )
         add( '^',       proc { |stack, dictionary| Rpl::Lang::Core.power( stack, dictionary ) } )
         add( 'sqrt',    proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } )
+        add( '√',       proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } ) # alias
         add( 'sq',      proc { |stack, dictionary| Rpl::Lang::Core.sq( stack, dictionary ) } )
         add( 'abs',     proc { |stack, dictionary| Rpl::Lang::Core.abs( stack, dictionary ) } )
         add( 'dec',     proc { |stack, dictionary| Rpl::Lang::Core.dec( stack, dictionary ) } )
@@ -58,6 +59,7 @@ module Rpl
         add( '%CH',     proc { |stack, dictionary| Rpl::Lang::Core.inverse_percent( stack, dictionary ) } )
         add( 'mod',     proc { |stack, dictionary| Rpl::Lang::Core.mod( stack, dictionary ) } )
         add( 'fact',    proc { |stack, dictionary| Rpl::Lang::Core.fact( stack, dictionary ) } )
+        add( '!',       proc { |stack, dictionary| Rpl::Lang::Core.fact( stack, dictionary ) } ) # alias
         # add( 'mant',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # mantissa of a real number
         # add( 'xpon',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # exponant of a real number
         add( 'floor',   proc { |stack, dictionary| Rpl::Lang::Core.floor( stack, dictionary ) } )
@@ -147,6 +149,7 @@ module Rpl
         add( 'sto-',    proc { |stack, dictionary| Rpl::Lang::Core.sto_subtract( stack, dictionary ) } )
         add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } )
         add( 'sto/',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } )
+        add( 'sto÷',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } ) # alias
         add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.sto_negate( stack, dictionary ) } )
         add( 'sinv',    proc { |stack, dictionary| Rpl::Lang::Core.sto_inverse( stack, dictionary ) } )
 
