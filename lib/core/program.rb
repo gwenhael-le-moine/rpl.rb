@@ -15,7 +15,6 @@ module Rpl
 
         stack, dictionary = Rpl::Lang::Runner.new.run_input( parsed_input,
                                                              stack, dictionary )
-        # TODO: check that STO actually updates dictionary
 
         [stack, dictionary]
       end

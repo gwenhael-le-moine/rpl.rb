@@ -9,7 +9,7 @@ module Rpl
         input.each do |elt|
           case elt[:type]
           when :word
-            command = dictionary.lookup( elt[:value] )
+            command = dictionary[ elt[:value] ]
 
             if command.nil?
               stack << { type: :name, value: "'#{elt[:value]}'" }

@@ -26,11 +26,4 @@ class TestLanguageProgram < Test::Unit::TestCase
                   { value: 4, type: :numeric, base: 10 }],
                  stack
   end
-
-  def test_sto
-    stack, _dictionary = Rpl::Lang::Core.sto( [{ value: '« 2 dup  »', type: :program },
-                                               { value: "'quatre'", type: :name }], Rpl::Lang::Dictionary.new )
-
-    assert_equal [], stack
-  end
 end

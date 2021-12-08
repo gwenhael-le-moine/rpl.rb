@@ -3,9 +3,12 @@
 module Rpl
   module Lang
     class Dictionary
+      attr_reader :vars
+
       def initialize
         @parser = Parser.new
         @words = {}
+        @vars = {}
 
         # GENERAL
         add( 'nop',     proc { |stack, dictionary| Rpl::Lang::Core.nop( stack, dictionary ) } )
@@ -133,19 +136,19 @@ module Rpl
         add( 'repeat',  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with while
 
         # STORE
-        add( 'sto',     proc { |stack, dictionary| Rpl::Lang::Core.sto( stack, dictionary ) } ) # store a variable. ex: 1 'name' sto
+        add( 'sto',     proc { |stack, dictionary| Rpl::Lang::Core.sto( stack, dictionary ) } )
         add( '▶',       proc { |stack, dictionary| Rpl::Lang::Core.sto( stack, dictionary ) } ) # alias
-        add( 'rcl',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # recall a variable. ex: 'name' rcl
-        add( 'purge',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # delete a variable. ex: 'name' purge
-        add( 'vars',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # list all variables
-        add( 'clusr',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # erase all variables
+        add( 'rcl',     proc { |stack, dictionary| Rpl::Lang::Core.rcl( stack, dictionary ) } )
+        add( 'purge',   proc { |stack, dictionary| Rpl::Lang::Core.purge( stack, dictionary ) } )
+        add( 'vars',    proc { |stack, dictionary| Rpl::Lang::Core.vars( stack, dictionary ) } )
+        add( 'clusr',   proc { |stack, dictionary| Rpl::Lang::Core.clusr( stack, dictionary ) } )
         add( 'edit',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # edit a variable content
-        add( 'sto+',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # add to a stored variable. ex: 1 'name' sto+ 'name' 2 sto+
-        add( 'sto-',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # substract to a stored variable. ex: 1 'name' sto- 'name' 2 sto-
-        add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # multiply a stored variable. ex: 3 'name' sto* 'name' 2 sto*
-        add( 'sto/',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # divide a stored variable. ex: 3 'name' sto/ 'name' 2 sto/
-        add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # negate a variable. ex: 'name' sneg
-        add( 'sinv',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # inverse a variable. ex: 1 'name' sinv
+        add( 'sto+',    proc { |stack, dictionary| Rpl::Lang::Core.sto_add( stack, dictionary ) } )
+        add( 'sto-',    proc { |stack, dictionary| Rpl::Lang::Core.sto_subtract( stack, dictionary ) } )
+        add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } )
+        add( 'sto/',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } )
+        add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.sto_negate( stack, dictionary ) } )
+        add( 'sinv',    proc { |stack, dictionary| Rpl::Lang::Core.sto_inverse( stack, dictionary ) } )
 
         # PROGRAM
         add( 'eval',    proc { |stack, dictionary| Rpl::Lang::Core.eval( stack, dictionary ) } )
@@ -194,11 +197,24 @@ module Rpl
         @words[ name ] = implementation
       end
 
-      def lookup( name )
-        @words[ name ] if @words.include?( name )
+      def add_var( name, implementation )
+        @vars[ name ] = implementation
       end
 
-      # TODO: alias
+      def remove_var( name )
+        @vars.delete( name )
+      end
+
+      def remove_all_vars
+        @vars = {}
+      end
+
+      def []( name )
+        word = @words[ name ]
+        word ||= @vars[ name ]
+
+        word
+      end
     end
   end
 end
