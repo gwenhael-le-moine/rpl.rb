@@ -25,9 +25,8 @@ module Rpl
       def type( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
-        stack << args[0]
         stack << { type: :string,
-                   value: args[0][:type].to_s }
+                   value: "\"#{args[0][:type]}\"" }
 
         [stack, dictionary]
       end
