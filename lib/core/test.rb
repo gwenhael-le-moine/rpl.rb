@@ -6,7 +6,7 @@ module Rpl
       module_function
 
       # binary operator >
-      def greater_than( stack )
+      def greater_than( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
@@ -26,7 +26,7 @@ module Rpl
       end
 
       # binary operator <
-      def less_than( stack )
+      def less_than( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
@@ -36,7 +36,7 @@ module Rpl
       end
 
       # binary operator <=
-      def less_or_equal_than( stack )
+      def less_or_equal_than( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
@@ -46,7 +46,7 @@ module Rpl
       end
 
       # boolean operator != (different)
-      def different( stack )
+      def different( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
@@ -56,7 +56,7 @@ module Rpl
       end
 
       # boolean operator and
-      def and( stack )
+      def and( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean], %i[boolean]] )
 
         stack << { type: :boolean,
@@ -66,7 +66,7 @@ module Rpl
       end
 
       # boolean operator or
-      def or( stack )
+      def or( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean], %i[boolean]] )
 
         stack << { type: :boolean,
@@ -76,7 +76,7 @@ module Rpl
       end
 
       # boolean operator xor
-      def xor( stack )
+      def xor( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean], %i[boolean]] )
 
         stack << { type: :boolean,
@@ -86,7 +86,7 @@ module Rpl
       end
 
       # boolean operator not
-      def not( stack )
+      def not( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean]] )
 
         stack << { type: :boolean,
@@ -96,7 +96,7 @@ module Rpl
       end
 
       # boolean operator same (equal)
-      def same( stack )
+      def same( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
@@ -106,7 +106,7 @@ module Rpl
       end
 
       # true boolean
-      def true( stack )
+      def true( stack, dictionary )
         stack << { type: :boolean,
                    value: true }
 
@@ -114,7 +114,7 @@ module Rpl
       end
 
       # false boolean
-      def false( stack )
+      def false( stack, dictionary )
         stack << { type: :boolean,
                    value: false }
 
