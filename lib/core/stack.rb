@@ -14,16 +14,6 @@ module Rpl
         [stack, dictionary]
       end
 
-      # drop first stack entry
-      def drop( stack, dictionary )
-        dropn( stack << { type: :numeric, base: 10, value: 1 }, dictionary )
-      end
-
-      # drop 2 first stack entries
-      def drop2( stack, dictionary )
-        dropn( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
-      end
-
       # drop n first stack entries
       def dropn( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
@@ -44,16 +34,6 @@ module Rpl
         stack << args[1] << args[0] << args[2]
 
         [stack, dictionary]
-      end
-
-      # duplicate first stack entry
-      def dup( stack, dictionary )
-        dupn( stack << { type: :numeric, base: 10, value: 1 }, dictionary )
-      end
-
-      # duplicate 2 first stack entries
-      def dup2( stack, dictionary )
-        dupn( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
       end
 
       # duplicate n first stack entries
@@ -129,9 +109,45 @@ module Rpl
         [stack, dictionary]
       end
 
+      # implemented in Rpl
       # push a copy of the element in stack level 2 onto the stack
       def over( stack, dictionary )
-        pick( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
+        stack << { value: '« 2 pick »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # drop first stack entry
+      def drop( stack, dictionary )
+        stack << { value: '« 1 dropn »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # drop 2 first stack entries
+      def drop2( stack, dictionary )
+        stack << { value: '« 2 dropn »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # duplicate first stack entry
+      def dup( stack, dictionary )
+        stack << { value: '« 1 dupn »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # duplicate 2 first stack entries
+      def dup2( stack, dictionary )
+        stack << { value: '« 2 dupn »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
       end
     end
   end
