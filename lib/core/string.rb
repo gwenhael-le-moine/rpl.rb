@@ -19,7 +19,7 @@ module Rpl
       def from_string( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
 
-        parsed_input = Rpl::Lang::Parser.new.parse_input( args[0][:value] )
+        parsed_input = Rpl::Lang::Parser.new.parse_input( args[0][:value][1..-2] )
 
         stack += parsed_input
 
@@ -42,7 +42,7 @@ module Rpl
 
         stack << { type: :numeric,
                    base: 10,
-                   value: args[0][:value].ord }
+                   value: args[0][:value][1..-2].ord }
 
         [stack, dictionary]
       end
@@ -53,7 +53,7 @@ module Rpl
 
         stack << { type: :numeric,
                    base: 10,
-                   value: args[0][:value].length }
+                   value: args[0][:value][1..-2].length }
 
         [stack, dictionary]
       end
@@ -64,7 +64,7 @@ module Rpl
 
         stack << { type: :numeric,
                    base: 10,
-                   value: args[1][:value].index( args[0][:value] ) }
+                   value: args[1][:value][1..-2].index( args[0][:value][1..-2] ) }
 
         [stack, dictionary]
       end
