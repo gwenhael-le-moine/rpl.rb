@@ -238,7 +238,7 @@ module Rpl
 
       # inverse
       def inverse( stack, dictionary )
-        stack << { value: '« 1 swap / »',
+        stack << { value: '« 1.0 swap / »',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
