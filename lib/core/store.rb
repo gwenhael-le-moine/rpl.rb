@@ -99,7 +99,7 @@ module Rpl
 
       # negate a variable. ex: 'name' sneg
       def sto_negate( stack, dictionary )
-        stack << { value: '« dup rcl -1 * swap sto »',
+        stack << { value: '« dup rcl chs swap sto »',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -107,7 +107,7 @@ module Rpl
 
       # inverse a variable. ex: 1 'name' sinv
       def sto_inverse( stack, dictionary )
-        stack << { value: '« dup rcl 1 swap / swap sto »',
+        stack << { value: '« dup rcl inv swap sto »',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
