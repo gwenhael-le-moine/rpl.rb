@@ -7,36 +7,30 @@ require_relative '../language'
 
 class TestLanguageBranch < Test::Unit::TestCase
   def test_ifte
-    stack, _dictionary = Rpl::Lang::Core.ifte( [{ type: :boolean, value: true },
-                                                { type: :program, value: '« 2 3 + »' },
-                                                { type: :program, value: '« 2 3 - »' }],
-                                               Rpl::Lang::Dictionary.new )
+    lang = Rpl::Language.new
+    lang.run 'true « 2 3 + » « 2 3 - » ifte'
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
-                 stack
+                 lang.stack
 
-    stack, _dictionary = Rpl::Lang::Core.ifte( [{ type: :boolean, value: false },
-                                                { type: :program, value: '« 2 3 + »' },
-                                                { type: :program, value: '« 2 3 - »' }],
-                                               Rpl::Lang::Dictionary.new )
+    lang = Rpl::Language.new
+    lang.run 'false « 2 3 + » « 2 3 - » ifte'
 
     assert_equal [{ value: -1, type: :numeric, base: 10 }],
-                 stack
+                 lang.stack
   end
 
   def test_ift
-    stack, _dictionary = Rpl::Lang::Core.ift( [{ type: :boolean, value: true },
-                                               { type: :program, value: '« 2 3 + »' }],
-                                              Rpl::Lang::Dictionary.new )
+    lang = Rpl::Language.new
+    lang.run 'true « 2 3 + » ift'
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
-                 stack
+                 lang.stack
 
-    stack, _dictionary = Rpl::Lang::Core.ift( [{ type: :boolean, value: false },
-                                               { type: :program, value: '« 2 3 + »' }],
-                                              Rpl::Lang::Dictionary.new )
+    lang = Rpl::Language.new
+    lang.run 'false « 2 3 + » ift'
 
     assert_equal [],
-                 stack
+                 lang.stack
   end
 end

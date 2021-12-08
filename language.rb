@@ -7,7 +7,7 @@ require './lib/runner'
 
 module Rpl
   class Language
-    attr_reader :stack
+    attr_reader :stack, :dictionary
 
     def initialize( stack = [] )
       @stack = stack
