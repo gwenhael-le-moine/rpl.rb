@@ -7,11 +7,11 @@ module Rpl
 
       # evaluate (run) a program, or recall a variable. ex: 'my_prog' eval
       def eval( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[program word name]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
-        # we trim enclosing «»
-        preparsed_input = args[0][:type] == :word ? args[0][:value] : args[0][:value][1..-2]
-        parsed_input = Rpl::Lang::Parser.new.parse_input( preparsed_input )
+        # we trim enclosing characters if necessary
+        preparsed_input = %i[string name program].include?( args[0][:type] ) ? args[0][:value][1..-2] : args[0][:value]
+        parsed_input = Rpl::Lang::Parser.new.parse_input( preparsed_input.to_s )
 
         stack, dictionary = Rpl::Lang::Runner.new.run_input( parsed_input,
                                                              stack, dictionary )
