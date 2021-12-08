@@ -59,7 +59,7 @@ module Rpl
       # duplicate n first stack entries
       def dupn( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
-        n = args[0][:value]
+        n = args[0][:value].to_i
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
 
         args.reverse!
@@ -76,7 +76,7 @@ module Rpl
       # push a copy of the given stack level onto the stack
       def pick( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
-        n = args[0][:value]
+        n = args[0][:value].to_i
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
 
         args.reverse!
