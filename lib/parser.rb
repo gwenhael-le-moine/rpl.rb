@@ -75,6 +75,7 @@ module Rpl
 
             begin
               parsed_entry[:value] = Float( parsed_entry[:value] )
+              parsed_entry[:value] = parsed_entry[:value].to_i if (parsed_entry[:value] % 1).zero? && elt.index('.').nil?
             rescue ArgumentError
               parsed_entry[:value] = Integer( parsed_entry[:value] )
             end
