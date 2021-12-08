@@ -31,13 +31,13 @@ module Rpl
       end
 
       def stack_extract( stack, needs )
-        raise 'Not enough elements' if stack.size < needs.size
+        raise ArgumentError, 'Not enough elements' if stack.size < needs.size
 
         args = []
         needs.each do |need|
           elt = stack.pop
 
-          raise "Type Error, needed #{need} got #{elt[:type]}" if need != :any && !need.include?( elt[:type] )
+          raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" if need != :any && !need.include?( elt[:type] )
 
           args << elt
         end

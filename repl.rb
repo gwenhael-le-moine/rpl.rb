@@ -26,7 +26,11 @@ class RplRepl
       # Remove blank lines from history
       Readline::HISTORY.pop if input.empty?
 
-      @lang.run( input )
+      begin
+        @lang.run( input )
+      rescue ArgumentError, ZeroDivisionError => e
+        p e
+      end
 
       print_stack
     end
