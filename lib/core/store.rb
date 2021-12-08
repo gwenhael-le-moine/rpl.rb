@@ -60,10 +60,10 @@ module Rpl
         [stack, dictionary]
       end
 
-      def edit( stack, dictionary )
-        # TODO
-        [stack, dictionary]
-      end
+      # def edit( stack, dictionary )
+      #   # TODO
+      #   [stack, dictionary]
+      # end
 
       # add to a stored variable. ex: 1 'name' sto+ 'name' 2 sto+
       def sto_add( stack, dictionary )
