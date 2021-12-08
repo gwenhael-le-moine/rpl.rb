@@ -53,16 +53,6 @@ module Rpl
         [stack, dictionary]
       end
 
-      # negation
-      def negate( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
-
-        stack << { type: :numeric, base: 10,
-                   value: args[0][:value] * -1 }
-
-        [stack, dictionary]
-      end
-
       # multiplication
       def multiply( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
@@ -77,22 +67,8 @@ module Rpl
       def divide( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric]] )
 
-        raise 'Division by 0' if args[0][:value].zero?
-
         stack << { type: :numeric, base: 10,
                    value: args[1][:value] / args[0][:value] }
-
-        [stack, dictionary]
-      end
-
-      # inverse
-      def inverse( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
-
-        raise 'Division by 0' if args[0][:value].zero?
-
-        stack << { type: :numeric, base: 10,
-                   value: 1.0 / args[0][:value] }
 
         [stack, dictionary]
       end
@@ -135,21 +111,6 @@ module Rpl
                    value: args[0][:value].abs }
 
         [stack, dictionary]
-      end
-
-      # decimal representation
-      def dec( stack, dictionary )
-        base( stack << { type: :numeric, base: 10, value: 10 }, dictionary )
-      end
-
-      # hexadecimal representation
-      def hex( stack, dictionary )
-        base( stack << { type: :numeric, base: 10, value: 16 }, dictionary )
-      end
-
-      # binary representation
-      def bin( stack, dictionary )
-        base( stack << { type: :numeric, base: 10, value: 2 }, dictionary )
       end
 
       # arbitrary base representation
@@ -264,6 +225,47 @@ module Rpl
         stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
 
         [stack, dictionary]
+      end
+
+      # implemented in Rpl
+      # negation
+      def negate( stack, dictionary )
+        stack << { value: '« -1 * »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # inverse
+      def inverse( stack, dictionary )
+        stack << { value: '« 1 swap / »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # decimal representation
+      def dec( stack, dictionary )
+        stack << { value: '« 10 base »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # hexadecimal representation
+      def hex( stack, dictionary )
+        stack << { value: '« 16 base »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
+      end
+
+      # binary representation
+      def bin( stack, dictionary )
+        stack << { value: '« 2 base »',
+                   type: :program }
+
+        Rpl::Lang::Core.eval( stack, dictionary )
       end
     end
   end

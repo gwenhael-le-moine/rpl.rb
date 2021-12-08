@@ -14,6 +14,7 @@ module Rpl
         Rpl::Lang::Core.eval( stack, dictionary )
       end
 
+      # Implemented in Rpl
       # similar to if-then-end, <test-instruction> <true-instruction> ift
       def ift( stack, dictionary )
         stack << { value: '« « nop » ifte »',
