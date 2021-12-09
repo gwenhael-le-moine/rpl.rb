@@ -60,14 +60,14 @@ module Rpl
         add( 'mod',     proc { |stack, dictionary| Rpl::Lang::Core.mod( stack, dictionary ) } )
         add( 'fact',    proc { |stack, dictionary| Rpl::Lang::Core.fact( stack, dictionary ) } )
         add( '!',       proc { |stack, dictionary| Rpl::Lang::Core.fact( stack, dictionary ) } ) # alias
-        # add( 'mant',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # mantissa of a real number
-        # add( 'xpon',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # exponant of a real number
         add( 'floor',   proc { |stack, dictionary| Rpl::Lang::Core.floor( stack, dictionary ) } )
         add( 'ceil',    proc { |stack, dictionary| Rpl::Lang::Core.ceil( stack, dictionary ) } )
-        # add( 'ip',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # integer part
-        # add( 'fp',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # fractional part
         add( 'min',     proc { |stack, dictionary| Rpl::Lang::Core.min( stack, dictionary ) } )
         add( 'max',     proc { |stack, dictionary| Rpl::Lang::Core.max( stack, dictionary ) } )
+        # add( 'mant',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # mantissa of a real number
+        # add( 'xpon',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # exponant of a real number
+        # add( 'ip',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # integer part
+        # add( 'fp',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # fractional part
 
         # OPERATIONS ON COMPLEXES
         # add( 're',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # complex real part
@@ -84,13 +84,13 @@ module Rpl
         # add( 'r→p',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
 
         # MODE
+        add( 'prec',    proc { |stack, dictionary| Rpl::Lang::Core.prec( stack, dictionary ) } )
+        add( 'default', proc { |stack, dictionary| Rpl::Lang::Core.default( stack, dictionary ) } )
+        add( 'type',    proc { |stack, dictionary| Rpl::Lang::Core.type( stack, dictionary ) } )
         # add( 'std',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # standard floating numbers representation. ex: std
         # add( 'fix',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # fixed point representation. ex: 6 fix
         # add( 'sci',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # scientific floating point representation. ex: 20 sci
-        add( 'prec',    proc { |stack, dictionary| Rpl::Lang::Core.prec( stack, dictionary ) } )
         # add( 'round',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # set float rounding mode. ex: ["nearest", "toward zero", "toward +inf", "toward -inf", "away from zero"] round
-        add( 'default', proc { |stack, dictionary| Rpl::Lang::Core.default( stack, dictionary ) } )
-        add( 'type',    proc { |stack, dictionary| Rpl::Lang::Core.type( stack, dictionary ) } )
 
         # TEST
         add( '>',       proc { |stack, dictionary| Rpl::Lang::Core.greater_than( stack, dictionary ) } )
@@ -124,6 +124,10 @@ module Rpl
         # add( 'split',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # split string
 
         # BRANCH
+        add( 'ift',     proc { |stack, dictionary| Rpl::Lang::Core.ift( stack, dictionary ) } )
+        add( 'ifte',    proc { |stack, dictionary| Rpl::Lang::Core.ifte( stack, dictionary ) } )
+        add( 'times',   proc { |stack, dictionary| Rpl::Lang::Core.times( stack, dictionary ) } ) # specific
+        add( 'loop',    proc { |stack, dictionary| Rpl::Lang::Core.loop( stack, dictionary ) } ) # specific
         # add( 'if',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # if <test-instruction> then <true-instructions> else <false-instructions> end
         # add( 'then',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with if
         # add( 'else',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with if
@@ -132,14 +136,10 @@ module Rpl
         # add( 'for',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # <start> <end> for <variable> <instructions> next|<step> step
         # add( 'next',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with start and for
         # add( 'step',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with start and for
-        add( 'ift',     proc { |stack, dictionary| Rpl::Lang::Core.ift( stack, dictionary ) } )
-        add( 'ifte',    proc { |stack, dictionary| Rpl::Lang::Core.ifte( stack, dictionary ) } )
         # add( 'do',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # do <instructions> until <condition> end
         # add( 'until',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with do
         # add( 'while',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # while <test-instruction> repeat <loop-instructions> end
         # add( 'repeat',  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with while
-        add( 'times',   proc { |stack, dictionary| Rpl::Lang::Core.times( stack, dictionary ) } ) # specific
-        add( 'loop',    proc { |stack, dictionary| Rpl::Lang::Core.loop( stack, dictionary ) } ) # specific
 
         # STORE
         add( 'sto',     proc { |stack, dictionary| Rpl::Lang::Core.sto( stack, dictionary ) } )
@@ -148,7 +148,6 @@ module Rpl
         add( 'purge',   proc { |stack, dictionary| Rpl::Lang::Core.purge( stack, dictionary ) } )
         add( 'vars',    proc { |stack, dictionary| Rpl::Lang::Core.vars( stack, dictionary ) } )
         add( 'clusr',   proc { |stack, dictionary| Rpl::Lang::Core.clusr( stack, dictionary ) } )
-        # add( 'edit',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # edit a variable content
         add( 'sto+',    proc { |stack, dictionary| Rpl::Lang::Core.sto_add( stack, dictionary ) } )
         add( 'sto-',    proc { |stack, dictionary| Rpl::Lang::Core.sto_subtract( stack, dictionary ) } )
         add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } )
@@ -157,10 +156,11 @@ module Rpl
         add( 'sto÷',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } ) # alias
         add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.sto_negate( stack, dictionary ) } )
         add( 'sinv',    proc { |stack, dictionary| Rpl::Lang::Core.sto_inverse( stack, dictionary ) } )
+        # add( 'edit',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # edit a variable content
 
         # PROGRAM
         add( 'eval',    proc { |stack, dictionary| Rpl::Lang::Core.eval( stack, dictionary ) } )
-        # add( '->',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # load program local variables. ex: << -> n m << 0 n m for i i + next >> >>
+        # add( '->',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # load program local variables. ex: « → n m « 0 n m for i i + next » »
         # add( '→',       proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
 
         # TRIG ON REALS AND COMPLEXES
@@ -201,6 +201,12 @@ module Rpl
         add( 'ticks',   proc { |stack, dictionary| Rpl::Lang::Core.ticks( stack, dictionary ) } )
 
         # Rpl.rb specifics
+        # LISTS
+        # add( '->LIST',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( … x -- […] ) pack x stacks levels into a list
+        # add( '→LIST',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
+        # add( 'LIST->',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( […] -- … ) unpack list on stack
+        # add( 'LIST→',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
+
         # FILES
         # add( 'fread',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( filename -- content ) read file and put content on stack as string
         # add( 'fload',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( filename -- … ) « FREAD EVAL »
