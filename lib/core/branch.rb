@@ -35,7 +35,7 @@ module Rpl
 
       # similar to if-then-else-end, <test-instruction> <true-instruction> <false-instruction> ifte
       def ifte( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[program word], %i[program word], %i[boolean]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [:any, :any, %i[boolean]] )
 
         stack << args[ args[2][:value] ? 1 : 0 ]
 
