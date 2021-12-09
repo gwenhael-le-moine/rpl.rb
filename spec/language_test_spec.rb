@@ -6,7 +6,6 @@ require 'test/unit'
 require_relative '../language'
 
 class TestLanguageTest < Test::Unit::TestCase
-
   def test_greater_than
     lang = Rpl::Language.new
     lang.run '0 0.1 >'
@@ -95,7 +94,7 @@ class TestLanguageTest < Test::Unit::TestCase
                  lang.stack
 
     lang = Rpl::Language.new
-    lang.run '1 2 !='
+    lang.run '1 2 ≠'
 
     assert_equal [{ value: true, type: :boolean }],
                  lang.stack
