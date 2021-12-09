@@ -136,6 +136,8 @@ module Rpl
         # add( 'until',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with do
         # add( 'while',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # while <test-instruction> repeat <loop-instructions> end
         # add( 'repeat',  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # used with while
+        add( 'times',   proc { |stack, dictionary| Rpl::Lang::Core.times( stack, dictionary ) } ) # specific
+        add( 'loop',    proc { |stack, dictionary| Rpl::Lang::Core.loop( stack, dictionary ) } ) # specific
 
         # STORE
         add( 'sto',     proc { |stack, dictionary| Rpl::Lang::Core.sto( stack, dictionary ) } )

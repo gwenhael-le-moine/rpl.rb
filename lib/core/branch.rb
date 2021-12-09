@@ -5,6 +5,34 @@ module Rpl
     module Core
       module_function
 
+      # ( x prg -- … ) run PRG X times putting i(counter) on the stack before each run
+      def times( stack, dictionary )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [:any, %i[numeric]] )
+
+        args[1][:value].times do |i|
+          counter = { value: i, type: :numeric, base: 10 }
+          stack << counter << args[0]
+
+          stack, dictionary = Rpl::Lang::Core.eval( stack, dictionary )
+        end
+
+        [stack, dictionary]
+      end
+
+      # ( x y prg -- … ) run PRG (Y - X) times putting i(counter) on the stack before each run
+      def loop( stack, dictionary )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [:any, %i[numeric], %i[numeric]] )
+
+        (args[2][:value]..args[1][:value]).each do |i|
+          counter = { value: i, type: :numeric, base: 10 }
+          stack << counter << args[0]
+
+          stack, dictionary = Rpl::Lang::Core.eval( stack, dictionary )
+        end
+
+        [stack, dictionary]
+      end
+
       # similar to if-then-else-end, <test-instruction> <true-instruction> <false-instruction> ifte
       def ifte( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[program word], %i[program word], %i[boolean]] )
