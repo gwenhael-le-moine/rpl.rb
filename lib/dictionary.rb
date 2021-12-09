@@ -163,7 +163,7 @@ module Rpl
 
         # TRIG ON REALS AND COMPLEXES
         add( 'pi',      proc { |stack, dictionary| Rpl::Lang::Core.pi( stack, dictionary ) } )
-        add( '𝛑',       proc { |stack, dictionary| Rpl::Lang::Core.pi( stack, dictionary ) } )     # alias
+        add( '𝛑',       proc { |stack, dictionary| Rpl::Lang::Core.pi( stack, dictionary ) } ) # alias
         # add( 'sin',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # sinus
         # add( 'asin',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # arg sinus
         # add( 'cos',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # cosinus
