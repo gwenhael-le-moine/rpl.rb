@@ -16,7 +16,7 @@ module Rpl
       end
 
       # binary operator >=
-      def greater_or_equal_than( stack )
+      def greater_than_or_equal( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
@@ -36,7 +36,7 @@ module Rpl
       end
 
       # binary operator <=
-      def less_or_equal_than( stack, dictionary )
+      def less_than_or_equal( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,

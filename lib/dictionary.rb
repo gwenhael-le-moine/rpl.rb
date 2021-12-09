@@ -94,11 +94,11 @@ module Rpl
 
         # TEST
         add( '>',       proc { |stack, dictionary| Rpl::Lang::Core.greater_than( stack, dictionary ) } )
-        add( '>=',      proc { |stack, dictionary| Rpl::Lang::Core.greater_or_equal_than( stack, dictionary ) } )
-        add( '≥',       proc { |stack, dictionary| Rpl::Lang::Core.greater_or_equal_than( stack, dictionary ) } ) # alias
+        add( '>=',      proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } )
+        add( '≥',       proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } ) # alias
         add( '<',       proc { |stack, dictionary| Rpl::Lang::Core.less_than( stack, dictionary ) } )
-        add( '<=',      proc { |stack, dictionary| Rpl::Lang::Core.less_or_equal_than( stack, dictionary ) } )
-        add( '≤',       proc { |stack, dictionary| Rpl::Lang::Core.less_or_equal_than( stack, dictionary ) } ) # alias
+        add( '<=',      proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } )
+        add( '≤',       proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } ) # alias
         add( '!=',      proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } )
         add( '≠',       proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } ) # alias
         add( '==',      proc { |stack, dictionary| Rpl::Lang::Core.same( stack, dictionary ) } ) # alias
