@@ -120,6 +120,8 @@ module Rpl
         add( 'size',    proc { |stack, dictionary| Rpl::Lang::Core.size( stack, dictionary ) } )
         add( 'pos',     proc { |stack, dictionary| Rpl::Lang::Core.pos( stack, dictionary ) } )
         add( 'sub',     proc { |stack, dictionary| Rpl::Lang::Core.sub( stack, dictionary ) } )
+        # add( 'rev',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # reverse string
+        # add( 'split',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # split string
 
         # BRANCH
         # add( 'if',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # if <test-instruction> then <true-instructions> else <false-instructions> end
@@ -197,6 +199,12 @@ module Rpl
         add( 'time',    proc { |stack, dictionary| Rpl::Lang::Core.time( stack, dictionary ) } )
         add( 'date',    proc { |stack, dictionary| Rpl::Lang::Core.date( stack, dictionary ) } )
         add( 'ticks',   proc { |stack, dictionary| Rpl::Lang::Core.ticks( stack, dictionary ) } )
+
+        # Rpl.rb specifics
+        # FILES
+        # add( 'fread',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( filename -- content ) read file and put content on stack as string
+        # add( 'fload',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( filename -- … ) « FREAD EVAL »
+        # add( 'fwrite',  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( content filename mode -- ) write content into filename using mode (w, a, …)
       end
 
       def add( name, implementation )
