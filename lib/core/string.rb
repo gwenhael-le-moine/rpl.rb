@@ -78,6 +78,28 @@ module Rpl
 
         [stack, dictionary]
       end
+
+      # reverse string
+      def rev( stack, dictionary )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
+
+        stack << { type: :string,
+                   value: "\"#{args[0][:value][1..-2].reverse}\"" }
+
+        [stack, dictionary]
+      end
+
+      # split string
+      def split( stack, dictionary )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], %i[string]] )
+
+        args[1][:value][1..-2].split( args[0][:value][1..-2] ).each do |elt|
+          stack << { type: :string,
+                     value: "\"#{elt}\"" }
+        end
+
+        [stack, dictionary]
+      end
     end
   end
 end
