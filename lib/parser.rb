@@ -52,9 +52,6 @@ module Rpl
         regrouped_input.each do |elt|
           parsed_entry = { value: elt }
 
-          opened_programs += 1 if elt[0] == '«'
-          string_delimiters += 1 if elt[0] == '"'
-
           parsed_entry[:type] = case elt[0]
                                 when '«'
                                   :program
