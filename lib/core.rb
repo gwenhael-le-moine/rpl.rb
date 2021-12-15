@@ -37,7 +37,7 @@ module Rpl
         needs.each do |need|
           elt = stack.pop
 
-          raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" if need != :any && !need.include?( elt[:type] )
+          raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" unless need == :any || need.include?( elt[:type] )
 
           args << elt
         end
