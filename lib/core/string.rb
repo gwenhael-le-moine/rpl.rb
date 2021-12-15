@@ -10,7 +10,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
         stack << { type: :string,
-                   value: args[0][:value].to_s }
+                   value: "\"#{args[0][:value]}\"" }
 
         [stack, dictionary]
       end
@@ -31,7 +31,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :string,
-                   value: args[0][:value].chr }
+                   value: "\"#{args[0][:value].chr}\"" }
 
         [stack, dictionary]
       end
@@ -74,7 +74,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric], %i[string]] )
 
         stack << { type: :string,
-                   value: args[2][:value][args[1][:value]..args[0][:value]] }
+                   value: "\"#{args[2][:value][args[1][:value]..args[0][:value]]}\"" }
 
         [stack, dictionary]
       end
