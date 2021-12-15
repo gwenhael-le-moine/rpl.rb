@@ -218,8 +218,8 @@ module Rpl
 
       # FILESYSTEM
       @dictionary.add( 'fread',   proc { |stack, dictionary| Rpl::Lang::Core.fread( stack, dictionary ) } )
-      # @dictionary.add( 'fload',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( filename -- … ) « FREAD EVAL »
-      # @dictionary.add( 'fwrite',  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( content filename mode -- ) write content into filename using mode (w, a, …)
+      @dictionary.add( 'feval',   proc { |stack, dictionary| Rpl::Lang::Core.feval( stack, dictionary ) } )
+      @dictionary.add( 'fwrite',  proc { |stack, dictionary| Rpl::Lang::Core.fwrite( stack, dictionary ) } )
 
       # GRAPHICS
     end
