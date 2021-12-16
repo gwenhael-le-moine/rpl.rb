@@ -52,6 +52,8 @@ class RplRepl
                  "0#{elt[:base]}_"
                end
       "#{prefix}#{elt[:value].to_s( elt[:base] )}"
+    when :list
+      "[#{elt[:value].map { |e| e[:value] }.join(', ')}]"
     else
       elt[:value]
     end

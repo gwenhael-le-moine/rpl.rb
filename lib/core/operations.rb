@@ -7,24 +7,22 @@ module Rpl
 
       # addition
       def add( stack, dictionary )
-        addable = %i[numeric string name]
+        addable = %i[numeric string name list program]
         stack, args = Rpl::Lang::Core.stack_extract( stack, [addable, addable] )
 
         result = { type: case args[1][:type]
-                         when :name
-                           :name
-                         when :string
-                           :string
                          when :numeric
                            if args[0][:type] == :numeric
                              :numeric
                            else
                              :string
                            end
+                         else
+                           args[1][:type]
                          end }
 
         args.each do |elt|
-          elt[:value] = elt[:value][1..-2] unless elt[:type] == :numeric
+          elt[:value] = elt[:value][1..-2] if %i[string name program].include?( elt[:type] )
         end
 
         result[:value] = case result[:type]
@@ -32,11 +30,13 @@ module Rpl
                            "'#{args[1][:value]}#{args[0][:value]}'"
                          when :string
                            "\"#{args[1][:value]}#{args[0][:value]}\""
-                         when :numeric
+                         when :program
+                           "« #{args[1][:value]}#{args[0][:value]} »"
+                         else
                            args[1][:value] + args[0][:value]
                          end
 
-        result[:base] = 10 if result[:type] == :numeric # TODO: what if operands have other bases ?
+        result[:base] = args[0][:base] if result[:type] == :numeric
 
         stack << result
 

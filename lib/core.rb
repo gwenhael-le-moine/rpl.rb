@@ -15,6 +15,7 @@ require_relative './core/time-date'
 require_relative './core/trig'
 require_relative './core/logs'
 require_relative './core/filesystem'
+require_relative './core/list'
 
 module Rpl
   module Lang

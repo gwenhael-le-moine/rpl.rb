@@ -211,10 +211,10 @@ module Rpl
 
       # Rpl.rb specifics
       # LISTS
-      # @dictionary.add( '->LIST',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( … x -- […] ) pack x stacks levels into a list
-      # @dictionary.add( '→LIST',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
-      # @dictionary.add( 'LIST->',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ( […] -- … ) unpack list on stack
-      # @dictionary.add( 'LIST→',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
+      @dictionary.add( '->list',  proc { |stack, dictionary| Rpl::Lang::Core.to_list( stack, dictionary ) } )
+      @dictionary.add( '→list',   proc { |stack, dictionary| Rpl::Lang::Core.to_list( stack, dictionary ) } ) # alias
+      @dictionary.add( 'list->',  proc { |stack, dictionary| Rpl::Lang::Core.unpack_list( stack, dictionary ) } )
+      @dictionary.add( 'list→',   proc { |stack, dictionary| Rpl::Lang::Core.unpack_list( stack, dictionary ) } ) # alias
 
       # FILESYSTEM
       @dictionary.add( 'fread',   proc { |stack, dictionary| Rpl::Lang::Core.fread( stack, dictionary ) } )

@@ -79,12 +79,21 @@ module Rpl
         [stack, dictionary]
       end
 
-      # reverse string
+      # reverse string or list
       def rev( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string list]] )
 
-        stack << { type: :string,
-                   value: "\"#{args[0][:value][1..-2].reverse}\"" }
+        result = args[0]
+
+        case args[0][:type]
+        when :string
+          result = { type: :string,
+                     value: "\"#{args[0][:value][1..-2].reverse}\"" }
+        when :list
+          result[:value].reverse!
+        end
+
+        stack << result
 
         [stack, dictionary]
       end
