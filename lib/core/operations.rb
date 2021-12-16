@@ -7,22 +7,56 @@ module Rpl
 
       # addition
       def add( stack, dictionary )
-        addable = %i[numeric string name list program]
+        addable = %i[numeric string name list]
         stack, args = Rpl::Lang::Core.stack_extract( stack, [addable, addable] )
+        # | +         | 1 numeric | 1 string | 1 name | 1 list |
+        # |-----------+-----------+----------+--------+--------|
+        # | 0 numeric | numeric   | string   | name   | list   |
+        # | 0 string  | string    | string   | string | list   |
+        # | 0 name    | string    | string   | name   | list   |
+        # | 0 list    | list      | list     | list   | list   |
 
-        result = { type: case args[1][:type]
+        result = { type: case args[0][:type]
                          when :numeric
-                           if args[0][:type] == :numeric
-                             :numeric
+                           args[1][:type]
+
+                         when :string
+                           case args[1][:type]
+                           when :list
+                             :list
                            else
                              :string
                            end
+
+                         when :name
+                           case args[1][:type]
+                           when :name
+                             :name
+                           when :list
+                             :list
+                           else
+                             :string
+                           end
+
+                         when :list
+                           :list
+
                          else
-                           args[1][:type]
+                           args[0][:type]
                          end }
 
-        args.each do |elt|
-          elt[:value] = elt[:value][1..-2] if %i[string name program].include?( elt[:type] )
+        if result[:type] == :list
+          args.each do |elt|
+            next unless elt[:type] != :list
+
+            elt_copy = Marshal.load(Marshal.dump( elt ))
+            elt[:type] = :list
+            elt[:value] = [elt_copy]
+          end
+        else
+          args.each do |elt|
+            elt[:value] = elt[:value][1..-2] if %i[string name].include?( elt[:type] )
+          end
         end
 
         result[:value] = case result[:type]
@@ -30,8 +64,6 @@ module Rpl
                            "'#{args[1][:value]}#{args[0][:value]}'"
                          when :string
                            "\"#{args[1][:value]}#{args[0][:value]}\""
-                         when :program
-                           "« #{args[1][:value]}#{args[0][:value]} »"
                          else
                            args[1][:value] + args[0][:value]
                          end
