@@ -26,6 +26,7 @@ module Rpl
       # @dictionary.add( 'version', proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # show rpn version
       # @dictionary.add( 'uname',   proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # show rpn complete identification string
       # @dictionary.add( 'history', proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # see commands history
+      @dictionary.add( '__ppstack',     proc { |stack, dictionary| Rpl::Lang::Core.__pp_stack( stack, dictionary ) } )
 
       # STACK
       @dictionary.add( 'swap',    proc { |stack, dictionary| Rpl::Lang::Core.swap( stack, dictionary ) } )

@@ -47,9 +47,16 @@ module Rpl
         [stack, args]
       end
 
-      def __todo( stack, _dictionary )
+      def __todo( stack, dictionary )
         puts '__NOT IMPLEMENTED__'
-        stack
+
+        [stack, dictionary]
+      end
+
+      def __pp_stack( stack, dictionary )
+        pp stack
+
+        [stack, dictionary]
       end
     end
   end
