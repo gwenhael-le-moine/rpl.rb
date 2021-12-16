@@ -48,14 +48,14 @@ module Rpl
       @dictionary.add( '+',       proc { |stack, dictionary| Rpl::Lang::Core.add( stack, dictionary ) } )
       @dictionary.add( '-',       proc { |stack, dictionary| Rpl::Lang::Core.subtract( stack, dictionary ) } )
       @dictionary.add( 'chs',     proc { |stack, dictionary| Rpl::Lang::Core.negate( stack, dictionary ) } )
-      @dictionary.add( '*',       proc { |stack, dictionary| Rpl::Lang::Core.multiply( stack, dictionary ) } )
-      @dictionary.add( '×',       proc { |stack, dictionary| Rpl::Lang::Core.multiply( stack, dictionary ) } ) # alias
-      @dictionary.add( '/',       proc { |stack, dictionary| Rpl::Lang::Core.divide( stack, dictionary ) } )
-      @dictionary.add( '÷',       proc { |stack, dictionary| Rpl::Lang::Core.divide( stack, dictionary ) } ) # alias
+      @dictionary.add( '*',       proc { |stack, dictionary| Rpl::Lang::Core.multiply( stack, dictionary ) } ) # alias
+      @dictionary.add( '×',       proc { |stack, dictionary| Rpl::Lang::Core.multiply( stack, dictionary ) } )
+      @dictionary.add( '/',       proc { |stack, dictionary| Rpl::Lang::Core.divide( stack, dictionary ) } ) # alias
+      @dictionary.add( '÷',       proc { |stack, dictionary| Rpl::Lang::Core.divide( stack, dictionary ) } )
       @dictionary.add( 'inv',     proc { |stack, dictionary| Rpl::Lang::Core.inverse( stack, dictionary ) } )
       @dictionary.add( '^',       proc { |stack, dictionary| Rpl::Lang::Core.power( stack, dictionary ) } )
-      @dictionary.add( 'sqrt',    proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } )
-      @dictionary.add( '√',       proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } ) # alias
+      @dictionary.add( 'sqrt',    proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } ) # alias
+      @dictionary.add( '√',       proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } )
       @dictionary.add( 'sq',      proc { |stack, dictionary| Rpl::Lang::Core.sq( stack, dictionary ) } )
       @dictionary.add( 'abs',     proc { |stack, dictionary| Rpl::Lang::Core.abs( stack, dictionary ) } )
       @dictionary.add( 'dec',     proc { |stack, dictionary| Rpl::Lang::Core.dec( stack, dictionary ) } )
@@ -104,27 +104,27 @@ module Rpl
 
       # TEST
       @dictionary.add( '>',       proc { |stack, dictionary| Rpl::Lang::Core.greater_than( stack, dictionary ) } )
-      @dictionary.add( '>=',      proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } )
-      @dictionary.add( '≥',       proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } ) # alias
+      @dictionary.add( '>=',      proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } ) # alias
+      @dictionary.add( '≥',       proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } )
       @dictionary.add( '<',       proc { |stack, dictionary| Rpl::Lang::Core.less_than( stack, dictionary ) } )
-      @dictionary.add( '<=',      proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } )
-      @dictionary.add( '≤',       proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } ) # alias
-      @dictionary.add( '!=',      proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } )
-      @dictionary.add( '≠',       proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } ) # alias
-      @dictionary.add( '==',      proc { |stack, dictionary| Rpl::Lang::Core.same( stack, dictionary ) } ) # alias
+      @dictionary.add( '<=',      proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } ) # alias
+      @dictionary.add( '≤',       proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } )
+      @dictionary.add( '!=',      proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } ) # alias
+      @dictionary.add( '≠',       proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } )
+      @dictionary.add( '==',      proc { |stack, dictionary| Rpl::Lang::Core.same( stack, dictionary ) } )
       @dictionary.add( 'and',     proc { |stack, dictionary| Rpl::Lang::Core.and( stack, dictionary ) } )
       @dictionary.add( 'or',      proc { |stack, dictionary| Rpl::Lang::Core.or( stack, dictionary ) } )
       @dictionary.add( 'xor',     proc { |stack, dictionary| Rpl::Lang::Core.xor( stack, dictionary ) } )
       @dictionary.add( 'not',     proc { |stack, dictionary| Rpl::Lang::Core.not( stack, dictionary ) } )
-      @dictionary.add( 'same',    proc { |stack, dictionary| Rpl::Lang::Core.same( stack, dictionary ) } )
+      @dictionary.add( 'same',    proc { |stack, dictionary| Rpl::Lang::Core.same( stack, dictionary ) } ) # alias
       @dictionary.add( 'true',    proc { |stack, dictionary| Rpl::Lang::Core.true( stack, dictionary ) } ) # specific
       @dictionary.add( 'false',   proc { |stack, dictionary| Rpl::Lang::Core.false( stack, dictionary ) } ) # specific
 
       # STRING
-      @dictionary.add( '->str',   proc { |stack, dictionary| Rpl::Lang::Core.to_string( stack, dictionary ) } )
-      @dictionary.add( '→str',    proc { |stack, dictionary| Rpl::Lang::Core.to_string( stack, dictionary ) } ) # alias
-      @dictionary.add( 'str->',   proc { |stack, dictionary| Rpl::Lang::Core.from_string( stack, dictionary ) } )
-      @dictionary.add( 'str→',    proc { |stack, dictionary| Rpl::Lang::Core.from_string( stack, dictionary ) } ) # alias
+      @dictionary.add( '->str',   proc { |stack, dictionary| Rpl::Lang::Core.to_string( stack, dictionary ) } ) # alias
+      @dictionary.add( '→str',    proc { |stack, dictionary| Rpl::Lang::Core.to_string( stack, dictionary ) } )
+      @dictionary.add( 'str->',   proc { |stack, dictionary| Rpl::Lang::Core.from_string( stack, dictionary ) } ) # alias
+      @dictionary.add( 'str→',    proc { |stack, dictionary| Rpl::Lang::Core.from_string( stack, dictionary ) } )
       @dictionary.add( 'chr',     proc { |stack, dictionary| Rpl::Lang::Core.chr( stack, dictionary ) } )
       @dictionary.add( 'num',     proc { |stack, dictionary| Rpl::Lang::Core.num( stack, dictionary ) } )
       @dictionary.add( 'size',    proc { |stack, dictionary| Rpl::Lang::Core.size( stack, dictionary ) } )
@@ -160,10 +160,10 @@ module Rpl
       @dictionary.add( 'clusr',   proc { |stack, dictionary| Rpl::Lang::Core.clusr( stack, dictionary ) } )
       @dictionary.add( 'sto+',    proc { |stack, dictionary| Rpl::Lang::Core.sto_add( stack, dictionary ) } )
       @dictionary.add( 'sto-',    proc { |stack, dictionary| Rpl::Lang::Core.sto_subtract( stack, dictionary ) } )
-      @dictionary.add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } )
-      @dictionary.add( 'sto×',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } ) # alias
-      @dictionary.add( 'sto/',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } )
-      @dictionary.add( 'sto÷',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } ) # alias
+      @dictionary.add( 'sto*',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } ) # alias
+      @dictionary.add( 'sto×',    proc { |stack, dictionary| Rpl::Lang::Core.sto_multiply( stack, dictionary ) } )
+      @dictionary.add( 'sto/',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } ) # alias
+      @dictionary.add( 'sto÷',    proc { |stack, dictionary| Rpl::Lang::Core.sto_divide( stack, dictionary ) } )
       @dictionary.add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.sto_negate( stack, dictionary ) } )
       @dictionary.add( 'sinv',    proc { |stack, dictionary| Rpl::Lang::Core.sto_inverse( stack, dictionary ) } )
       # @dictionary.add( 'edit',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # edit a variable content
@@ -188,8 +188,8 @@ module Rpl
       # @dictionary.add( 'r→d',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
 
       # LOGS ON REALS AND COMPLEXES
-      @dictionary.add( 'e',       proc { |stack, dictionary| Rpl::Lang::Core.e( stack, dictionary ) } )
-      @dictionary.add( 'ℇ',       proc { |stack, dictionary| Rpl::Lang::Core.e( stack, dictionary ) } ) # alias
+      @dictionary.add( 'e',       proc { |stack, dictionary| Rpl::Lang::Core.e( stack, dictionary ) } ) # alias
+      @dictionary.add( 'ℇ',       proc { |stack, dictionary| Rpl::Lang::Core.e( stack, dictionary ) } )
       # @dictionary.add( 'ln',      proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # logarithm base e
       # @dictionary.add( 'lnp1',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # ln(1+x) which is useful when x is close to 0
       # @dictionary.add( 'exp',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # exponential
