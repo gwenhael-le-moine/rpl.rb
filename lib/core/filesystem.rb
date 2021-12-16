@@ -23,13 +23,12 @@ module Rpl
         Rpl::Lang::Core.eval( stack, dictionary )
       end
 
-      # ( content filename mode -- ) write content into filename using mode (w, a, …)
+      # ( content filename -- ) write content into filename
       def fwrite( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], %i[string], :any] )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], :any] )
 
-        path = args[1][:value][1..-2]
-        puts "File.open( #{path}, mode: #{args[0][:value][1..-2]} ) { |file| file.write( #{args[2][:value]} ) }"
-        File.open( path ) { |file| file.write( args[0][:value] ) }
+        File.write( File.absolute_path( args[0][:value][1..-2] ),
+                    args[1][:value] )
 
         [stack, dictionary]
       end
