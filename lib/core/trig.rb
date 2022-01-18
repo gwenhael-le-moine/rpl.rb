@@ -23,6 +23,7 @@ module Rpl
         [stack, dictionary]
       end
 
+      # https://rosettacode.org/wiki/Trigonometric_functions#Ruby
       # arg sinus
       def arg_sinus( stack, dictionary )
         # # Handle angles with no tangent.
@@ -31,7 +32,8 @@ module Rpl
 
         # # Tangent of angle is y / x, where x^2 + y^2 = 1.
         # atan(y / sqrt(1 - y * y, prec), prec)
-        stack << { value: '«
+        stack << { value: '
+«
   dup abs 1 ==
   « pi 2 / * »
   « dup sq 1 swap - sqrt / atan »
