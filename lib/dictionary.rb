@@ -166,16 +166,16 @@ module Rpl
         # TRIG ON REALS AND COMPLEXES
         add( 'pi',      proc { |stack, dictionary| Rpl::Lang::Core.pi( stack, dictionary ) } )
         add( '𝛑',       proc { |stack, dictionary| Rpl::Lang::Core.pi( stack, dictionary ) } ) # alias
-        # add( 'sin',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # sinus
-        # add( 'asin',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # arg sinus
-        # add( 'cos',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # cosinus
-        # add( 'acos',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # arg cosinus
-        # add( 'tan',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # tangent
-        # add( 'atan',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # arg tangent
-        # add( 'd->r',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # convert degrees to radians
-        # add( 'd→r',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
-        # add( 'r->d',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # convert radians to degrees
-        # add( 'r→d',     proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # alias
+        add( 'sin',     proc { |stack, dictionary| Rpl::Lang::Core.sinus( stack, dictionary ) } )
+        add( 'asin',    proc { |stack, dictionary| Rpl::Lang::Core.arg_sinus( stack, dictionary ) } )
+        add( 'cos',     proc { |stack, dictionary| Rpl::Lang::Core.cosinus( stack, dictionary ) } )
+        add( 'acos',    proc { |stack, dictionary| Rpl::Lang::Core.arg_cosinus( stack, dictionary ) } )
+        add( 'tan',     proc { |stack, dictionary| Rpl::Lang::Core.tangent( stack, dictionary ) } )
+        add( 'atan',    proc { |stack, dictionary| Rpl::Lang::Core.arg_tangent( stack, dictionary ) } )
+        add( 'd->r',    proc { |stack, dictionary| Rpl::Lang::Core.degrees_to_radians( stack, dictionary ) } )
+        add( 'd→r',     proc { |stack, dictionary| Rpl::Lang::Core.degrees_to_radians( stack, dictionary ) } ) # alias
+        add( 'r->d',    proc { |stack, dictionary| Rpl::Lang::Core.radians_to_degrees( stack, dictionary ) } )
+        add( 'r→d',     proc { |stack, dictionary| Rpl::Lang::Core.radians_to_degrees( stack, dictionary ) } ) # alias
 
         # LOGS ON REALS AND COMPLEXES
         add( 'e',       proc { |stack, dictionary| Rpl::Lang::Core.e( stack, dictionary ) } )
