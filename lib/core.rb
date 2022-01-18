@@ -14,6 +14,8 @@ require_relative './core/test'
 require_relative './core/time-date'
 require_relative './core/trig'
 require_relative './core/logs'
+require_relative './core/filesystem'
+require_relative './core/list'
 
 module Rpl
   module Lang
@@ -37,7 +39,7 @@ module Rpl
         needs.each do |need|
           elt = stack.pop
 
-          raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" if need != :any && !need.include?( elt[:type] )
+          raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" unless need == :any || need.include?( elt[:type] )
 
           args << elt
         end
@@ -51,9 +53,16 @@ module Rpl
         numerics.last[:base]
       end
 
-      def __todo( stack, _dictionary )
+      def __todo( stack, dictionary )
         puts '__NOT IMPLEMENTED__'
-        stack
+
+        [stack, dictionary]
+      end
+
+      def __pp_stack( stack, dictionary )
+        pp stack
+
+        [stack, dictionary]
       end
     end
   end

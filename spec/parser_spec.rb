@@ -75,6 +75,39 @@ class TestParser < Test::Unit::TestCase
     assert_equal [{ value: 4, type: :numeric, base: 10 }, { value: '"test"', type: :string }], result
   end
 
+  def test_emptystring
+    result = Rpl::Lang::Parser.new.parse_input( '""' )
+
+    assert_equal [{ value: '""', type: :string }], result
+  end
+
+  def test_spacestring
+    result = Rpl::Lang::Parser.new.parse_input( '" "' )
+
+    assert_equal [{ value: '" "', type: :string }], result
+  end
+
+  def test_string_spacestring
+    result = Rpl::Lang::Parser.new.parse_input( '"test string" " "' )
+
+    assert_equal [{ value: '"test string"', type: :string },
+                  { value: '" "', type: :string }], result
+  end
+
+  def test_string_word
+    result = Rpl::Lang::Parser.new.parse_input( '"test string" split' )
+
+    assert_equal [{ value: '"test string"', type: :string },
+                  { value: 'split', type: :word }], result
+  end
+
+  def test_spacestring_word
+    result = Rpl::Lang::Parser.new.parse_input( '" " split' )
+
+    assert_equal [{ value: '" "', type: :string },
+                  { value: 'split', type: :word }], result
+  end
+
   def test_program_name
     result = Rpl::Lang::Parser.new.parse_input( "« 2 dup * » 'carré' sto" )
 

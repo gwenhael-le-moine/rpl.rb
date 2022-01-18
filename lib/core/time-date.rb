@@ -10,7 +10,7 @@ module Rpl
       # time in local format
       def time( stack, dictionary )
         stack << { type: :string,
-                   value: Time.now.to_s }
+                   value: "\"#{Time.now}\"" }
 
         [stack, dictionary]
       end
@@ -18,7 +18,7 @@ module Rpl
       # date in local format
       def date( stack, dictionary )
         stack << { type: :string,
-                   value: Date.today.to_s }
+                   value: "\"#{Date.today}\"" }
 
         [stack, dictionary]
       end

@@ -46,7 +46,7 @@ module Rpl
 
         2.times do
           n.times.each do |i|
-            stack << args[ i ]
+            stack << Marshal.load(Marshal.dump( args[i] ))
           end
         end
 

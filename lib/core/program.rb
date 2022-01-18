@@ -10,7 +10,9 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
         # we trim enclosing characters if necessary
-        preparsed_input = %i[string name program].include?( args[0][:type] ) ? args[0][:value][1..-2] : args[0][:value]
+        preparsed_input = args[0][:value]
+        preparsed_input = preparsed_input[1..-2] if %i[string name program].include?( args[0][:type] )
+        preparsed_input.gsub!( '\n', ' ' ) if %i[string program].include?( args[0][:type] )
         parsed_input = Rpl::Lang::Parser.new.parse_input( preparsed_input.to_s )
 
         stack, dictionary = Rpl::Lang::Runner.new.run_input( parsed_input,

@@ -32,7 +32,7 @@ module Rpl
             opened_programs += 1
             elt.gsub!( '«', '« ') if elt.length > 1 && elt[1] != ' '
           end
-          string_delimiters += 1 if elt[0] == '"'
+          string_delimiters += 1 if elt[0] == '"' && elt.length > 1
 
           elt = "#{regrouped_input.pop} #{elt}".strip if regrouping
 
@@ -42,7 +42,7 @@ module Rpl
             closed_programs += 1
             elt.gsub!( '»', ' »') if elt.length > 1 && elt[-2] != ' '
           end
-          string_delimiters += 1 if elt.length > 1 && elt[-1] == '"'
+          string_delimiters += 1 if elt[-1] == '"'
 
           regrouping = string_delimiters.odd? || (opened_programs > closed_programs )
         end
@@ -51,9 +51,6 @@ module Rpl
         parsed_tree = []
         regrouped_input.each do |elt|
           parsed_entry = { value: elt }
-
-          opened_programs += 1 if elt[0] == '«'
-          string_delimiters += 1 if elt[0] == '"'
 
           parsed_entry[:type] = case elt[0]
                                 when '«'
