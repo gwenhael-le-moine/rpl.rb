@@ -45,6 +45,12 @@ module Rpl
         [stack, args]
       end
 
+      def infer_resulting_base( numerics )
+        10 if numerics.length.zero?
+
+        numerics.last[:base]
+      end
+
       def __todo( stack, _dictionary )
         puts '__NOT IMPLEMENTED__'
         stack
