@@ -67,7 +67,13 @@ module Rpl
 
       # add to a stored variable. ex: 1 'name' sto+ 'name' 2 sto+
       def sto_add( stack, dictionary )
-        stack << { value: '« dup type "name" == « swap » ift over rcl + swap sto »',
+        stack << { value: '
+«
+  dup type "name" ==
+  « swap »
+  ift
+  over rcl + swap sto
+»',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -75,7 +81,13 @@ module Rpl
 
       # substract to a stored variable. ex: 1 'name' sto- 'name' 2 sto-
       def sto_subtract( stack, dictionary )
-        stack << { value: '« dup type "name" == « swap » ift over rcl swap - swap sto »',
+        stack << { value: '
+«
+  dup type "name" ==
+  « swap »
+  ift
+  over rcl swap - swap sto
+»',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -83,7 +95,13 @@ module Rpl
 
       # multiply a stored variable. ex: 3 'name' sto* 'name' 2 sto*
       def sto_multiply( stack, dictionary )
-        stack << { value: '« dup type "name" == « swap » ift over rcl * swap sto »',
+        stack << { value: '
+«
+  dup type "name" ==
+  « swap »
+  ift
+  over rcl * swap sto
+»',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -91,7 +109,13 @@ module Rpl
 
       # divide a stored variable. ex: 3 'name' sto/ 'name' 2 sto/
       def sto_divide( stack, dictionary )
-        stack << { value: '« dup type "name" == « swap » ift over rcl swap / swap sto »',
+        stack << { value: '
+«
+  dup type "name" ==
+  « swap »
+  ift
+  over rcl swap / swap sto
+»',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
