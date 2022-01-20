@@ -35,7 +35,7 @@ module Rpl
         stack << { value: '
 «
   dup abs 1 ==
-  « pi 2 / * »
+  « 𝛑 2 / * »
   « dup sq 1 swap - sqrt / atan »
   ifte
 »',
@@ -57,7 +57,18 @@ module Rpl
 
       # arg cosinus
       def arg_cosinus( stack, dictionary )
-        stack << { value: '« dup 0 == « pi 2 / » « dup sq 1 swap - sqrt / atan dup 0 < « pi + » ift » ifte »',
+        stack << { value: '
+«
+  dup 0 ==
+  « 𝛑 2 / »
+  «
+    dup sq 1 swap - sqrt / atan
+    dup 0 <
+    « 𝛑 + »
+    ift
+  »
+  ifte
+»',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
