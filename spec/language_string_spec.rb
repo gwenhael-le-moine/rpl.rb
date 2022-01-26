@@ -10,7 +10,7 @@ class TestLanguageString < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '2 →str'
 
-    assert_equal [{ value: '"2"', type: :string }],
+    assert_equal [{ value: '2', type: :string }],
                  lang.stack
   end
 
@@ -24,8 +24,8 @@ class TestLanguageString < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '"« dup * » \'carré\' sto" str→'
 
-    assert_equal [{ value: '« dup * »', type: :program },
-                  { value: "'carré'", type: :name },
+    assert_equal [{ value: 'dup *', type: :program },
+                  { value: 'carré', type: :name },
                   { value: 'sto', type: :word }],
                  lang.stack
   end
@@ -34,7 +34,7 @@ class TestLanguageString < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '71 chr'
 
-    assert_equal [{ value: '"G"', type: :string }],
+    assert_equal [{ value: 'G', type: :string }],
                  lang.stack
   end
 
@@ -66,7 +66,7 @@ class TestLanguageString < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '"my string to sub" 4 6 sub'
 
-    assert_equal [{ value: '"str"', type: :string }],
+    assert_equal [{ value: 'str', type: :string }],
                  lang.stack
   end
 
@@ -74,7 +74,7 @@ class TestLanguageString < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '"my string to sub" rev'
 
-    assert_equal [{ value: '"my string to sub"'.reverse, type: :string }],
+    assert_equal [{ value: 'my string to sub'.reverse, type: :string }],
                  lang.stack
   end
 
@@ -82,18 +82,18 @@ class TestLanguageString < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '"my string to sub" " " split'
 
-    assert_equal [{ value: '"my"', type: :string },
-                  { value: '"string"', type: :string },
-                  { value: '"to"', type: :string },
-                  { value: '"sub"', type: :string }],
+    assert_equal [{ value: 'my', type: :string },
+                  { value: 'string', type: :string },
+                  { value: 'to', type: :string },
+                  { value: 'sub', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '"my,string,to sub" "," split'
 
-    assert_equal [{ value: '"my"', type: :string },
-                  { value: '"string"', type: :string },
-                  { value: '"to sub"', type: :string }],
+    assert_equal [{ value: 'my', type: :string },
+                  { value: 'string', type: :string },
+                  { value: 'to sub', type: :string }],
                  lang.stack
   end
 end

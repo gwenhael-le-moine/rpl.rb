@@ -112,7 +112,7 @@ module Rpl
       # implemented in Rpl
       # push a copy of the element in stack level 2 onto the stack
       def over( stack, dictionary )
-        stack << { value: '« 2 pick »',
+        stack << { value: '2 pick',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -120,7 +120,7 @@ module Rpl
 
       # drop first stack entry
       def drop( stack, dictionary )
-        stack << { value: '« 1 dropn »',
+        stack << { value: '1 dropn',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -128,7 +128,7 @@ module Rpl
 
       # drop 2 first stack entries
       def drop2( stack, dictionary )
-        stack << { value: '« 2 dropn »',
+        stack << { value: '2 dropn',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -136,7 +136,7 @@ module Rpl
 
       # duplicate first stack entry
       def dup( stack, dictionary )
-        stack << { value: '« 1 dupn »',
+        stack << { value: '1 dupn',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -144,7 +144,7 @@ module Rpl
 
       # duplicate 2 first stack entries
       def dup2( stack, dictionary )
-        stack << { value: '« 2 dupn »',
+        stack << { value: '2 dupn',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )

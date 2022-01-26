@@ -53,17 +53,10 @@ module Rpl
             elt[:type] = :list
             elt[:value] = [elt_copy]
           end
-        else
-          args.each do |elt|
-            elt[:value] = elt[:value][1..-2] if %i[string name].include?( elt[:type] )
-          end
         end
 
-        result[:value] = case result[:type]
-                         when :name
-                           "'#{args[1][:value]}#{args[0][:value]}'"
-                         when :string
-                           "\"#{args[1][:value]}#{args[0][:value]}\""
+        result[:value] = if %i[name string].include?( result[:type] )
+                           "#{args[1][:value]}#{args[0][:value]}"
                          else
                            args[1][:value] + args[0][:value]
                          end
@@ -262,7 +255,7 @@ module Rpl
       # implemented in Rpl
       # negation
       def negate( stack, dictionary )
-        stack << { value: '« -1 * »',
+        stack << { value: '-1 *',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -270,7 +263,7 @@ module Rpl
 
       # inverse
       def inverse( stack, dictionary )
-        stack << { value: '« 1.0 swap / »',
+        stack << { value: '1.0 swap /',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -278,7 +271,7 @@ module Rpl
 
       # decimal representation
       def dec( stack, dictionary )
-        stack << { value: '« 10 base »',
+        stack << { value: '10 base',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -286,7 +279,7 @@ module Rpl
 
       # hexadecimal representation
       def hex( stack, dictionary )
-        stack << { value: '« 16 base »',
+        stack << { value: '16 base',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -294,7 +287,7 @@ module Rpl
 
       # binary representation
       def bin( stack, dictionary )
-        stack << { value: '« 2 base »',
+        stack << { value: '2 base',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )

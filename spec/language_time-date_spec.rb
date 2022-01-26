@@ -11,7 +11,7 @@ class TestLanguageTimeDate < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run 'time'
 
-    assert_equal [{ value: "\"#{now}\"", type: :string }],
+    assert_equal [{ value: now, type: :string }],
                  lang.stack
   end
 
@@ -20,7 +20,7 @@ class TestLanguageTimeDate < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run 'date'
 
-    assert_equal [{ value: "\"#{now}\"", type: :string }],
+    assert_equal [{ value: now, type: :string }],
                  lang.stack
   end
 

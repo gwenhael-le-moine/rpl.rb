@@ -23,6 +23,7 @@ module Rpl
         opened_programs = 0
         closed_programs = 0
         string_delimiters = 0
+        name_delimiters = 0
         regrouping = false
 
         regrouped_input = []
@@ -32,6 +33,7 @@ module Rpl
             elt.gsub!( '«', '« ') if elt.length > 1 && elt[1] != ' '
           end
           string_delimiters += 1 if elt[0] == '"' && elt.length > 1
+          name_delimiters += 1 if elt[0] == "'" && elt.length > 1
 
           elt = "#{regrouped_input.pop} #{elt}".strip if regrouping
 
@@ -42,8 +44,9 @@ module Rpl
             elt.gsub!( '»', ' »') if elt.length > 1 && elt[-2] != ' '
           end
           string_delimiters += 1 if elt[-1] == '"'
+          name_delimiters += 1 if elt[-1] == "'"
 
-          regrouping = string_delimiters.odd? || (opened_programs > closed_programs )
+          regrouping = string_delimiters.odd? || name_delimiters.odd? || (opened_programs > closed_programs )
         end
 
         # 2. parse
@@ -66,7 +69,11 @@ module Rpl
                                   end
                                 end
 
-          if parsed_entry[:type] == :numeric
+          if %I[string name].include?( parsed_entry[:type] )
+            parsed_entry[:value] = parsed_entry[:value][1..-2]
+          elsif parsed_entry[:type] == :program
+            parsed_entry[:value] = parsed_entry[:value][2..-3]
+          elsif parsed_entry[:type] == :numeric
             parsed_entry[:base] = 10 # TODO: parse others possible bases 0x...
 
             begin

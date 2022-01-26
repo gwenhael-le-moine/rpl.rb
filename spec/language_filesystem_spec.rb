@@ -10,18 +10,18 @@ class TestLanguageFileSystem < Test::Unit::TestCase
     lang = Rpl::Language.new
     lang.run '"spec/test.rpl" fread'
 
-    assert_equal [{ value: "\"1 2 +
+    assert_equal [{ value: "1 2 +
 
 « dup dup * * »
 'trrr' sto
 
 trrr
-\"", type: :string }],
+", type: :string }],
                  lang.stack
 
     lang.run 'eval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
-                  { value: ["'trrr'"], type: :list }],
+                  { value: ['trrr'], type: :list }],
                  lang.stack
   end
 
@@ -29,7 +29,7 @@ trrr
     lang = Rpl::Language.new
     lang.run '"spec/test.rpl" feval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
-                  { value: ["'trrr'"], type: :list }],
+                  { value: ['trrr'], type: :list }],
                  lang.stack
   end
 
@@ -42,7 +42,7 @@ trrr
     assert_true File.exist?( 'spec/test_fwrite.txt' )
 
     written_content = File.read( 'spec/test_fwrite.txt' )
-    assert_equal '"Ceci est un test de fwrite"',
+    assert_equal 'Ceci est un test de fwrite',
                  written_content
 
     FileUtils.rm 'spec/test_fwrite.txt'

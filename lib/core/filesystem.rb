@@ -7,17 +7,17 @@ module Rpl
       def fread( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
 
-        path = File.absolute_path( args[0][:value][1..-2] )
+        path = File.absolute_path( args[0][:value] )
 
         stack << { type: :string,
-                   value: "\"#{File.read( path )}\"" }
+                   value: File.read( path ) }
 
         [stack, dictionary]
       end
 
       # ( filename -- … ) read and run file
       def feval( stack, dictionary )
-        stack << { value: '« fread eval »',
+        stack << { value: 'fread eval',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -27,7 +27,7 @@ module Rpl
       def fwrite( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], :any] )
 
-        File.write( File.absolute_path( args[0][:value][1..-2] ),
+        File.write( File.absolute_path( args[0][:value] ),
                     args[1][:value] )
 
         [stack, dictionary]

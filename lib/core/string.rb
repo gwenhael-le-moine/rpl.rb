@@ -10,7 +10,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
         stack << { type: :string,
-                   value: "\"#{args[0][:value]}\"" }
+                   value: args[0][:value].to_s }
 
         [stack, dictionary]
       end
@@ -19,7 +19,7 @@ module Rpl
       def from_string( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
 
-        parsed_input = Rpl::Lang::Parser.new.parse_input( args[0][:value][1..-2] )
+        parsed_input = Rpl::Lang::Parser.new.parse_input( args[0][:value] )
 
         stack += parsed_input
 
@@ -31,7 +31,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :string,
-                   value: "\"#{args[0][:value].chr}\"" }
+                   value: args[0][:value].chr }
 
         [stack, dictionary]
       end
@@ -42,7 +42,7 @@ module Rpl
 
         stack << { type: :numeric,
                    base: 10,
-                   value: args[0][:value][1..-2].ord }
+                   value: args[0][:value].ord }
 
         [stack, dictionary]
       end
@@ -53,7 +53,7 @@ module Rpl
 
         stack << { type: :numeric,
                    base: 10,
-                   value: args[0][:value][1..-2].length }
+                   value: args[0][:value].length }
 
         [stack, dictionary]
       end
@@ -64,7 +64,7 @@ module Rpl
 
         stack << { type: :numeric,
                    base: 10,
-                   value: args[1][:value][1..-2].index( args[0][:value][1..-2] ) }
+                   value: args[1][:value].index( args[0][:value] ) }
 
         [stack, dictionary]
       end
@@ -74,7 +74,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric], %i[string]] )
 
         stack << { type: :string,
-                   value: "\"#{args[2][:value][args[1][:value]..args[0][:value]]}\"" }
+                   value: args[2][:value][ (args[1][:value] - 1)..(args[0][:value] - 1) ] }
 
         [stack, dictionary]
       end
@@ -88,7 +88,7 @@ module Rpl
         case args[0][:type]
         when :string
           result = { type: :string,
-                     value: "\"#{args[0][:value][1..-2].reverse}\"" }
+                     value: args[0][:value].reverse }
         when :list
           result[:value].reverse!
         end
@@ -102,9 +102,9 @@ module Rpl
       def split( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], %i[string]] )
 
-        args[1][:value][1..-2].split( args[0][:value][1..-2] ).each do |elt|
+        args[1][:value].split( args[0][:value] ).each do |elt|
           stack << { type: :string,
-                     value: "\"#{elt}\"" }
+                     value: elt }
         end
 
         [stack, dictionary]

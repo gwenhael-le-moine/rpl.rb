@@ -26,7 +26,7 @@ module Rpl
         stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
 
         stack << { type: :string,
-                   value: "\"#{args[0][:type]}\"" }
+                   value: args[0][:type].to_s }
 
         [stack, dictionary]
       end

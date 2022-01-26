@@ -14,12 +14,12 @@ class TesttLanguageOperations < Test::Unit::TestCase
 
     lang = Rpl::Language.new
     lang.run '1 "a" +'
-    assert_equal [{ value: '"1a"', type: :string }],
+    assert_equal [{ value: '1a', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '1 \'a\' +'
-    assert_equal [{ value: '"1a"', type: :string }],
+    assert_equal [{ value: '1a', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
@@ -31,44 +31,44 @@ class TesttLanguageOperations < Test::Unit::TestCase
 
     lang = Rpl::Language.new
     lang.run '"a" "b" +'
-    assert_equal [{ value: '"ab"', type: :string }],
+    assert_equal [{ value: 'ab', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '"a" \'b\' +'
-    assert_equal [{ value: '"ab"', type: :string }],
+    assert_equal [{ value: 'ab', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '"a" 1 +'
-    assert_equal [{ value: '"a1"', type: :string }],
+    assert_equal [{ value: 'a1', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '"a" 1 dup →list +'
-    assert_equal [{ value: [{ value: '"a"', type: :string },
+    assert_equal [{ value: [{ value: 'a', type: :string },
                             { value: 1, type: :numeric, base: 10 }],
                     type: :list }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '\'a\' 1 +'
-    assert_equal [{ value: "'a1'", type: :name }],
+    assert_equal [{ value: 'a1', type: :name }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '\'a\' "b" +'
-    assert_equal [{ value: '"ab"', type: :string }],
+    assert_equal [{ value: 'ab', type: :string }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '\'a\' \'b\' +'
-    assert_equal [{ value: "'ab'", type: :name }],
+    assert_equal [{ value: 'ab', type: :name }],
                  lang.stack
 
     lang = Rpl::Language.new
     lang.run '\'a\' 1 dup →list +'
-    assert_equal [{ value: [{ value: "'a'", type: :name },
+    assert_equal [{ value: [{ value: 'a', type: :name },
                             { value: 1, type: :numeric, base: 10 }],
                     type: :list }],
                  lang.stack
@@ -77,10 +77,10 @@ class TesttLanguageOperations < Test::Unit::TestCase
     lang.run '1 a "test" 3 →list dup rev +'
     assert_equal [{ type: :list,
                     value: [{ value: 1, type: :numeric, base: 10 },
-                            { type: :name, value: "'a'" },
-                            { value: '"test"', type: :string },
-                            { value: '"test"', type: :string },
-                            { type: :name, value: "'a'" },
+                            { type: :name, value: 'a' },
+                            { value: 'test', type: :string },
+                            { value: 'test', type: :string },
+                            { type: :name, value: 'a' },
                             { value: 1, type: :numeric, base: 10 }] }],
                  lang.stack
 
@@ -88,8 +88,8 @@ class TesttLanguageOperations < Test::Unit::TestCase
     lang.run '1 a "test" 3 →list 9 +'
     assert_equal [{ type: :list,
                     value: [{ value: 1, type: :numeric, base: 10 },
-                            { type: :name, value: "'a'" },
-                            { value: '"test"', type: :string },
+                            { type: :name, value: 'a' },
+                            { value: 'test', type: :string },
                             { value: 9, type: :numeric, base: 10 }] }],
                  lang.stack
   end

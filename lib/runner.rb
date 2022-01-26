@@ -12,7 +12,10 @@ module Rpl
             command = dictionary.lookup( elt[:value] )
 
             if command.nil?
-              stack << { type: :name, value: "'#{elt[:value]}'" }
+              # if there's command by that name then it's a name
+              elt[:type] = :name
+
+              stack << elt
             else
               stack, dictionary = command.call( stack, dictionary )
             end

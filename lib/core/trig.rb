@@ -33,12 +33,10 @@ module Rpl
         # # Tangent of angle is y / x, where x^2 + y^2 = 1.
         # atan(y / sqrt(1 - y * y, prec), prec)
         stack << { value: '
-«
   dup abs 1 ==
   « 𝛑 2 / * »
   « dup sq 1 swap - sqrt / atan »
-  ifte
-»',
+  ifte',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -58,7 +56,6 @@ module Rpl
       # arg cosinus
       def arg_cosinus( stack, dictionary )
         stack << { value: '
-«
   dup 0 ==
   « 𝛑 2 / »
   «
@@ -67,8 +64,7 @@ module Rpl
     « 𝛑 + »
     ift
   »
-  ifte
-»',
+  ifte',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -76,7 +72,7 @@ module Rpl
 
       # tangent
       def tangent( stack, dictionary )
-        stack << { value: '« dup sin swap cos / »',
+        stack << { value: 'dup sin swap cos /',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -95,7 +91,7 @@ module Rpl
 
       # convert degrees to radians
       def degrees_to_radians( stack, dictionary )
-        stack << { value: '« 𝛑 * 180 / »',
+        stack << { value: '𝛑 * 180 /',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -103,7 +99,7 @@ module Rpl
 
       # convert radians to degrees
       def radians_to_degrees( stack, dictionary )
-        stack << { value: '« 180 * 𝛑 / »',
+        stack << { value: '180 * 𝛑 /',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
