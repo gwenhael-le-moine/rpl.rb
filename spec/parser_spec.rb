@@ -28,6 +28,9 @@ class TestParser < Test::Unit::TestCase
 
     result = Rpl::Lang::Parser.new.parse_input( '" test "' )
     assert_equal [{ value: '" test "', type: :string }], result
+
+    result = Rpl::Lang::Parser.new.parse_input( '" « test » "' )
+    assert_equal [{ value: '" test "', type: :string }], result
   end
 
   def test_name

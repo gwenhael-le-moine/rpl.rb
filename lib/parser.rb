@@ -27,7 +27,6 @@ module Rpl
 
         regrouped_input = []
         splitted_input.each do |elt|
-          # TODO: handle buried-in-elt « and » (surround by ' ' and re-split)
           if elt[0] == '«'
             opened_programs += 1
             elt.gsub!( '«', '« ') if elt.length > 1 && elt[1] != ' '
