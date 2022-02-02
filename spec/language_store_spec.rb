@@ -31,7 +31,7 @@ class TestLanguageProgram < Test::Unit::TestCase
   def test_vars
     lang = Rpl::Language.new
     lang.run '« 2 dup * » \'quatre\' sto 1 \'un\' sto vars'
-    assert_equal [{ value: ['quatre', 'un'], type: :list }],
+    assert_equal [{ value: %w[quatre un], type: :list }],
                  lang.stack
   end
 
