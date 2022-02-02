@@ -91,7 +91,7 @@ module Rpl
 
       # convert degrees to radians
       def degrees_to_radians( stack, dictionary )
-        stack << { value: '𝛑 * 180 /',
+        stack << { value: '𝛑 180 / *',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )
@@ -99,7 +99,7 @@ module Rpl
 
       # convert radians to degrees
       def radians_to_degrees( stack, dictionary )
-        stack << { value: '180 * 𝛑 /',
+        stack << { value: '𝛑 180 / /',
                    type: :program }
 
         Rpl::Lang::Core.eval( stack, dictionary )

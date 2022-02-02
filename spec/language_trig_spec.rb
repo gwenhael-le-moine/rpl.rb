@@ -64,8 +64,8 @@ class TesttLanguageOperations < Test::Unit::TestCase
 
   def test_r→d
     lang = Rpl::Language.new
-    lang.run '2.6179938780 r→d'
-    assert_equal [{ value: 150, type: :numeric, base: 10 }],
+    lang.run 'pi r→d'
+    assert_equal [{ value: 180, type: :numeric, base: 10 }],
                  lang.stack
   end
 end
