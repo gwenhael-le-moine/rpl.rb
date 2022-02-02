@@ -23,6 +23,24 @@ module Rpl
         [stack, dictionary]
       end
 
+      # store a local variable
+      def lsto( stack, dictionary )
+        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name], :any] )
+
+        dictionary.add_local_var( args[0][:value],
+                                  proc { |stk, dict, rcl_only = false|
+                                    stk << args[1]
+
+                                    if rcl_only
+                                      [stk, dict]
+                                    else
+                                      Rpl::Lang::Core.eval( stk, dict )
+                                    end
+                                  } )
+
+        [stack, dictionary]
+      end
+
       # recall a variable. ex: 'name' rcl
       def rcl( stack, dictionary )
         stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name]] )
@@ -46,7 +64,7 @@ module Rpl
       # list all variables
       def vars( stack, dictionary )
         stack << { type: :list,
-                   value: dictionary.vars.keys }
+                   value: dictionary.vars.keys + dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys } }
 
         [stack, dictionary]
       end

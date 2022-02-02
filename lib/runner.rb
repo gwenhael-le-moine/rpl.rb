@@ -6,6 +6,8 @@ module Rpl
       def initialize; end
 
       def run_input( input, stack, dictionary )
+        dictionary.add_local_vars_layer
+
         input.each do |elt|
           case elt[:type]
           when :word
@@ -23,6 +25,8 @@ module Rpl
             stack << elt
           end
         end
+
+        dictionary.remove_local_vars_layer
 
         [stack, dictionary]
       end

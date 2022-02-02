@@ -167,6 +167,8 @@ module Rpl
       @dictionary.add( 'sneg',    proc { |stack, dictionary| Rpl::Lang::Core.sto_negate( stack, dictionary ) } )
       @dictionary.add( 'sinv',    proc { |stack, dictionary| Rpl::Lang::Core.sto_inverse( stack, dictionary ) } )
       # @dictionary.add( 'edit',    proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # edit a variable content
+      @dictionary.add( 'lsto',    proc { |stack, dictionary| Rpl::Lang::Core.lsto( stack, dictionary ) } ) # store to local variable
+      @dictionary.add( '↴',       proc { |stack, dictionary| Rpl::Lang::Core.lsto( stack, dictionary ) } ) # alias
 
       # PROGRAM
       @dictionary.add( 'eval',    proc { |stack, dictionary| Rpl::Lang::Core.eval( stack, dictionary ) } )

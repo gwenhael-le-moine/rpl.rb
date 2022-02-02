@@ -15,6 +15,22 @@ class TestLanguageProgram < Test::Unit::TestCase
                  lang.stack
   end
 
+  def test_lsto
+    lang = Rpl::Language.new
+    lang.run "« 2 'deux' lsto deux dup * » eval 'deux' rcl"
+
+    assert_empty lang.dictionary.local_vars_layers
+    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+                 lang.stack
+
+    lang = Rpl::Language.new
+    lang.run "« 2 'deux' lsto « 3 'trois' lsto trois drop » eval deux dup * » eval 'deux' rcl 'trois' rcl"
+
+    assert_empty lang.dictionary.local_vars_layers
+    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+                 lang.stack
+  end
+
   def test_rcl
     lang = Rpl::Language.new
     lang.run '« 2 dup * » \'quatre\' sto \'quatre\' rcl'
