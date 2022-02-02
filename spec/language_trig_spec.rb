@@ -57,8 +57,9 @@ class TesttLanguageOperations < Test::Unit::TestCase
 
   def test_d→r
     lang = Rpl::Language.new
-    lang.run '30 d→r'
-    assert_equal [{ value: 0.5235987756, type: :numeric, base: 10 }],
+    lang.run '90 d→r'
+    assert_equal [{ value: BigDecimal( 1.57079632679489661923132169168272243847381663981000003, Rpl::Lang::Core.precision ),
+                    type: :numeric, base: 10 }],
                  lang.stack
   end
 
