@@ -57,7 +57,7 @@ module Rpl
       def arg_cosinus( stack, dictionary )
         stack << { value: '
   dup 0 ==
-  « 𝛑 2 / »
+  « drop 𝛑 2 / »
   «
     dup sq 1 swap - sqrt / atan
     dup 0 <

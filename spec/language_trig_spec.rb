@@ -22,8 +22,8 @@ class TesttLanguageOperations < Test::Unit::TestCase
 
   def test_asin
     lang = Rpl::Language.new
-    lang.run '0.14112000806 asin'
-    assert_equal [{ value: Math.asin( 0.14112000806 ), type: :numeric, base: 10 }],
+    lang.run '1 asin pi 2 / =='
+    assert_equal [{ value: true, type: :boolean }],
                  lang.stack
   end
 
@@ -36,15 +36,15 @@ class TesttLanguageOperations < Test::Unit::TestCase
 
   def test_acos
     lang = Rpl::Language.new
-    lang.run '0.5 acos'
-    assert_equal [{ value: Math.acos( 0.5 ), type: :numeric, base: 10 }],
+    lang.run '0 acos pi 2 / =='
+    assert_equal [{ value: true, type: :boolean }],
                  lang.stack
   end
 
   def test_tan
     lang = Rpl::Language.new
-    lang.run '1 tan'
-    assert_equal [{ value: Math.tan( 1 ), type: :numeric, base: 10 }],
+    lang.run '0 tan 0 =='
+    assert_equal [{ value: true, type: :boolean }],
                  lang.stack
   end
 
