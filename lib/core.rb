@@ -19,51 +19,52 @@ require_relative './core/list'
 
 module Rpl
   module Lang
-    module Core
-      module_function
+    module_function
 
-      include BigMath
+    include BigMath
 
-      def precision
-        @precision or 12
+    def precision
+      @precision or 12
+    end
+
+    def precision=( value )
+      @precision = value
+    end
+
+    def stack_extract( stack, needs )
+      raise ArgumentError, 'Not enough elements' if stack.size < needs.size
+
+      args = []
+      needs.each do |need|
+        elt = stack.pop
+
+        raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" unless need == :any || need.include?( elt[:type] )
+
+        args << elt
       end
 
-      def precision=( value )
-        @precision = value
-      end
+      [stack, args]
+    end
 
-      def stack_extract( stack, needs )
-        raise ArgumentError, 'Not enough elements' if stack.size < needs.size
+    def infer_resulting_base( numerics )
+      10 if numerics.length.zero?
 
-        args = []
-        needs.each do |need|
-          elt = stack.pop
+      numerics.last[:base]
+    end
 
-          raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" unless need == :any || need.include?( elt[:type] )
+    def eval( stack, dictionary, rplcode )
+      preparsed_input = rplcode.gsub( '\n', ' ' ).strip if rplcode.is_a?( String )
+      parsed_input = Rpl::Lang.parse_input( preparsed_input.to_s )
 
-          args << elt
-        end
+      Rpl::Lang.run_input( parsed_input,
+                           stack, dictionary )
+    end
 
-        [stack, args]
-      end
+    ### DEBUG ###
+    def __pp_stack( stack, dictionary )
+      pp stack
 
-      def infer_resulting_base( numerics )
-        10 if numerics.length.zero?
-
-        numerics.last[:base]
-      end
-
-      def __todo( stack, dictionary )
-        puts '__NOT IMPLEMENTED__'
-
-        [stack, dictionary]
-      end
-
-      def __pp_stack( stack, dictionary )
-        pp stack
-
-        [stack, dictionary]
-      end
+      [stack, dictionary]
     end
   end
 end

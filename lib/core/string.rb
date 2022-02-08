@@ -7,7 +7,7 @@ module Rpl
 
       # convert an object into a string
       def to_string( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [:any] )
+        stack, args = Rpl::Lang.stack_extract( stack, [:any] )
 
         stack << { type: :string,
                    value: args[0][:value].to_s }
@@ -17,9 +17,9 @@ module Rpl
 
       # convert a string into an object
       def from_string( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
 
-        parsed_input = Rpl::Lang::Parser.new.parse_input( args[0][:value] )
+        parsed_input = Rpl::Lang.parse_input( args[0][:value] )
 
         stack += parsed_input
 
@@ -28,7 +28,7 @@ module Rpl
 
       # convert ASCII character code in stack level 1 into a string
       def chr( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :string,
                    value: args[0][:value].chr }
@@ -38,7 +38,7 @@ module Rpl
 
       # return ASCII code of the first character of the string in stack level 1 as a real number
       def num( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -49,7 +49,7 @@ module Rpl
 
       # return the length of the string
       def size( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -60,7 +60,7 @@ module Rpl
 
       # search for the string in level 1 within the string in level 2
       def pos( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], %i[string]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[string], %i[string]] )
 
         stack << { type: :numeric,
                    base: 10,
@@ -71,7 +71,7 @@ module Rpl
 
       # return a substring of the string in level 3
       def sub( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric], %i[numeric], %i[string]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric], %i[string]] )
 
         stack << { type: :string,
                    value: args[2][:value][ (args[1][:value] - 1)..(args[0][:value] - 1) ] }
@@ -81,7 +81,7 @@ module Rpl
 
       # reverse string or list
       def rev( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string list]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[string list]] )
 
         result = args[0]
 
@@ -100,7 +100,7 @@ module Rpl
 
       # split string
       def split( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[string], %i[string]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[string], %i[string]] )
 
         args[1][:value].split( args[0][:value] ).each do |elt|
           stack << { type: :string,

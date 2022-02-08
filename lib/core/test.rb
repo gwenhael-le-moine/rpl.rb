@@ -7,7 +7,7 @@ module Rpl
 
       # binary operator >
       def greater_than( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
                    value: args[1][:value] > args[0][:value] }
@@ -17,7 +17,7 @@ module Rpl
 
       # binary operator >=
       def greater_than_or_equal( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
                    value: args[1][:value] >= args[0][:value] }
@@ -27,7 +27,7 @@ module Rpl
 
       # binary operator <
       def less_than( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
                    value: args[1][:value] < args[0][:value] }
@@ -37,7 +37,7 @@ module Rpl
 
       # binary operator <=
       def less_than_or_equal( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
                    value: args[1][:value] <= args[0][:value] }
@@ -47,7 +47,7 @@ module Rpl
 
       # boolean operator != (different)
       def different( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
                    value: args[1][:value] != args[0][:value] }
@@ -57,7 +57,7 @@ module Rpl
 
       # boolean operator and
       def and( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean], %i[boolean]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[boolean], %i[boolean]] )
 
         stack << { type: :boolean,
                    value: args[1][:value] && args[0][:value] }
@@ -67,7 +67,7 @@ module Rpl
 
       # boolean operator or
       def or( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean], %i[boolean]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[boolean], %i[boolean]] )
 
         stack << { type: :boolean,
                    value: args[1][:value] || args[0][:value] }
@@ -77,7 +77,7 @@ module Rpl
 
       # boolean operator xor
       def xor( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean], %i[boolean]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[boolean], %i[boolean]] )
 
         stack << { type: :boolean,
                    value: args[1][:value] ^ args[0][:value] }
@@ -87,7 +87,7 @@ module Rpl
 
       # boolean operator not
       def not( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[boolean]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[boolean]] )
 
         stack << { type: :boolean,
                    value: !args[0][:value] }
@@ -97,7 +97,7 @@ module Rpl
 
       # boolean operator same (equal)
       def same( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << { type: :boolean,
                    value: args[1][:value] == args[0][:value] }

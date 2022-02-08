@@ -9,14 +9,14 @@ class TesttLanguageOperations < Test::Unit::TestCase
   def test_pi
     lang = Rpl::Language.new
     lang.run 'pi'
-    assert_equal [{ value: BigMath.PI( Rpl::Lang::Core.precision ), type: :numeric, base: 10 }],
+    assert_equal [{ value: BigMath.PI( Rpl::Lang.precision ), type: :numeric, base: 10 }],
                  lang.stack
   end
 
   def test_sin
     lang = Rpl::Language.new
     lang.run '3 sin'
-    assert_equal [{ value: BigMath.sin( BigDecimal( 3 ), Rpl::Lang::Core.precision ), type: :numeric, base: 10 }],
+    assert_equal [{ value: BigMath.sin( BigDecimal( 3 ), Rpl::Lang.precision ), type: :numeric, base: 10 }],
                  lang.stack
   end
 
@@ -30,7 +30,7 @@ class TesttLanguageOperations < Test::Unit::TestCase
   def test_cos
     lang = Rpl::Language.new
     lang.run '3 cos'
-    assert_equal [{ value: BigMath.cos( BigDecimal( 3 ), Rpl::Lang::Core.precision ), type: :numeric, base: 10 }],
+    assert_equal [{ value: BigMath.cos( BigDecimal( 3 ), Rpl::Lang.precision ), type: :numeric, base: 10 }],
                  lang.stack
   end
 
@@ -51,14 +51,14 @@ class TesttLanguageOperations < Test::Unit::TestCase
   def test_atan
     lang = Rpl::Language.new
     lang.run '1 atan'
-    assert_equal [{ value: BigMath.atan( BigDecimal( 1 ), Rpl::Lang::Core.precision ), type: :numeric, base: 10 }],
+    assert_equal [{ value: BigMath.atan( BigDecimal( 1 ), Rpl::Lang.precision ), type: :numeric, base: 10 }],
                  lang.stack
   end
 
   def test_d→r
     lang = Rpl::Language.new
     lang.run '90 d→r'
-    assert_equal [{ value: BigDecimal( 1.57079632679489661923132169168272243847381663981000003, Rpl::Lang::Core.precision ),
+    assert_equal [{ value: BigDecimal( 1.57079632679489661923132169168272243847381663981000003, Rpl::Lang.precision ),
                     type: :numeric, base: 10 }],
                  lang.stack
   end

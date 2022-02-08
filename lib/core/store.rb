@@ -7,7 +7,7 @@ module Rpl
 
       # store a variable. ex: 1 'name' sto
       def sto( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name], :any] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[name], :any] )
 
         dictionary.add_var( args[0][:value],
                             proc { |stk, dict, rcl_only = false|
@@ -25,7 +25,7 @@ module Rpl
 
       # store a local variable
       def lsto( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name], :any] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[name], :any] )
 
         dictionary.add_local_var( args[0][:value],
                                   proc { |stk, dict, rcl_only = false|
@@ -43,7 +43,7 @@ module Rpl
 
       # recall a variable. ex: 'name' rcl
       def rcl( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[name]] )
 
         word = dictionary.lookup( args[0][:value] )
 
@@ -54,7 +54,7 @@ module Rpl
 
       # delete a variable. ex: 'name' purge
       def purge( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[name]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[name]] )
 
         dictionary.remove_var( args[0][:value] )
 
@@ -64,7 +64,7 @@ module Rpl
       # list all variables
       def vars( stack, dictionary )
         stack << { type: :list,
-                   value: dictionary.vars.keys + dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys } }
+                   value: (dictionary.vars.keys + dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys }).map { |name| { type: :name, value: name } } }
 
         [stack, dictionary]
       end
@@ -78,66 +78,48 @@ module Rpl
 
       # add to a stored variable. ex: 1 'name' sto+ 'name' 2 sto+
       def sto_add( stack, dictionary )
-        stack << { value: '
+        Rpl::Lang.eval( stack, dictionary, '
   dup type "name" ==
   « swap »
   ift
-  over rcl + swap sto',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+  over rcl + swap sto' )
       end
 
       # substract to a stored variable. ex: 1 'name' sto- 'name' 2 sto-
       def sto_subtract( stack, dictionary )
-        stack << { value: '
+        Rpl::Lang.eval( stack, dictionary, '
   dup type "name" ==
   « swap »
   ift
-  over rcl swap - swap sto',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+  over rcl swap - swap sto' )
       end
 
       # multiply a stored variable. ex: 3 'name' sto* 'name' 2 sto*
       def sto_multiply( stack, dictionary )
-        stack << { value: '
+        Rpl::Lang.eval( stack, dictionary, '
   dup type "name" ==
   « swap »
   ift
-  over rcl * swap sto',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+  over rcl * swap sto' )
       end
 
       # divide a stored variable. ex: 3 'name' sto/ 'name' 2 sto/
       def sto_divide( stack, dictionary )
-        stack << { value: '
+        Rpl::Lang.eval( stack, dictionary, '
   dup type "name" ==
   « swap »
   ift
-  over rcl swap / swap sto',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+  over rcl swap / swap sto' )
       end
 
       # negate a variable. ex: 'name' sneg
       def sto_negate( stack, dictionary )
-        stack << { value: 'dup rcl chs swap sto',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, 'dup rcl chs swap sto' )
       end
 
       # inverse a variable. ex: 1 'name' sinv
       def sto_inverse( stack, dictionary )
-        stack << { value: 'dup rcl inv swap sto',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, 'dup rcl inv swap sto' )
       end
     end
   end

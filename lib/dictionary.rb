@@ -7,7 +7,6 @@ module Rpl
                   :local_vars_layers
 
       def initialize
-        @parser = Parser.new
         @words = {}
         @vars = {}
         @local_vars_layers = []
@@ -54,8 +53,8 @@ module Rpl
       end
 
       def lookup( name )
-        local_var = @local_vars_layers.reverse.find { |layer| layer[ name ] }
-        word = local_var.nil? ? nil : local_var[name]
+        local_vars_layer = @local_vars_layers.reverse.find { |layer| layer[ name ] }
+        word = local_vars_layer.nil? ? nil : local_vars_layer[ name ]
         word ||= @vars[ name ]
         word ||= @words[ name ]
 

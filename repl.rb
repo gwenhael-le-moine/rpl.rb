@@ -53,7 +53,7 @@ class RplRepl
                end
       "#{prefix}#{elt[:value].to_s( elt[:base] )}"
     when :list
-      "[#{elt[:value].map { |e| e[:value] }.join(', ')}]"
+      "[#{elt[:value].map { |e| format_element( e ) }.join(', ')}]"
     when :program
       "« #{elt[:value]} »"
     when :string

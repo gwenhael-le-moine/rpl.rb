@@ -21,7 +21,7 @@ trrr
 
     lang.run 'eval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
-                  { value: ['trrr'], type: :list }],
+                  { value: [{ type: :name, value: 'trrr' }], type: :list }],
                  lang.stack
   end
 
@@ -29,7 +29,7 @@ trrr
     lang = Rpl::Language.new
     lang.run '"spec/test.rpl" feval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
-                  { value: ['trrr'], type: :list }],
+                  { value: [{ type: :name, value: 'trrr' }], type: :list }],
                  lang.stack
   end
 

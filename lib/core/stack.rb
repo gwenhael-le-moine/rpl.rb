@@ -7,7 +7,7 @@ module Rpl
 
       # swap 2 first stack entries
       def swap( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any] )
 
         stack << args[0] << args[1]
 
@@ -16,8 +16,8 @@ module Rpl
 
       # drop n first stack entries
       def dropn( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
-        stack, _args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+        stack, _args = Rpl::Lang.stack_extract( stack, %i[any] * args[0][:value] )
 
         [stack, dictionary]
       end
@@ -29,7 +29,7 @@ module Rpl
 
       # rotate 3 first stack entries
       def rot( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any any any] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any any any] )
 
         stack << args[1] << args[0] << args[2]
 
@@ -38,9 +38,9 @@ module Rpl
 
       # duplicate n first stack entries
       def dupn( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value].to_i
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any] * args[0][:value] )
 
         args.reverse!
 
@@ -55,9 +55,9 @@ module Rpl
 
       # push a copy of the given stack level onto the stack
       def pick( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value].to_i
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any] * args[0][:value] )
 
         args.reverse!
 
@@ -78,9 +78,9 @@ module Rpl
 
       # move a stack entry to the top of the stack
       def roll( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value]
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any] * args[0][:value] )
 
         args.reverse!
 
@@ -94,9 +94,9 @@ module Rpl
 
       # move the element on top of the stack to a higher stack position
       def rolld( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
         n = args[0][:value]
-        stack, args = Rpl::Lang::Core.stack_extract( stack, %i[any] * args[0][:value] )
+        stack, args = Rpl::Lang.stack_extract( stack, %i[any] * args[0][:value] )
 
         args.reverse!
 
@@ -112,42 +112,27 @@ module Rpl
       # implemented in Rpl
       # push a copy of the element in stack level 2 onto the stack
       def over( stack, dictionary )
-        stack << { value: '2 pick',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '2 pick' )
       end
 
       # drop first stack entry
       def drop( stack, dictionary )
-        stack << { value: '1 dropn',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '1 dropn' )
       end
 
       # drop 2 first stack entries
       def drop2( stack, dictionary )
-        stack << { value: '2 dropn',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '2 dropn' )
       end
 
       # duplicate first stack entry
       def dup( stack, dictionary )
-        stack << { value: '1 dupn',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '1 dupn' )
       end
 
       # duplicate 2 first stack entries
       def dup2( stack, dictionary )
-        stack << { value: '2 dupn',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '2 dupn' )
       end
     end
   end

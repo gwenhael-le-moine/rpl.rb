@@ -7,18 +7,18 @@ module Rpl
       def pi( stack, dictionary )
         stack << { type: :numeric,
                    base: 10,
-                   value: BigMath.PI( Rpl::Lang::Core.precision ) }
+                   value: BigMath.PI( Rpl::Lang.precision ) }
 
         [stack, dictionary]
       end
 
       # sinus
       def sinus( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric,
-                   base: infer_resulting_base( args ),
-                   value: BigMath.sin( BigDecimal( args[0][:value], Rpl::Lang::Core.precision ), Rpl::Lang::Core.precision ) }
+                   base: Rpl::Lang.infer_resulting_base( args ),
+                   value: BigMath.sin( BigDecimal( args[0][:value], Rpl::Lang.precision ), Rpl::Lang.precision ) }
 
         [stack, dictionary]
       end
@@ -26,36 +26,27 @@ module Rpl
       # https://rosettacode.org/wiki/Trigonometric_functions#Ruby
       # arg sinus
       def arg_sinus( stack, dictionary )
-        # # Handle angles with no tangent.
-        # return -PI / 2 if y == -1
-        # return PI / 2 if y == 1
-
-        # # Tangent of angle is y / x, where x^2 + y^2 = 1.
-        # atan(y / sqrt(1 - y * y, prec), prec)
-        stack << { value: '
+        Rpl::Lang.eval( stack, dictionary, '
   dup abs 1 ==
   « 𝛑 2 / * »
   « dup sq 1 swap - sqrt / atan »
-  ifte',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+  ifte' )
       end
 
       # cosinus
       def cosinus( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric,
-                   base: infer_resulting_base( args ),
-                   value: BigMath.cos( BigDecimal( args[0][:value], Rpl::Lang::Core.precision ), Rpl::Lang::Core.precision ) }
+                   base: Rpl::Lang.infer_resulting_base( args ),
+                   value: BigMath.cos( BigDecimal( args[0][:value], Rpl::Lang.precision ), Rpl::Lang.precision ) }
 
         [stack, dictionary]
       end
 
       # arg cosinus
       def arg_cosinus( stack, dictionary )
-        stack << { value: '
+        Rpl::Lang.eval( stack, dictionary, '
   dup 0 ==
   « drop 𝛑 2 / »
   «
@@ -64,45 +55,33 @@ module Rpl
     « 𝛑 + »
     ift
   »
-  ifte',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+  ifte' )
       end
 
       # tangent
       def tangent( stack, dictionary )
-        stack << { value: 'dup sin swap cos /',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, 'dup sin swap cos /' )
       end
 
       # arg tangent
       def arg_tangent( stack, dictionary )
-        stack, args = Rpl::Lang::Core.stack_extract( stack, [%i[numeric]] )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
 
         stack << { type: :numeric,
-                   base: infer_resulting_base( args ),
-                   value: BigMath.atan( BigDecimal( args[0][:value], Rpl::Lang::Core.precision ), Rpl::Lang::Core.precision ) }
+                   base: Rpl::Lang.infer_resulting_base( args ),
+                   value: BigMath.atan( BigDecimal( args[0][:value], Rpl::Lang.precision ), Rpl::Lang.precision ) }
 
         [stack, dictionary]
       end
 
       # convert degrees to radians
       def degrees_to_radians( stack, dictionary )
-        stack << { value: '𝛑 180 / *',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '𝛑 180 / *' )
       end
 
       # convert radians to degrees
       def radians_to_degrees( stack, dictionary )
-        stack << { value: '𝛑 180 / /',
-                   type: :program }
-
-        Rpl::Lang::Core.eval( stack, dictionary )
+        Rpl::Lang.eval( stack, dictionary, '𝛑 180 / /' )
       end
     end
   end
