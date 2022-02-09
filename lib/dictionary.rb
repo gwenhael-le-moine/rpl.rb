@@ -3,7 +3,8 @@
 module Rpl
   module Lang
     class Dictionary
-      attr_reader :vars,
+      attr_reader :words,
+                  :vars,
                   :local_vars_layers
 
       def initialize
@@ -12,8 +13,12 @@ module Rpl
         @local_vars_layers = []
       end
 
-      def add( name, implementation )
-        @words[ name ] = implementation
+      def add_word( names, category, help, implementation )
+        names.each do |name|
+          @words[ name ] = { category: category,
+                             help: help,
+                             implementation: implementation }
+        end
       end
 
       def add_var( name, implementation )
@@ -65,7 +70,7 @@ module Rpl
         word ||= @vars[ name ]
 
         # or is it a core word
-        word ||= @words[ name ]
+        word ||= @words[ name ].nil? ? nil : @words[ name ][:implementation]
 
         word
       end

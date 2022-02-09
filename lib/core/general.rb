@@ -24,6 +24,16 @@ module Rpl
         [stack, dictionary]
       end
 
+      def help( stack, dictionary )
+        stack, args = Rpl::Lang.stack_extract( stack, [%i[name]] )
+
+        word = dictionary.words[ args[0][:value] ]
+
+        stack << { type: :string,
+                   value: "#{args[0][:value]}: #{word.nil? ? 'not a core word' : word[:help]}" }
+
+        [stack, dictionary]
+      end
     end
   end
 end
