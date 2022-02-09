@@ -10,7 +10,7 @@ module Rpl
         stack, args = Rpl::Lang.stack_extract( stack, [:any, %i[numeric]] )
 
         args[1][:value].to_i.times do |i|
-          counter = { value: i, type: :numeric, base: 10 }
+          counter = { value: BigDecimal( i, Rpl::Lang.precision ), type: :numeric, base: 10 }
           stack << counter << args[0]
 
           stack, dictionary = Rpl::Lang::Core.eval( stack, dictionary )
@@ -24,7 +24,7 @@ module Rpl
         stack, args = Rpl::Lang.stack_extract( stack, [:any, %i[numeric], %i[numeric]] )
 
         ((args[2][:value].to_i)..(args[1][:value].to_i)).each do |i|
-          counter = { value: i, type: :numeric, base: 10 }
+          counter = { value: BigDecimal( i, Rpl::Lang.precision ), type: :numeric, base: 10 }
           stack << counter << args[0]
 
           stack, dictionary = Rpl::Lang::Core.eval( stack, dictionary )
