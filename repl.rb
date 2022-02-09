@@ -21,8 +21,6 @@ class RplRepl
 
       pp Readline::HISTORY if input == 'history'
 
-      input = '"rpn.rb version 0.0"' if %w[version uname].include?( input )
-
       # Remove blank lines from history
       Readline::HISTORY.pop if input.empty?
 
