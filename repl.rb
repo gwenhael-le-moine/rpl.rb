@@ -28,7 +28,7 @@ class RplRepl
 
       begin
         @interpreter.run( input )
-      rescue ArgumentError, ZeroDivisionError => e
+      rescue ArgumentError => e
         p e
       end
 
