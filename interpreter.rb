@@ -69,6 +69,7 @@ module Rpl
       end
 
       # 2. parse
+      # TODO: parse ∞, <NaN> as numerics
       parsed_tree = []
       regrouped_input.each do |elt|
         parsed_entry = { value: elt }
