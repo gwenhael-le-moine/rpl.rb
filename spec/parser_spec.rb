@@ -3,7 +3,7 @@
 
 require 'test/unit'
 
-require_relative '../lib/parser'
+require_relative '../language'
 
 class TestParser < Test::Unit::TestCase
   def test_number

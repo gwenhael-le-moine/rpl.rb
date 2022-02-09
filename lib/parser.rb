@@ -75,13 +75,14 @@ module Rpl
         elsif parsed_entry[:type] == :numeric
           parsed_entry[:base] = 10 # TODO: parse others possible bases 0x...
 
-          # TODO: store value as BigDecimal
           begin
             parsed_entry[:value] = Float( parsed_entry[:value] )
             parsed_entry[:value] = parsed_entry[:value].to_i if (parsed_entry[:value] % 1).zero? && elt.index('.').nil?
           rescue ArgumentError
             parsed_entry[:value] = Integer( parsed_entry[:value] )
           end
+
+          parsed_entry[:value] = BigDecimal( parsed_entry[:value], Rpl::Lang.precision )
         end
 
         parsed_tree << parsed_entry

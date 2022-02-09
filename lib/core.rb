@@ -23,6 +23,10 @@ module Rpl
 
     include BigMath
 
+    def version
+      0
+    end
+
     def precision
       @precision or 12
     end
@@ -46,18 +50,55 @@ module Rpl
       [stack, args]
     end
 
-    def infer_resulting_base( numerics )
-      10 if numerics.length.zero?
-
-      numerics.last[:base]
-    end
-
     def eval( stack, dictionary, rplcode )
       preparsed_input = rplcode.gsub( '\n', ' ' ).strip if rplcode.is_a?( String )
       parsed_input = Rpl::Lang.parse_input( preparsed_input.to_s )
 
       Rpl::Lang.run_input( parsed_input,
                            stack, dictionary )
+    end
+
+    def to_string( elt )
+      case elt[:type]
+      when :numeric
+        prefix = case elt[:base]
+                 when 2
+                   '0b'
+                 when 8
+                   '0o'
+                 when 10
+                   ''
+                 when 16
+                   '0x'
+                 else
+                   "0#{elt[:base]}_"
+                 end
+
+        suffix = if elt[:value].to_i == elt[:value]
+                   elt[:value].to_i
+                 else
+                   elt[:value].to_s('F')
+                 end
+        suffix = elt[:value].to_s( elt[:base] ) unless elt[:base] == 10
+
+        "#{prefix}#{suffix}"
+      when :list
+        "[#{elt[:value].map { |e| format_element( e ) }.join(', ')}]"
+      when :program
+        "« #{elt[:value]} »"
+      when :string
+        "\"#{elt[:value]}\""
+      when :name
+        "'#{elt[:value]}'"
+      else
+        elt[:value]
+      end
+    end
+
+    def infer_resulting_base( numerics )
+      10 if numerics.length.zero?
+
+      numerics.last[:base]
     end
 
     ### DEBUG ###

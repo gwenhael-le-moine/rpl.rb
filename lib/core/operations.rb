@@ -55,8 +55,16 @@ module Rpl
           end
         end
 
+        value_to_string = lambda do |e|
+          if e[:type] == :numeric
+            Rpl::Lang.to_string( e )
+          else
+            e[:value].to_s
+          end
+        end
+
         result[:value] = if %i[name string].include?( result[:type] )
-                           "#{args[1][:value]}#{args[0][:value]}"
+                           "#{value_to_string.call( args[1] )}#{value_to_string.call( args[0] )}"
                          else
                            args[1][:value] + args[0][:value]
                          end

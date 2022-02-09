@@ -37,32 +37,7 @@ class RplRepl
   end
 
   def format_element( elt )
-    case elt[:type]
-    when :numeric
-      prefix = case elt[:base]
-               when 2
-                 '0b'
-               when 8
-                 '0o'
-               when 10
-                 ''
-               when 16
-                 '0x'
-               else
-                 "0#{elt[:base]}_"
-               end
-      "#{prefix}#{elt[:value].to_s( elt[:base] )}"
-    when :list
-      "[#{elt[:value].map { |e| format_element( e ) }.join(', ')}]"
-    when :program
-      "« #{elt[:value]} »"
-    when :string
-      "\"#{elt[:value]}\""
-    when :name
-      "'#{elt[:value]}'"
-    else
-      elt[:value]
-    end
+    Rpl::Lang.to_string( elt )
   end
 
   def print_stack
