@@ -10,7 +10,7 @@ module Rpl
         stack, args = Rpl::Lang.stack_extract( stack, [:any] )
 
         stack << { type: :string,
-                   value: Rpl::Lang.to_string( args[0] ) }
+                   value: Rpl::Lang.stringify( args[0] ) }
 
         [stack, dictionary]
       end
@@ -19,9 +19,7 @@ module Rpl
       def from_string( stack, dictionary )
         stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
 
-        parsed_input = Rpl::Lang.parse_input( args[0][:value] )
-
-        stack += parsed_input
+        stack += Rpl::Interpreter.new.parse( args[0][:value] )
 
         [stack, dictionary]
       end

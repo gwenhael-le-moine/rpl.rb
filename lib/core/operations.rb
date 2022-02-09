@@ -57,7 +57,7 @@ module Rpl
 
         value_to_string = lambda do |e|
           if e[:type] == :numeric
-            Rpl::Lang.to_string( e )
+            Rpl::Lang.stringify( e )
           else
             e[:value].to_s
           end

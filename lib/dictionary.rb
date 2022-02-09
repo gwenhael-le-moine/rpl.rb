@@ -21,7 +21,9 @@ module Rpl
       end
 
       def remove_vars( names )
-        names.each { |name| @vars.delete( name ) }
+        names.each do |name|
+          @vars.delete( name )
+        end
       end
 
       def remove_var( name )
@@ -41,7 +43,9 @@ module Rpl
       end
 
       def remove_local_vars( names )
-        names.each { |name| @local_vars_layers.last.delete( name ) }
+        names.each do |name|
+          @local_vars_layers.last.delete( name )
+        end
       end
 
       def remove_local_var( name )
@@ -53,9 +57,14 @@ module Rpl
       end
 
       def lookup( name )
+        # look in local variables from the deepest layer up
         local_vars_layer = @local_vars_layers.reverse.find { |layer| layer[ name ] }
         word = local_vars_layer.nil? ? nil : local_vars_layer[ name ]
+
+        # otherwise look in (global) variables
         word ||= @vars[ name ]
+
+        # or is it a core word
         word ||= @words[ name ]
 
         word

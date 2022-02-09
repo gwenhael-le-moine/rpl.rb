@@ -3,33 +3,33 @@
 
 require 'test/unit'
 
-require_relative '../language'
+require_relative '../interpreter'
 
 class TestLanguageTimeDate < Test::Unit::TestCase
   def test_time
     now = Time.now.to_s
-    lang = Rpl::Language.new
-    lang.run 'time'
+    interpreter = Rpl::Interpreter.new
+    interpreter.run 'time'
 
     assert_equal [{ value: now, type: :string }],
-                 lang.stack
+                 interpreter.stack
   end
 
   def test_date
     now = Date.today.to_s
-    lang = Rpl::Language.new
-    lang.run 'date'
+    interpreter = Rpl::Interpreter.new
+    interpreter.run 'date'
 
     assert_equal [{ value: now, type: :string }],
-                 lang.stack
+                 interpreter.stack
   end
 
   def test_ticks
-    lang = Rpl::Language.new
-    lang.run 'ticks'
+    interpreter = Rpl::Interpreter.new
+    interpreter.run 'ticks'
 
     # TODO: better test, but how?
     assert_equal :numeric,
-                 lang.stack[0][:type]
+                 interpreter.stack[0][:type]
   end
 end

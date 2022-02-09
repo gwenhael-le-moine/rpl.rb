@@ -3,12 +3,12 @@
 
 require 'test/unit'
 
-require_relative '../language'
+require_relative '../interpreter'
 
 class TestLanguageFileSystem < Test::Unit::TestCase
   def test_fread
-    lang = Rpl::Language.new
-    lang.run '"spec/test.rpl" fread'
+    interpreter = Rpl::Interpreter.new
+    interpreter.run '"spec/test.rpl" fread'
 
     assert_equal [{ value: "1 2 +
 
@@ -17,27 +17,27 @@ class TestLanguageFileSystem < Test::Unit::TestCase
 
 trrr
 ", type: :string }],
-                 lang.stack
+                 interpreter.stack
 
-    lang.run 'eval vars'
+    interpreter.run 'eval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
                   { value: [{ type: :name, value: 'trrr' }], type: :list }],
-                 lang.stack
+                 interpreter.stack
   end
 
   def test_feval
-    lang = Rpl::Language.new
-    lang.run '"spec/test.rpl" feval vars'
+    interpreter = Rpl::Interpreter.new
+    interpreter.run '"spec/test.rpl" feval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
                   { value: [{ type: :name, value: 'trrr' }], type: :list }],
-                 lang.stack
+                 interpreter.stack
   end
 
   def test_fwrite
-    lang = Rpl::Language.new
-    lang.run '"Ceci est un test de fwrite" "spec/test_fwrite.txt" fwrite'
+    interpreter = Rpl::Interpreter.new
+    interpreter.run '"Ceci est un test de fwrite" "spec/test_fwrite.txt" fwrite'
     assert_equal [],
-                 lang.stack
+                 interpreter.stack
 
     assert_true File.exist?( 'spec/test_fwrite.txt' )
 

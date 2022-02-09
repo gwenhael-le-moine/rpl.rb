@@ -2,11 +2,11 @@
 
 require 'readline'
 
-require './language'
+require './interpreter'
 
 class RplRepl
   def initialize
-    @lang = Rpl::Language.new
+    @interpreter = Rpl::Interpreter.new
   end
 
   def run
@@ -27,7 +27,7 @@ class RplRepl
       Readline::HISTORY.pop if input.empty?
 
       begin
-        @lang.run( input )
+        @interpreter.run( input )
       rescue ArgumentError, ZeroDivisionError => e
         p e
       end
@@ -37,13 +37,13 @@ class RplRepl
   end
 
   def format_element( elt )
-    Rpl::Lang.to_string( elt )
+    Rpl::Lang.stringify( elt )
   end
 
   def print_stack
-    stack_size = @lang.stack.size
+    stack_size = @interpreter.stack.size
 
-    @lang.stack.each_with_index do |elt, i|
+    @interpreter.stack.each_with_index do |elt, i|
       puts "#{stack_size - i}: #{format_element( elt )}"
     end
   end

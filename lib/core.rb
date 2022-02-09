@@ -52,13 +52,14 @@ module Rpl
 
     def eval( stack, dictionary, rplcode )
       preparsed_input = rplcode.gsub( '\n', ' ' ).strip if rplcode.is_a?( String )
-      parsed_input = Rpl::Lang.parse_input( preparsed_input.to_s )
 
-      Rpl::Lang.run_input( parsed_input,
-                           stack, dictionary )
+      interpreter = Rpl::Interpreter.new( stack, dictionary )
+      interpreter.run( preparsed_input )
+
+      [interpreter.stack, interpreter.dictionary]
     end
 
-    def to_string( elt )
+    def stringify( elt )
       case elt[:type]
       when :numeric
         prefix = case elt[:base]
