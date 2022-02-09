@@ -76,7 +76,7 @@ module Rpl
 
       # convert degrees to radians
       def degrees_to_radians( stack, dictionary )
-        Rpl::Lang.eval( stack, dictionary, '𝛑 180 / *' )
+        Rpl::Lang.eval( stack, dictionary, '180 / 𝛑 *' )
       end
 
       # convert radians to degrees
