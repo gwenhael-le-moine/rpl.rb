@@ -118,6 +118,8 @@ module Rpl
       Interpreter.parse( input ).each do |elt|
         case elt[:type]
         when :word
+          break if %w[break quit exit].include?( elt[:value] )
+
           command = @dictionary.lookup( elt[:value] )
 
           if command.nil?
