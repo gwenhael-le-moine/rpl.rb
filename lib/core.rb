@@ -24,7 +24,7 @@ module Rpl
     include BigMath
 
     def version
-      0
+      0.1
     end
 
     def precision
