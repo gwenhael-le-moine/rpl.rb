@@ -112,7 +112,7 @@ module Rpl
           command = @dictionary.lookup( elt[:value] )
 
           if command.nil?
-            # if there's command by that name then it's a name
+            # if there isn't a command by that name then it's a name
             elt[:type] = :name
 
             @stack << elt
