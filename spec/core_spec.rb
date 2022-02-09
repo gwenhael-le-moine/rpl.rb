@@ -24,4 +24,11 @@ class TestParser < Test::Unit::TestCase
                   { value: 'test', type: :string }],
                  args
   end
+
+  def test_stringify
+    assert_equal '∞',
+                 Rpl::Lang.stringify( { value: Float::INFINITY,
+                                        base: 10,
+                                        type: :numeric } )
+  end
 end
