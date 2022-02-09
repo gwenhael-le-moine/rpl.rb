@@ -6,8 +6,7 @@ require './lib/dictionary'
 module Rpl
   class Interpreter
     attr_reader :stack,
-                :dictionary# ,
-    #             :version
+                :dictionary # , :version
 
     # attr_accessor :precision
 
@@ -232,97 +231,97 @@ module Rpl
       # Usual operations on reals and complexes
       @dictionary.add_word( ['+'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a b -- c ) addition',
                             proc { |stack, dictionary| Rpl::Lang::Core.add( stack, dictionary ) } )
       @dictionary.add_word( ['-'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a b -- c ) subtraction',
                             proc { |stack, dictionary| Rpl::Lang::Core.subtract( stack, dictionary ) } )
       @dictionary.add_word( ['chs'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- b ) negate',
                             proc { |stack, dictionary| Rpl::Lang::Core.negate( stack, dictionary ) } )
       @dictionary.add_word( ['×', '*'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a b -- c ) multiplication',
                             proc { |stack, dictionary| Rpl::Lang::Core.multiply( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['÷', '/'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a b -- c ) division',
                             proc { |stack, dictionary| Rpl::Lang::Core.divide( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['inv'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- b ) invert numeric',
                             proc { |stack, dictionary| Rpl::Lang::Core.inverse( stack, dictionary ) } )
       @dictionary.add_word( ['^'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a b -- c ) a to the power of b',
                             proc { |stack, dictionary| Rpl::Lang::Core.power( stack, dictionary ) } )
       @dictionary.add_word( ['√', 'sqrt'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- b ) square root',
                             proc { |stack, dictionary| Rpl::Lang::Core.sqrt( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['²', 'sq'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- b ) square',
                             proc { |stack, dictionary| Rpl::Lang::Core.sq( stack, dictionary ) } )
       @dictionary.add_word( ['abs'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- b ) absolute value',
                             proc { |stack, dictionary| Rpl::Lang::Core.abs( stack, dictionary ) } )
       @dictionary.add_word( ['dec'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- a ) set numeric\'s base to 10',
                             proc { |stack, dictionary| Rpl::Lang::Core.dec( stack, dictionary ) } )
       @dictionary.add_word( ['hex'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- a ) set numeric\'s base to 16',
                             proc { |stack, dictionary| Rpl::Lang::Core.hex( stack, dictionary ) } )
       @dictionary.add_word( ['bin'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- a ) set numeric\'s base to 2',
                             proc { |stack, dictionary| Rpl::Lang::Core.bin( stack, dictionary ) } )
       @dictionary.add_word( ['base'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a b -- a ) set numeric\'s base to b',
                             proc { |stack, dictionary| Rpl::Lang::Core.base( stack, dictionary ) } )
       @dictionary.add_word( ['sign'],
                             'Usual operations on reals and complexes',
-                            '',
+                            '( a -- b ) sign of element',
                             proc { |stack, dictionary| Rpl::Lang::Core.sign( stack, dictionary ) } )
 
       # Operations on reals
       @dictionary.add_word( ['%'],
                             'Operations on reals',
-                            '',
+                            '( a b -- c ) b% of a',
                             proc { |stack, dictionary| Rpl::Lang::Core.percent( stack, dictionary ) } )
       @dictionary.add_word( ['%CH'],
                             'Operations on reals',
-                            '',
+                            '( a b -- c ) b is c% of a',
                             proc { |stack, dictionary| Rpl::Lang::Core.inverse_percent( stack, dictionary ) } )
       @dictionary.add_word( ['mod'],
                             'Operations on reals',
-                            '',
+                            '( a b -- c ) modulo',
                             proc { |stack, dictionary| Rpl::Lang::Core.mod( stack, dictionary ) } )
       @dictionary.add_word( ['!', 'fact'],
                             'Operations on reals',
-                            '',
+                            '( a -- b ) factorial',
                             proc { |stack, dictionary| Rpl::Lang::Core.fact( stack, dictionary ) } )
       @dictionary.add_word( ['floor'],
                             'Operations on reals',
-                            '',
+                            '( a -- b ) highest integer under a',
                             proc { |stack, dictionary| Rpl::Lang::Core.floor( stack, dictionary ) } )
       @dictionary.add_word( ['ceil'],
                             'Operations on reals',
-                            '',
+                            '( a -- b ) highest integer over a',
                             proc { |stack, dictionary| Rpl::Lang::Core.ceil( stack, dictionary ) } )
       @dictionary.add_word( ['min'],
                             'Operations on reals',
-                            '',
+                            '( a b -- a/b ) leave lowest of a or b',
                             proc { |stack, dictionary| Rpl::Lang::Core.min( stack, dictionary ) } )
       @dictionary.add_word( ['max'],
                             'Operations on reals',
-                            '',
+                            '( a b -- a/b ) leave highest of a or b',
                             proc { |stack, dictionary| Rpl::Lang::Core.max( stack, dictionary ) } )
       # @dictionary.add_word( ['mant'],
       # 'Operations on reals',
@@ -370,15 +369,15 @@ module Rpl
       # Mode
       @dictionary.add_word( ['prec'],
                             'Mode',
-                            '',
+                            '( a -- ) set precision to a',
                             proc { |stack, dictionary| Rpl::Lang::Core.prec( stack, dictionary ) } )
       @dictionary.add_word( ['default'],
                             'Mode',
-                            '',
+                            '( -- ) set default precision',
                             proc { |stack, dictionary| Rpl::Lang::Core.default( stack, dictionary ) } )
       @dictionary.add_word( ['type'],
                             'Mode',
-                            '',
+                            '( a -- s ) type of a as a string',
                             proc { |stack, dictionary| Rpl::Lang::Core.type( stack, dictionary ) } )
       # @dictionary.add_word( ['std'],
       #                  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # standard floating numbers representation. ex: std
@@ -392,51 +391,51 @@ module Rpl
       # Test
       @dictionary.add_word( ['>'],
                             'Test',
-                            '',
+                            '( a b -- t ) is a greater than b?',
                             proc { |stack, dictionary| Rpl::Lang::Core.greater_than( stack, dictionary ) } )
       @dictionary.add_word( ['≥', '>='],
                             'Test',
-                            '',
+                            '( a b -- t ) is a greater than or equal to b?',
                             proc { |stack, dictionary| Rpl::Lang::Core.greater_than_or_equal( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['<'],
                             'Test',
-                            '',
+                            '( a b -- t ) is a less than b?',
                             proc { |stack, dictionary| Rpl::Lang::Core.less_than( stack, dictionary ) } )
       @dictionary.add_word( ['≤', '<='],
                             'Test',
-                            '',
+                            '( a b -- t ) is a less than or equal to b?',
                             proc { |stack, dictionary| Rpl::Lang::Core.less_than_or_equal( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['≠', '!='],
                             'Test',
-                            '',
+                            '( a b -- t ) is a not equal to b',
                             proc { |stack, dictionary| Rpl::Lang::Core.different( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['==', 'same'],
                             'Test',
-                            '',
+                            '( a b -- t ) is a equal to b',
                             proc { |stack, dictionary| Rpl::Lang::Core.same( stack, dictionary ) } )
       @dictionary.add_word( ['and'],
                             'Test',
-                            '',
+                            '( a b -- t ) boolean and',
                             proc { |stack, dictionary| Rpl::Lang::Core.and( stack, dictionary ) } )
       @dictionary.add_word( ['or'],
                             'Test',
-                            '',
+                            '( a b -- t ) boolean or',
                             proc { |stack, dictionary| Rpl::Lang::Core.or( stack, dictionary ) } )
       @dictionary.add_word( ['xor'],
                             'Test',
-                            '',
+                            '( a b -- t ) boolean xor',
                             proc { |stack, dictionary| Rpl::Lang::Core.xor( stack, dictionary ) } )
       @dictionary.add_word( ['not'],
                             'Test',
-                            '',
+                            '( a -- t ) invert boolean value',
                             proc { |stack, dictionary| Rpl::Lang::Core.not( stack, dictionary ) } )
       @dictionary.add_word( ['true'],
                             'Test',
-                            '',
+                            '( -- t ) push true onto stack',
                             proc { |stack, dictionary| Rpl::Lang::Core.true( stack, dictionary ) } ) # specific
       @dictionary.add_word( ['false'],
                             'Test',
-                            '',
+                            '( -- t ) push false onto stack',
                             proc { |stack, dictionary| Rpl::Lang::Core.false( stack, dictionary ) } ) # specific
 
       # String
