@@ -14,7 +14,7 @@ module Rpl
       load_core
     end
 
-    def parse( input )
+    def self.parse( input )
       is_numeric = lambda do |elt|
         begin
           !Float(elt).nil?
@@ -106,7 +106,7 @@ module Rpl
     def run( input )
       @dictionary.add_local_vars_layer
 
-      parse( input ).each do |elt|
+      Interpreter.parse( input ).each do |elt|
         case elt[:type]
         when :word
           command = @dictionary.lookup( elt[:value] )

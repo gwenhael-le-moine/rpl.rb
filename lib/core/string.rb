@@ -19,7 +19,7 @@ module Rpl
       def from_string( stack, dictionary )
         stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
 
-        stack += Rpl::Interpreter.new.parse( args[0][:value] )
+        stack += Rpl::Interpreter.parse( args[0][:value] )
 
         [stack, dictionary]
       end
