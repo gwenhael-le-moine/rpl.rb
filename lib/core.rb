@@ -75,12 +75,18 @@ module Rpl
                    "0#{elt[:base]}_"
                  end
 
-        suffix = if elt[:value].to_i == elt[:value]
-                   elt[:value].to_i
-                 else
-                   elt[:value].to_s('F')
-                 end
-        suffix = elt[:value].to_s( elt[:base] ) unless elt[:base] == 10
+        if elt[:value].infinite?
+          suffix = elt[:value].infinite?.positive? ? '∞' : '-∞'
+        elsif elt[:value].nan?
+          suffix = '<NaN>'
+        else
+          suffix = if elt[:value].to_i == elt[:value]
+                     elt[:value].to_i
+                   else
+                     elt[:value].to_s('F')
+                   end
+          suffix = elt[:value].to_s( elt[:base] ) unless elt[:base] == 10
+        end
 
         "#{prefix}#{suffix}"
       when :list
