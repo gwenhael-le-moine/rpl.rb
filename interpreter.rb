@@ -5,13 +5,21 @@ require './lib/dictionary'
 
 module Rpl
   class Interpreter
-    attr_reader :stack, :dictionary
+    attr_reader :stack,
+                :dictionary# ,
+    #             :version
 
-    def initialize( stack = nil, dictionary = nil )
-      @stack = stack.nil? ? [] : stack
-      @dictionary = dictionary.nil? ? Rpl::Lang::Dictionary.new : dictionary
+    # attr_accessor :precision
 
-      load_core
+    def initialize( stack = [], dictionary = Rpl::Lang::Dictionary.new )
+      # @version = 0.1
+
+      # @precision = 12
+
+      @dictionary = dictionary
+      @stack = stack
+
+      populate_dictionary if @dictionary.words.empty?
     end
 
     def self.parse( input )
@@ -129,7 +137,7 @@ module Rpl
       [@stack, @dictionary]
     end
 
-    def load_core
+    def populate_dictionary
       # GENERAL
       @dictionary.add( 'nop',
                        proc { |stack, dictionary| Rpl::Lang::Core.nop( stack, dictionary ) } )
