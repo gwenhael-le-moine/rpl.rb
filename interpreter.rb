@@ -441,57 +441,57 @@ module Rpl
       # String
       @dictionary.add_word( ['→str', '->str'],
                             'String',
-                            '',
+                            '( a -- s ) convert element to string',
                             proc { |stack, dictionary| Rpl::Lang::Core.to_string( stack, dictionary ) } ) # alias
       @dictionary.add_word( ['str→', 'str->'],
                             'String',
-                            '',
+                            '( s -- a ) convert string to element',
                             proc { |stack, dictionary| Rpl::Lang::Core.from_string( stack, dictionary ) } )
       @dictionary.add_word( ['chr'],
                             'String',
-                            '',
+                            '( n -- c ) convert ASCII character code in stack level 1 into a string',
                             proc { |stack, dictionary| Rpl::Lang::Core.chr( stack, dictionary ) } )
       @dictionary.add_word( ['num'],
                             'String',
-                            '',
+                            '( s -- n ) return ASCII code of the first character of the string in stack level 1 as a real number',
                             proc { |stack, dictionary| Rpl::Lang::Core.num( stack, dictionary ) } )
       @dictionary.add_word( ['size'],
                             'String',
-                            '',
+                            '( s -- n ) return the length of the string',
                             proc { |stack, dictionary| Rpl::Lang::Core.size( stack, dictionary ) } )
       @dictionary.add_word( ['pos'],
                             'String',
-                            '',
+                            '( s s -- n ) search for the string in level 1 within the string in level 2',
                             proc { |stack, dictionary| Rpl::Lang::Core.pos( stack, dictionary ) } )
       @dictionary.add_word( ['sub'],
                             'String',
-                            '',
+                            '( s n n -- s ) return a substring of the string in level 3',
                             proc { |stack, dictionary| Rpl::Lang::Core.sub( stack, dictionary ) } )
       @dictionary.add_word( ['rev'],
                             'String',
-                            '',
+                            '( s -- s ) reverse string',
                             proc { |stack, dictionary| Rpl::Lang::Core.rev( stack, dictionary ) } ) # specific
       @dictionary.add_word( ['split'],
                             'String',
-                            '',
+                            '( s c -- … ) split string s on character c',
                             proc { |stack, dictionary| Rpl::Lang::Core.split( stack, dictionary ) } ) # specific
 
       # Branch
       @dictionary.add_word( ['ift'],
                             'Branch',
-                            '',
+                            '( t pt -- … ) eval pt or not based on the value of boolean t',
                             proc { |stack, dictionary| Rpl::Lang::Core.ift( stack, dictionary ) } )
       @dictionary.add_word( ['ifte'],
                             'Branch',
-                            '',
+                            '( t pt pf -- … ) eval pt or pf based on the value of boolean t',
                             proc { |stack, dictionary| Rpl::Lang::Core.ifte( stack, dictionary ) } )
       @dictionary.add_word( ['times'],
                             'Branch',
-                            '',
+                            '( n p -- … ) eval p n times while pushing counter on stack before',
                             proc { |stack, dictionary| Rpl::Lang::Core.times( stack, dictionary ) } ) # specific
       @dictionary.add_word( ['loop'],
                             'Branch',
-                            '',
+                            '( n1 n2 p -- … ) eval p looping from n1 to n2 while pushing counter on stack before',
                             proc { |stack, dictionary| Rpl::Lang::Core.loop( stack, dictionary ) } ) # specific
       # @dictionary.add_word( 'if',
       #                  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # if <test-instruction> then <true-instructions> else <false-instructions> end
@@ -583,45 +583,45 @@ module Rpl
       # Trig on reals and complexes
       @dictionary.add_word( ['𝛑', 'pi'],
                             'Trig on reals and complexes',
-                            '',
+                            '( … -- 𝛑 ) push 𝛑',
                             proc { |stack, dictionary| Rpl::Lang::Core.pi( stack, dictionary ) } )
       @dictionary.add_word( ['sin'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) compute sinus of n',
                             proc { |stack, dictionary| Rpl::Lang::Core.sinus( stack, dictionary ) } ) # sinus
       @dictionary.add_word( ['asin'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) compute arg-sinus of n',
                             proc { |stack, dictionary| Rpl::Lang::Core.arg_sinus( stack, dictionary ) } ) # arg sinus
       @dictionary.add_word( ['cos'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) compute cosinus of n',
                             proc { |stack, dictionary| Rpl::Lang::Core.cosinus( stack, dictionary ) } ) # cosinus
       @dictionary.add_word( ['acos'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) compute arg-cosinus of n',
                             proc { |stack, dictionary| Rpl::Lang::Core.arg_cosinus( stack, dictionary ) } ) # arg cosinus
       @dictionary.add_word( ['tan'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) compute tangent of n',
                             proc { |stack, dictionary| Rpl::Lang::Core.tangent( stack, dictionary ) } ) # tangent
       @dictionary.add_word( ['atan'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) compute arc-tangent of n',
                             proc { |stack, dictionary| Rpl::Lang::Core.arg_tangent( stack, dictionary ) } ) # arg tangent
       @dictionary.add_word( ['d→r', 'd->r'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) convert degree to radian',
                             proc { |stack, dictionary| Rpl::Lang::Core.degrees_to_radians( stack, dictionary ) } ) # convert degrees to radians
       @dictionary.add_word( ['r→d', 'r->d'],
                             'Trig on reals and complexes',
-                            '',
+                            '( n -- m ) convert radian to degree',
                             proc { |stack, dictionary| Rpl::Lang::Core.radians_to_degrees( stack, dictionary ) } ) # convert radians to degrees
 
       # Logs on reals and complexes
       @dictionary.add_word( ['ℇ', 'e'],
                             'Logs on reals and complexes',
-                            '',
+                            '( … -- ℇ ) push ℇ',
                             proc { |stack, dictionary| Rpl::Lang::Core.e( stack, dictionary ) } ) # alias
       # @dictionary.add_word( 'ln',
       #                  proc { |stack, dictionary| Rpl::Lang::Core.__todo( stack, dictionary ) } ) # logarithm base e
@@ -655,40 +655,40 @@ module Rpl
       # Time and date
       @dictionary.add_word( ['time'],
                             'Time and date',
-                            '',
+                            '( -- t ) push current time',
                             proc { |stack, dictionary| Rpl::Lang::Core.time( stack, dictionary ) } )
       @dictionary.add_word( ['date'],
                             'Time and date',
-                            '',
+                            '( -- d ) push current date',
                             proc { |stack, dictionary| Rpl::Lang::Core.date( stack, dictionary ) } )
       @dictionary.add_word( ['ticks'],
                             'Time and date',
-                            '',
+                            '( -- t ) push datetime as ticks',
                             proc { |stack, dictionary| Rpl::Lang::Core.ticks( stack, dictionary ) } )
 
       # Rpl.rb specifics
       # Lists
       @dictionary.add_word( ['→list', '->list'],
                             'Lists',
-                            '',
+                            '( … x -- […] ) pack x stacks levels into a list',
                             proc { |stack, dictionary| Rpl::Lang::Core.to_list( stack, dictionary ) } )
       @dictionary.add_word( ['list→', 'list->'],
                             'Lists',
-                            '',
+                            '( […] -- … ) unpack list on stack',
                             proc { |stack, dictionary| Rpl::Lang::Core.unpack_list( stack, dictionary ) } )
 
       # Filesystem
       @dictionary.add_word( ['fread'],
                             'Filesystem',
-                            '',
+                            '( filename -- content ) read file and put content on stack as string',
                             proc { |stack, dictionary| Rpl::Lang::Core.fread( stack, dictionary ) } )
       @dictionary.add_word( ['feval'],
                             'Filesystem',
-                            '',
+                            '( filename -- … ) read and run file',
                             proc { |stack, dictionary| Rpl::Lang::Core.feval( stack, dictionary ) } )
       @dictionary.add_word( ['fwrite'],
                             'Filesystem',
-                            '',
+                            '( content filename -- ) write content into filename',
                             proc { |stack, dictionary| Rpl::Lang::Core.fwrite( stack, dictionary ) } )
 
       # Graphics
