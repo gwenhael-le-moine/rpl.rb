@@ -152,11 +152,14 @@ class Interpreter
   def stack_extract( needs )
     raise ArgumentError, 'Not enough elements' if @stack.size < needs.size
 
-    args = []
-    needs.each do |need|
-      raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" unless need == :any || need.include?( @stack.last[:type] )
+    needs.each_with_index do |need, index|
+      stack_index = (index + 1) * -1
+
+      raise ArgumentError, "Type Error, needed #{need} got #{@stack[stack_index][:type]}" unless need == :any || need.include?( @stack[stack_index][:type] )
     end
-    needs.each do # rubocop:disable Style/CombinableLoops
+
+    args = []
+    needs.size.times do
       args << @stack.pop
     end
 
