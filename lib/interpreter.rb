@@ -155,7 +155,8 @@ class Interpreter
     args = []
     needs.each do |need|
       raise ArgumentError, "Type Error, needed #{need} got #{elt[:type]}" unless need == :any || need.include?( @stack.last[:type] )
-
+    end
+    needs.each do # rubocop:disable Style/CombinableLoops
       args << @stack.pop
     end
 
