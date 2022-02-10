@@ -1,25 +1,24 @@
-# coding: utf-8
 # frozen_string_literal: true
 
 require 'test/unit'
 
-require_relative '../lib/core'
+require_relative '../interpreter'
 
 class TestParser < Test::Unit::TestCase
   def test_stack_extract
-    stack, args = Rpl::Lang.stack_extract [{ value: 1, type: :numeric },
-                                           { value: 2, type: :numeric }],
-                                          [:any]
+    interpreter = Rpl::Interpreter.new( [{ value: 1, type: :numeric },
+                                         { value: 2, type: :numeric }] )
+    args = interpreter.stack_extract [:any]
     assert_equal [{ value: 1, type: :numeric }],
-                 stack
+                 interpreter.stack
     assert_equal [{ value: 2, type: :numeric }],
                  args
 
-    stack, args = Rpl::Lang.stack_extract [{ value: 'test', type: :string },
-                                           { value: 2, type: :numeric }],
-                                          [[:numeric], :any]
+    interpreter = Rpl::Interpreter.new( [{ value: 'test', type: :string },
+                                         { value: 2, type: :numeric }] )
+    args = interpreter.stack_extract [[:numeric], :any]
     assert_equal [],
-                 stack
+                 interpreter.stack
     assert_equal [{ value: 2, type: :numeric },
                   { value: 'test', type: :string }],
                  args
@@ -27,8 +26,8 @@ class TestParser < Test::Unit::TestCase
 
   def test_stringify
     assert_equal '∞',
-                 Rpl::Lang.stringify( { value: Float::INFINITY,
-                                        base: 10,
-                                        type: :numeric } )
+                 Rpl::Interpreter.new.stringify( { value: Float::INFINITY,
+                                                   base: 10,
+                                                   type: :numeric } )
   end
 end

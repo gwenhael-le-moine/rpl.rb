@@ -6,9 +6,9 @@ module Rpl
       module_function
 
       # addition
-      def add( stack, dictionary )
+      def add
         addable = %i[numeric string name list]
-        stack, args = Rpl::Lang.stack_extract( stack, [addable, addable] )
+        args = stack_extract( [addable, addable] )
         # | +         | 1 numeric | 1 string | 1 name | 1 list |
         # |-----------+-----------+----------+--------+--------|
         # | 0 numeric | numeric   | string   | name   | list   |
@@ -57,7 +57,7 @@ module Rpl
 
         value_to_string = lambda do |e|
           if e[:type] == :numeric
-            Rpl::Lang.stringify( e )
+            stringify( e )
           else
             e[:value].to_s
           end
@@ -71,95 +71,81 @@ module Rpl
 
         result[:base] = args[0][:base] if result[:type] == :numeric
 
-        stack << result
-
-        [stack, dictionary]
+        @stack << result
       end
 
       # substraction
-      def subtract( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def subtract
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[1][:value] - args[0][:value] }
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: args[1][:value] - args[0][:value] }
 
         [stack, dictionary]
       end
 
       # multiplication
-      def multiply( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def multiply
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[1][:value] * args[0][:value] }
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: args[1][:value] * args[0][:value] }
 
         [stack, dictionary]
       end
 
       # division
-      def divide( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def divide
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[1][:value] / args[0][:value] }
-
-        [stack, dictionary]
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: args[1][:value] / args[0][:value] }
       end
 
       # power
-      def power( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def power
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[1][:value]**args[0][:value] }
-
-        [stack, dictionary]
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: args[1][:value]**args[0][:value] }
       end
 
       # rpn_square root
-      def sqrt( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def sqrt
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: BigMath.sqrt( BigDecimal( args[0][:value], Rpl::Lang.precision ), Rpl::Lang.precision ) }
-
-        [stack, dictionary]
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: BigMath.sqrt( BigDecimal( args[0][:value], precision ), precision ) }
       end
 
       # rpn_square
-      def sq( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def sq
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[0][:value] * args[0][:value] }
-
-        [stack, dictionary]
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: args[0][:value] * args[0][:value] }
       end
 
       # absolute value
-      def abs( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def abs
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[0][:value].abs }
-
-        [stack, dictionary]
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: args[0][:value].abs }
       end
 
       # arbitrary base representation
-      def base( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def base
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
         args[1][:base] = args[0][:value]
 
-        stack << args[1]
-
-        [stack, dictionary]
+        @stack << args[1]
       end
 
       # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
-      def sign( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def sign
+        args = stack_extract( [%i[numeric]] )
         value = if args[0][:value].positive?
                   1
                 elsif args[0][:value].negative?
@@ -168,122 +154,104 @@ module Rpl
                   0
                 end
 
-        stack << { type: :numeric, base: Rpl::Lang.infer_resulting_base( args ),
-                   value: value }
-
-        [stack, dictionary]
+        @stack << { type: :numeric, base: infer_resulting_base( args ),
+                    value: value }
       end
 
       # OPERATIONS ON REALS
 
       # percent
-      def percent( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def percent
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric,
-                   base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[0][:value] * ( args[1][:value] / 100.0 ) }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: infer_resulting_base( args ),
+                    value: args[0][:value] * ( args[1][:value] / 100.0 ) }
       end
 
       # inverse percent
-      def inverse_percent( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def inverse_percent
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric,
-                   base: Rpl::Lang.infer_resulting_base( args ),
-                   value: 100.0 * ( args[0][:value] / args[1][:value] ) }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: infer_resulting_base( args ),
+                    value: 100.0 * ( args[0][:value] / args[1][:value] ) }
       end
 
       # modulo
-      def mod( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def mod
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << { type: :numeric,
-                   base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[1][:value] % args[0][:value] }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: infer_resulting_base( args ),
+                    value: args[1][:value] % args[0][:value] }
       end
 
       # n! for integer n or Gamma(x+1) for fractional x
-      def fact( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def fact
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :numeric,
-                   base: Rpl::Lang.infer_resulting_base( args ),
-                   value: Math.gamma( args[0][:value] ) }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: infer_resulting_base( args ),
+                    value: Math.gamma( args[0][:value] ) }
       end
 
       # largest number <=
-      def floor( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def floor
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :numeric,
-                   base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[0][:value].floor }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: infer_resulting_base( args ),
+                    value: args[0][:value].floor }
       end
 
       # smallest number >=
-      def ceil( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def ceil
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :numeric,
-                   base: Rpl::Lang.infer_resulting_base( args ),
-                   value: args[0][:value].ceil }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: infer_resulting_base( args ),
+                    value: args[0][:value].ceil }
       end
 
       # min of 2 real numbers
-      def min( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def min
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
-
-        [stack, dictionary]
+        @stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
       end
 
       # max of 2 real numbers
-      def max( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric]] )
+      def max
+        args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
-
-        [stack, dictionary]
+        @stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
       end
 
       # implemented in Rpl
       # negation
-      def negate( stack, dictionary )
-        Rpl::Lang.eval( stack, dictionary, '-1 *' )
+      def negate
+        run( '-1 *' )
       end
 
       # inverse
-      def inverse( stack, dictionary )
-        Rpl::Lang.eval( stack, dictionary, '1.0 swap /' )
+      def inverse
+        run( '1.0 swap /' )
       end
 
       # decimal representation
-      def dec( stack, dictionary )
-        Rpl::Lang.eval( stack, dictionary, '10 base' )
+      def dec
+        run( '10 base' )
       end
 
       # hexadecimal representation
-      def hex( stack, dictionary )
-        Rpl::Lang.eval( stack, dictionary, '16 base' )
+      def hex
+        run( '16 base' )
       end
 
       # binary representation
-      def bin( stack, dictionary )
-        Rpl::Lang.eval( stack, dictionary, '2 base' )
+      def bin
+        run( '2 base' )
       end
     end
   end

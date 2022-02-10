@@ -6,80 +6,66 @@ module Rpl
       module_function
 
       # convert an object into a string
-      def to_string( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [:any] )
+      def to_string
+        args = stack_extract( [:any] )
 
-        stack << { type: :string,
-                   value: Rpl::Lang.stringify( args[0] ) }
-
-        [stack, dictionary]
+        @stack << { type: :string,
+                    value: stringify( args[0] ) }
       end
 
       # convert a string into an object
-      def from_string( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
+      def from_string
+        args = stack_extract( [%i[string]] )
 
-        stack += Rpl::Interpreter.parse( args[0][:value] )
-
-        [stack, dictionary]
+        @stack += parse( args[0][:value] )
       end
 
       # convert ASCII character code in stack level 1 into a string
-      def chr( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
+      def chr
+        args = stack_extract( [%i[numeric]] )
 
-        stack << { type: :string,
-                   value: args[0][:value].to_i.chr }
-
-        [stack, dictionary]
+        @stack << { type: :string,
+                    value: args[0][:value].to_i.chr }
       end
 
       # return ASCII code of the first character of the string in stack level 1 as a real number
-      def num( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
+      def num
+        args = stack_extract( [%i[string]] )
 
-        stack << { type: :numeric,
-                   base: 10,
-                   value: args[0][:value].ord }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: 10,
+                    value: args[0][:value].ord }
       end
 
       # return the length of the string
-      def size( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[string]] )
+      def size
+        args = stack_extract( [%i[string]] )
 
-        stack << { type: :numeric,
-                   base: 10,
-                   value: args[0][:value].length }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: 10,
+                    value: args[0][:value].length }
       end
 
       # search for the string in level 1 within the string in level 2
-      def pos( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[string], %i[string]] )
+      def pos
+        args = stack_extract( [%i[string], %i[string]] )
 
-        stack << { type: :numeric,
-                   base: 10,
-                   value: args[1][:value].index( args[0][:value] ) }
-
-        [stack, dictionary]
+        @stack << { type: :numeric,
+                    base: 10,
+                    value: args[1][:value].index( args[0][:value] ) }
       end
 
       # return a substring of the string in level 3
-      def sub( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric], %i[numeric], %i[string]] )
+      def sub
+        args = stack_extract( [%i[numeric], %i[numeric], %i[string]] )
 
-        stack << { type: :string,
-                   value: args[2][:value][ (args[1][:value] - 1)..(args[0][:value] - 1) ] }
-
-        [stack, dictionary]
+        @stack << { type: :string,
+                    value: args[2][:value][ (args[1][:value] - 1)..(args[0][:value] - 1) ] }
       end
 
       # reverse string or list
-      def rev( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[string list]] )
+      def rev
+        args = stack_extract( [%i[string list]] )
 
         result = args[0]
 
@@ -91,21 +77,17 @@ module Rpl
           result[:value].reverse!
         end
 
-        stack << result
-
-        [stack, dictionary]
+        @stack << result
       end
 
       # split string
-      def split( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[string], %i[string]] )
+      def split
+        args = stack_extract( [%i[string], %i[string]] )
 
         args[1][:value].split( args[0][:value] ).each do |elt|
-          stack << { type: :string,
-                     value: elt }
+          @stack << { type: :string,
+                      value: elt }
         end
-
-        [stack, dictionary]
       end
     end
   end

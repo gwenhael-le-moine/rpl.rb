@@ -6,25 +6,21 @@ module Rpl
       module_function
 
       # ( … x -- […] ) pack x stacks levels into a list
-      def to_list( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[numeric]] )
-        stack, args = Rpl::Lang.stack_extract( stack, %i[any] * args[0][:value] )
+      def to_list
+        args = stack_extract( [%i[numeric]] )
+        args = stack_extract( %i[any] * args[0][:value] )
 
-        stack << { type: :list,
-                   value: args.reverse }
-
-        [stack, dictionary]
+        @stack << { type: :list,
+                    value: args.reverse }
       end
 
       # ( […] -- … ) unpack list on stack
-      def unpack_list( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [%i[list]] )
+      def unpack_list
+        args = stack_extract( [%i[list]] )
 
         args[0][:value].each do |elt|
-          stack << elt
+          @stack << elt
         end
-
-        [stack, dictionary]
       end
     end
   end

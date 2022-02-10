@@ -6,11 +6,10 @@ module Rpl
       module_function
 
       # evaluate (run) a program, or recall a variable. ex: 'my_prog' eval
-      def eval( stack, dictionary )
-        stack, args = Rpl::Lang.stack_extract( stack, [:any] )
+      def eval
+        args = stack_extract( [:any] )
 
-        Rpl::Lang.eval( stack, dictionary,
-                        args[0][:value].to_s )
+        run( args[0][:value].to_s )
       end
     end
   end

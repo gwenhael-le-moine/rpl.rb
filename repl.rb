@@ -28,6 +28,7 @@ class RplRepl
         @interpreter.run( input )
       rescue ArgumentError => e
         p e
+        p e.stack
       end
 
       print_stack
@@ -35,7 +36,7 @@ class RplRepl
   end
 
   def format_element( elt )
-    Rpl::Lang.stringify( elt )
+    @interpreter.stringify( elt )
   end
 
   def print_stack
