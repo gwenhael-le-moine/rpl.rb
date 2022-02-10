@@ -1,258 +1,256 @@
 # frozen_string_literal: true
 
-module Rpl
-  module Lang
-    module Core
-      module_function
+module Lang
+  module Core
+    module_function
 
-      # addition
-      def add
-        addable = %i[numeric string name list]
-        args = stack_extract( [addable, addable] )
-        # | +         | 1 numeric | 1 string | 1 name | 1 list |
-        # |-----------+-----------+----------+--------+--------|
-        # | 0 numeric | numeric   | string   | name   | list   |
-        # | 0 string  | string    | string   | string | list   |
-        # | 0 name    | string    | string   | name   | list   |
-        # | 0 list    | list      | list     | list   | list   |
+    # addition
+    def add
+      addable = %i[numeric string name list]
+      args = stack_extract( [addable, addable] )
+      # | +         | 1 numeric | 1 string | 1 name | 1 list |
+      # |-----------+-----------+----------+--------+--------|
+      # | 0 numeric | numeric   | string   | name   | list   |
+      # | 0 string  | string    | string   | string | list   |
+      # | 0 name    | string    | string   | name   | list   |
+      # | 0 list    | list      | list     | list   | list   |
 
-        result = { type: case args[0][:type]
-                         when :numeric
-                           args[1][:type]
+      result = { type: case args[0][:type]
+                       when :numeric
+                         args[1][:type]
 
-                         when :string
-                           case args[1][:type]
-                           when :list
-                             :list
-                           else
-                             :string
-                           end
-
-                         when :name
-                           case args[1][:type]
-                           when :name
-                             :name
-                           when :list
-                             :list
-                           else
-                             :string
-                           end
-
+                       when :string
+                         case args[1][:type]
                          when :list
                            :list
-
                          else
-                           args[0][:type]
-                         end }
-
-        if result[:type] == :list
-          args.each do |elt|
-            next unless elt[:type] != :list
-
-            elt_copy = Marshal.load(Marshal.dump( elt ))
-            elt[:type] = :list
-            elt[:value] = [elt_copy]
-          end
-        end
-
-        value_to_string = lambda do |e|
-          if e[:type] == :numeric
-            stringify( e )
-          else
-            e[:value].to_s
-          end
-        end
-
-        result[:value] = if %i[name string].include?( result[:type] )
-                           "#{value_to_string.call( args[1] )}#{value_to_string.call( args[0] )}"
-                         else
-                           args[1][:value] + args[0][:value]
+                           :string
                          end
 
-        result[:base] = args[0][:base] if result[:type] == :numeric
+                       when :name
+                         case args[1][:type]
+                         when :name
+                           :name
+                         when :list
+                           :list
+                         else
+                           :string
+                         end
 
-        @stack << result
+                       when :list
+                         :list
+
+                       else
+                         args[0][:type]
+                       end }
+
+      if result[:type] == :list
+        args.each do |elt|
+          next unless elt[:type] != :list
+
+          elt_copy = Marshal.load(Marshal.dump( elt ))
+          elt[:type] = :list
+          elt[:value] = [elt_copy]
+        end
       end
 
-      # substraction
-      def subtract
-        args = stack_extract( [%i[numeric], %i[numeric]] )
-
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: args[1][:value] - args[0][:value] }
-
-        [stack, dictionary]
+      value_to_string = lambda do |e|
+        if e[:type] == :numeric
+          stringify( e )
+        else
+          e[:value].to_s
+        end
       end
 
-      # multiplication
-      def multiply
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+      result[:value] = if %i[name string].include?( result[:type] )
+                         "#{value_to_string.call( args[1] )}#{value_to_string.call( args[0] )}"
+                       else
+                         args[1][:value] + args[0][:value]
+                       end
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: args[1][:value] * args[0][:value] }
+      result[:base] = args[0][:base] if result[:type] == :numeric
 
-        [stack, dictionary]
-      end
+      @stack << result
+    end
 
-      # division
-      def divide
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+    # substraction
+    def subtract
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: args[1][:value] / args[0][:value] }
-      end
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: args[1][:value] - args[0][:value] }
 
-      # power
-      def power
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+      [stack, dictionary]
+    end
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: args[1][:value]**args[0][:value] }
-      end
+    # multiplication
+    def multiply
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-      # rpn_square root
-      def sqrt
-        args = stack_extract( [%i[numeric]] )
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: args[1][:value] * args[0][:value] }
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: BigMath.sqrt( BigDecimal( args[0][:value], precision ), precision ) }
-      end
+      [stack, dictionary]
+    end
 
-      # rpn_square
-      def sq
-        args = stack_extract( [%i[numeric]] )
+    # division
+    def divide
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: args[0][:value] * args[0][:value] }
-      end
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: args[1][:value] / args[0][:value] }
+    end
 
-      # absolute value
-      def abs
-        args = stack_extract( [%i[numeric]] )
+    # power
+    def power
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: args[0][:value].abs }
-      end
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: args[1][:value]**args[0][:value] }
+    end
 
-      # arbitrary base representation
-      def base
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+    # rpn_square root
+    def sqrt
+      args = stack_extract( [%i[numeric]] )
 
-        args[1][:base] = args[0][:value]
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: BigMath.sqrt( BigDecimal( args[0][:value], precision ), precision ) }
+    end
 
-        @stack << args[1]
-      end
+    # rpn_square
+    def sq
+      args = stack_extract( [%i[numeric]] )
 
-      # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
-      def sign
-        args = stack_extract( [%i[numeric]] )
-        value = if args[0][:value].positive?
-                  1
-                elsif args[0][:value].negative?
-                  -1
-                else
-                  0
-                end
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: args[0][:value] * args[0][:value] }
+    end
 
-        @stack << { type: :numeric, base: infer_resulting_base( args ),
-                    value: value }
-      end
+    # absolute value
+    def abs
+      args = stack_extract( [%i[numeric]] )
 
-      # OPERATIONS ON REALS
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: args[0][:value].abs }
+    end
 
-      # percent
-      def percent
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+    # arbitrary base representation
+    def base
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric,
-                    base: infer_resulting_base( args ),
-                    value: args[0][:value] * ( args[1][:value] / 100.0 ) }
-      end
+      args[1][:base] = args[0][:value]
 
-      # inverse percent
-      def inverse_percent
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+      @stack << args[1]
+    end
 
-        @stack << { type: :numeric,
-                    base: infer_resulting_base( args ),
-                    value: 100.0 * ( args[0][:value] / args[1][:value] ) }
-      end
+    # 1 if number at stack level 1 is > 0, 0 if == 0, -1 if <= 0
+    def sign
+      args = stack_extract( [%i[numeric]] )
+      value = if args[0][:value].positive?
+                1
+              elsif args[0][:value].negative?
+                -1
+              else
+                0
+              end
 
-      # modulo
-      def mod
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+      @stack << { type: :numeric, base: infer_resulting_base( args ),
+                  value: value }
+    end
 
-        @stack << { type: :numeric,
-                    base: infer_resulting_base( args ),
-                    value: args[1][:value] % args[0][:value] }
-      end
+    # OPERATIONS ON REALS
 
-      # n! for integer n or Gamma(x+1) for fractional x
-      def fact
-        args = stack_extract( [%i[numeric]] )
+    # percent
+    def percent
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric,
-                    base: infer_resulting_base( args ),
-                    value: Math.gamma( args[0][:value] ) }
-      end
+      @stack << { type: :numeric,
+                  base: infer_resulting_base( args ),
+                  value: args[0][:value] * ( args[1][:value] / 100.0 ) }
+    end
 
-      # largest number <=
-      def floor
-        args = stack_extract( [%i[numeric]] )
+    # inverse percent
+    def inverse_percent
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric,
-                    base: infer_resulting_base( args ),
-                    value: args[0][:value].floor }
-      end
+      @stack << { type: :numeric,
+                  base: infer_resulting_base( args ),
+                  value: 100.0 * ( args[0][:value] / args[1][:value] ) }
+    end
 
-      # smallest number >=
-      def ceil
-        args = stack_extract( [%i[numeric]] )
+    # modulo
+    def mod
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-        @stack << { type: :numeric,
-                    base: infer_resulting_base( args ),
-                    value: args[0][:value].ceil }
-      end
+      @stack << { type: :numeric,
+                  base: infer_resulting_base( args ),
+                  value: args[1][:value] % args[0][:value] }
+    end
 
-      # min of 2 real numbers
-      def min
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+    # n! for integer n or Gamma(x+1) for fractional x
+    def fact
+      args = stack_extract( [%i[numeric]] )
 
-        @stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
-      end
+      @stack << { type: :numeric,
+                  base: infer_resulting_base( args ),
+                  value: Math.gamma( args[0][:value] ) }
+    end
 
-      # max of 2 real numbers
-      def max
-        args = stack_extract( [%i[numeric], %i[numeric]] )
+    # largest number <=
+    def floor
+      args = stack_extract( [%i[numeric]] )
 
-        @stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
-      end
+      @stack << { type: :numeric,
+                  base: infer_resulting_base( args ),
+                  value: args[0][:value].floor }
+    end
 
-      # implemented in Rpl
-      # negation
-      def negate
-        run( '-1 *' )
-      end
+    # smallest number >=
+    def ceil
+      args = stack_extract( [%i[numeric]] )
 
-      # inverse
-      def inverse
-        run( '1.0 swap /' )
-      end
+      @stack << { type: :numeric,
+                  base: infer_resulting_base( args ),
+                  value: args[0][:value].ceil }
+    end
 
-      # decimal representation
-      def dec
-        run( '10 base' )
-      end
+    # min of 2 real numbers
+    def min
+      args = stack_extract( [%i[numeric], %i[numeric]] )
 
-      # hexadecimal representation
-      def hex
-        run( '16 base' )
-      end
+      @stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
+    end
 
-      # binary representation
-      def bin
-        run( '2 base' )
-      end
+    # max of 2 real numbers
+    def max
+      args = stack_extract( [%i[numeric], %i[numeric]] )
+
+      @stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
+    end
+
+    # implemented in Rpl
+    # negation
+    def negate
+      run( '-1 *' )
+    end
+
+    # inverse
+    def inverse
+      run( '1.0 swap /' )
+    end
+
+    # decimal representation
+    def dec
+      run( '10 base' )
+    end
+
+    # hexadecimal representation
+    def hex
+      run( '16 base' )
+    end
+
+    # binary representation
+    def bin
+      run( '2 base' )
     end
   end
 end

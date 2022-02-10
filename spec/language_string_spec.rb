@@ -3,11 +3,11 @@
 
 require 'test/unit'
 
-require_relative '../interpreter'
+require_relative '../rpl'
 
 class TestLanguageString < Test::Unit::TestCase
   def test_to_string
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '2 →str'
 
     assert_equal [{ value: '2', type: :string }],
@@ -15,13 +15,13 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_from_string
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"2" str→'
 
     assert_equal [{ value: 2, type: :numeric, base: 10 }],
                  interpreter.stack
 
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"« dup * » \'carré\' sto" str→'
 
     assert_equal [{ value: 'dup *', type: :program },
@@ -31,7 +31,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_chr
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '71 chr'
 
     assert_equal [{ value: 'G', type: :string }],
@@ -39,7 +39,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_num
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"G" num'
 
     assert_equal [{ value: 71, type: :numeric, base: 10 }],
@@ -47,7 +47,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_size
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"test" size'
 
     assert_equal [{ value: 4, type: :numeric, base: 10 }],
@@ -55,7 +55,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_pos
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"test of POS" "of" pos'
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
@@ -63,7 +63,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_sub
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"my string to sub" 4 6 sub'
 
     assert_equal [{ value: 'str', type: :string }],
@@ -71,7 +71,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_rev
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"my string to sub" rev'
 
     assert_equal [{ value: 'my string to sub'.reverse, type: :string }],
@@ -79,7 +79,7 @@ class TestLanguageString < Test::Unit::TestCase
   end
 
   def test_split
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"my string to sub" " " split'
 
     assert_equal [{ value: 'my', type: :string },
@@ -88,7 +88,7 @@ class TestLanguageString < Test::Unit::TestCase
                   { value: 'sub', type: :string }],
                  interpreter.stack
 
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"my,string,to sub" "," split'
 
     assert_equal [{ value: 'my', type: :string },

@@ -1,30 +1,30 @@
-module Rpl
-  module Lang
-    module Core
-      module_function
+# frozen_string_literal: true
 
-      # ( filename -- content ) read file and put content on stack as string
-      def fread
-        args = stack_extract( [%i[string]] )
+module Lang
+  module Core
+    module_function
 
-        path = File.absolute_path( args[0][:value] )
+    # ( filename -- content ) read file and put content on stack as string
+    def fread
+      args = stack_extract( [%i[string]] )
 
-        @stack << { type: :string,
-                    value: File.read( path ) }
-      end
+      path = File.absolute_path( args[0][:value] )
 
-      # ( filename -- … ) read and run file
-      def feval
-        run 'fread eval'
-      end
+      @stack << { type: :string,
+                  value: File.read( path ) }
+    end
 
-      # ( content filename -- ) write content into filename
-      def fwrite
-        args = stack_extract( [%i[string], :any] )
+    # ( filename -- … ) read and run file
+    def feval
+      run 'fread eval'
+    end
 
-        File.write( File.absolute_path( args[0][:value] ),
-                    args[1][:value] )
-      end
+    # ( content filename -- ) write content into filename
+    def fwrite
+      args = stack_extract( [%i[string], :any] )
+
+      File.write( File.absolute_path( args[0][:value] ),
+                  args[1][:value] )
     end
   end
 end

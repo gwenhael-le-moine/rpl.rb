@@ -2,20 +2,20 @@
 
 require 'test/unit'
 
-require_relative '../interpreter'
+require_relative '../rpl'
 
 class TestParser < Test::Unit::TestCase
   def test_stack_extract
-    interpreter = Rpl::Interpreter.new( [{ value: 1, type: :numeric },
-                                         { value: 2, type: :numeric }] )
+    interpreter = Rpl.new( [{ value: 1, type: :numeric },
+                            { value: 2, type: :numeric }] )
     args = interpreter.stack_extract [:any]
     assert_equal [{ value: 1, type: :numeric }],
                  interpreter.stack
     assert_equal [{ value: 2, type: :numeric }],
                  args
 
-    interpreter = Rpl::Interpreter.new( [{ value: 'test', type: :string },
-                                         { value: 2, type: :numeric }] )
+    interpreter = Rpl.new( [{ value: 'test', type: :string },
+                            { value: 2, type: :numeric }] )
     args = interpreter.stack_extract [[:numeric], :any]
     assert_equal [],
                  interpreter.stack
@@ -26,8 +26,8 @@ class TestParser < Test::Unit::TestCase
 
   def test_stringify
     assert_equal '∞',
-                 Rpl::Interpreter.new.stringify( { value: Float::INFINITY,
-                                                   base: 10,
-                                                   type: :numeric } )
+                 Rpl.new.stringify( { value: Float::INFINITY,
+                                      base: 10,
+                                      type: :numeric } )
   end
 end

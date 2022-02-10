@@ -3,11 +3,11 @@
 
 require 'test/unit'
 
-require_relative '../interpreter'
+require_relative '../rpl'
 
 class TestLanguageFileSystem < Test::Unit::TestCase
   def test_fread
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"spec/test.rpl" fread'
 
     assert_equal [{ value: "1 2 +
@@ -26,7 +26,7 @@ trrr
   end
 
   def test_feval
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"spec/test.rpl" feval vars'
     assert_equal [{ value: 27, base: 10, type: :numeric },
                   { value: [{ type: :name, value: 'trrr' }], type: :list }],
@@ -34,7 +34,7 @@ trrr
   end
 
   def test_fwrite
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '"Ceci est un test de fwrite" "spec/test_fwrite.txt" fwrite'
     assert_equal [],
                  interpreter.stack

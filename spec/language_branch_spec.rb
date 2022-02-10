@@ -3,11 +3,11 @@
 
 require 'test/unit'
 
-require_relative '../interpreter'
+require_relative '../rpl'
 
 class TestLanguageBranch < Test::Unit::TestCase
   def test_loop
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '11 16 « "hello no." swap + » loop'
 
     assert_equal [{ value: 'hello no.11', type: :string },
@@ -20,7 +20,7 @@ class TestLanguageBranch < Test::Unit::TestCase
   end
 
   def test_times
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run '5 « "hello no." swap + » times'
 
     assert_equal [{ value: 'hello no.0', type: :string },
@@ -32,13 +32,13 @@ class TestLanguageBranch < Test::Unit::TestCase
   end
 
   def test_ifte
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run 'true « 2 3 + » « 2 3 - » ifte'
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
                  interpreter.stack
 
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run 'false « 2 3 + » « 2 3 - » ifte'
 
     assert_equal [{ value: -1, type: :numeric, base: 10 }],
@@ -46,13 +46,13 @@ class TestLanguageBranch < Test::Unit::TestCase
   end
 
   def test_ift
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run 'true « 2 3 + » ift'
 
     assert_equal [{ value: 5, type: :numeric, base: 10 }],
                  interpreter.stack
 
-    interpreter = Rpl::Interpreter.new
+    interpreter = Rpl.new
     interpreter.run 'false « 2 3 + » ift'
 
     assert_equal [],

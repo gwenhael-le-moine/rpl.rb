@@ -2,11 +2,11 @@
 
 require 'readline'
 
-require './interpreter'
+require './rpl'
 
 class RplRepl
   def initialize
-    @interpreter = Rpl::Interpreter.new
+    @interpreter = Rpl.new
   end
 
   def run
