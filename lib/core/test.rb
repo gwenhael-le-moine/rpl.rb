@@ -1,97 +1,127 @@
 # frozen_string_literal: true
 
-module Lang
+module RplLang
   module Core
-    # binary operator >
-    def greater_than
-      args = stack_extract( %i[any any] )
+    module Test
+      def populate_dictionary
+        super
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] > args[0][:value] }
-    end
+        @dictionary.add_word( ['>'],
+                              'Test',
+                              '( a b -- t ) is a greater than b?',
+                              proc do
+                                args = stack_extract( %i[any any] )
 
-    # binary operator >=
-    def greater_than_or_equal
-      args = stack_extract( %i[any any] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] > args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] >= args[0][:value] }
-    end
+        @dictionary.add_word( ['≥', '>='],
+                              'Test',
+                              '( a b -- t ) is a greater than or equal to b?',
+                              proc do
+                                args = stack_extract( %i[any any] )
 
-    # binary operator <
-    def less_than
-      args = stack_extract( %i[any any] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] >= args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] < args[0][:value] }
-    end
+        @dictionary.add_word( ['<'],
+                              'Test',
+                              '( a b -- t ) is a less than b?',
+                              proc do
+                                args = stack_extract( %i[any any] )
 
-    # binary operator <=
-    def less_than_or_equal
-      args = stack_extract( %i[any any] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] < args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] <= args[0][:value] }
-    end
+        @dictionary.add_word( ['≤', '<='],
+                              'Test',
+                              '( a b -- t ) is a less than or equal to b?',
+                              proc do
+                                args = stack_extract( %i[any any] )
 
-    # boolean operator != (different)
-    def different
-      args = stack_extract( %i[any any] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] <= args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] != args[0][:value] }
-    end
+        @dictionary.add_word( ['≠', '!='],
+                              'Test',
+                              '( a b -- t ) is a not equal to b',
+                              proc do
+                                args = stack_extract( %i[any any] )
 
-    # boolean operator and
-    def boolean_and
-      args = stack_extract( [%i[boolean], %i[boolean]] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] != args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] && args[0][:value] }
-    end
+        @dictionary.add_word( ['==', 'same'],
+                              'Test',
+                              '( a b -- t ) is a equal to b',
+                              proc do
+                                args = stack_extract( %i[any any] )
 
-    # boolean operator or
-    def boolean_or
-      args = stack_extract( [%i[boolean], %i[boolean]] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] == args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] || args[0][:value] }
-    end
+        @dictionary.add_word( ['and'],
+                              'Test',
+                              '( a b -- t ) boolean and',
+                              proc do
+                                args = stack_extract( [%i[boolean], %i[boolean]] )
 
-    # boolean operator xor
-    def xor
-      args = stack_extract( [%i[boolean], %i[boolean]] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] && args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] ^ args[0][:value] }
-    end
+        @dictionary.add_word( ['or'],
+                              'Test',
+                              '( a b -- t ) boolean or',
+                              proc do
+                                args = stack_extract( [%i[boolean], %i[boolean]] )
 
-    # boolean operator not
-    def boolean_not
-      args = stack_extract( [%i[boolean]] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] || args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: !args[0][:value] }
-    end
+        @dictionary.add_word( ['xor'],
+                              'Test',
+                              '( a b -- t ) boolean xor',
+                              proc do
+                                args = stack_extract( [%i[boolean], %i[boolean]] )
 
-    # boolean operator same (equal)
-    def same
-      args = stack_extract( %i[any any] )
+                                @stack << { type: :boolean,
+                                            value: args[1][:value] ^ args[0][:value] }
+                              end )
 
-      @stack << { type: :boolean,
-                  value: args[1][:value] == args[0][:value] }
-    end
+        @dictionary.add_word( ['not'],
+                              'Test',
+                              '( a -- t ) invert boolean value',
+                              proc do
+                                args = stack_extract( [%i[boolean]] )
 
-    # true boolean
-    def boolean_true
-      @stack << { type: :boolean,
-                  value: true }
-    end
+                                @stack << { type: :boolean,
+                                            value: !args[0][:value] }
+                              end )
 
-    # false boolean
-    def boolean_false
-      @stack << { type: :boolean,
-                  value: false }
+        @dictionary.add_word( ['true'],
+                              'Test',
+                              '( -- t ) push true onto stack',
+                              proc do
+                                @stack << { type: :boolean,
+                                            value: true }
+                              end ) # specific
+
+        @dictionary.add_word( ['false'],
+                              'Test',
+                              '( -- t ) push false onto stack',
+                              proc do
+                                @stack << { type: :boolean,
+                                            value: false }
+                              end ) # specific
+      end
     end
   end
 end

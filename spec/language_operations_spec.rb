@@ -282,4 +282,18 @@ class TesttLanguageOperations < Test::Unit::TestCase
     assert_equal [{ value: 2, type: :numeric, base: 10 }],
                  interpreter.stack
   end
+
+  def test_ip
+    interpreter = Rpl.new
+    interpreter.run '3.14 ip'
+    assert_equal [{ value: 3, type: :numeric, base: 10 }],
+                 interpreter.stack
+  end
+
+  def test_fp
+    interpreter = Rpl.new
+    interpreter.run '3.14 fp'
+    assert_equal [{ value: 0.14, type: :numeric, base: 10 }],
+                 interpreter.stack
+  end
 end

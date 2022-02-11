@@ -1,42 +1,53 @@
 # frozen_string_literal: true
 
-module Lang
+module RplLang
   module Core
-    # ( x prg -- … ) run PRG X times putting i(counter) on the stack before each run
-    def times
-      args = stack_extract( [:any, %i[numeric]] )
+    module Branch
+      def populate_dictionary
+        super
 
-      args[1][:value].to_i.times do |i|
-        counter = { value: BigDecimal( i, @precision ), type: :numeric, base: 10 }
-        @stack << counter
+        @dictionary.add_word( ['ift'],
+                              'Branch',
+                              '( t pt -- … ) eval pt or not based on the value of boolean t',
+                              proc do
+                                run( '« nop » ifte' )
+                              end )
+        @dictionary.add_word( ['ifte'],
+                              'Branch',
+                              '( t pt pf -- … ) eval pt or pf based on the value of boolean t',
+                              proc do
+                                args = stack_extract( [:any, :any, %i[boolean]] )
 
-        run( args[0][:value] )
+                                run( args[ args[2][:value] ? 1 : 0 ][:value] )
+                              end )
+        @dictionary.add_word( ['times'],
+                              'Branch',
+                              '( n p -- … ) eval p n times while pushing counter on stack before',
+                              proc do
+                                args = stack_extract( [:any, %i[numeric]] )
+
+                                args[1][:value].to_i.times do |i|
+                                  counter = { value: BigDecimal( i, @precision ), type: :numeric, base: 10 }
+                                  @stack << counter
+
+                                  run( args[0][:value] )
+                                end
+
+                              end ) # specific
+        @dictionary.add_word( ['loop'],
+                              'Branch',
+                              '( n1 n2 p -- … ) eval p looping from n1 to n2 while pushing counter on stack before',
+                              proc do
+                                args = stack_extract( [:any, %i[numeric], %i[numeric]] )
+
+                                ((args[2][:value].to_i)..(args[1][:value].to_i)).each do |i|
+                                  counter = { value: BigDecimal( i, @precision ), type: :numeric, base: 10 }
+                                  @stack << counter
+
+                                  run( args[0][:value] )
+                                end
+                              end ) # specific
       end
-    end
-
-    # ( x y prg -- … ) run PRG (Y - X) times putting i(counter) on the stack before each run
-    def loop
-      args = stack_extract( [:any, %i[numeric], %i[numeric]] )
-
-      ((args[2][:value].to_i)..(args[1][:value].to_i)).each do |i|
-        counter = { value: BigDecimal( i, @precision ), type: :numeric, base: 10 }
-        @stack << counter
-
-        run( args[0][:value] )
-      end
-    end
-
-    # similar to if-then-else-end, <test-instruction> <true-instruction> <false-instruction> ifte
-    def ifte
-      args = stack_extract( [:any, :any, %i[boolean]] )
-
-      run( args[ args[2][:value] ? 1 : 0 ][:value] )
-    end
-
-    # Implemented in Rpl
-    # similar to if-then-end, <test-instruction> <true-instruction> ift
-    def ift
-      run( '« nop » ifte' )
     end
   end
 end

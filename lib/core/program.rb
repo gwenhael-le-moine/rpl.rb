@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
-module Lang
+module RplLang
   module Core
-    module_function
+    module Program
+      def populate_dictionary
+        super
 
-    # evaluate (run) a program, or recall a variable. ex: 'my_prog' eval
-    def eval
-      args = stack_extract( [:any] )
+        @dictionary.add_word( ['eval'],
+                              'Program',
+                              '( a -- … ) interpret',
+                              proc do
+                                args = stack_extract( [:any] )
 
-      run( args[0][:value].to_s )
+                                run( args[0][:value].to_s )
+                              end )
+      end
     end
   end
 end

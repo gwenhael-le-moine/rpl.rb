@@ -155,7 +155,7 @@ class Interpreter
     needs.each_with_index do |need, index|
       stack_index = (index + 1) * -1
 
-      raise ArgumentError, "Type Error, needed #{need} got #{@stack[stack_index][:type]}" unless need == :any || need.include?( @stack[stack_index][:type] )
+      raise ArgumentError, "Type Error, needed #{need} got #{@stack[stack_index]}" unless need == :any || need.include?( @stack[stack_index][:type] )
     end
 
     args = []

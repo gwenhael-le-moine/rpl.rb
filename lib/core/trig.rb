@@ -1,47 +1,59 @@
 # frozen_string_literal: true
 
-module Lang
+# https://rosettacode.org/wiki/Trigonometric_functions#Ruby
+
+module RplLang
   module Core
-    module_function
+    module Trig
+      def populate_dictionary
+        super
 
-    # pi constant
-    def pi
-      @stack << { type: :numeric,
-                  base: 10,
-                  value: BigMath.PI( precision ) }
-    end
+        @dictionary.add_word( ['𝛑', 'pi'],
+                              'Trig on reals and complexes',
+                              '( … -- 𝛑 ) push 𝛑',
+                              proc do
+                                @stack << { type: :numeric,
+                                            base: 10,
+                                            value: BigMath.PI( precision ) }
+                              end )
 
-    # sinus
-    def sinus
-      args = stack_extract( [%i[numeric]] )
+        @dictionary.add_word( ['sin'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) compute sinus of n',
+                              proc do
+                                args = stack_extract( [%i[numeric]] )
 
-      @stack << { type: :numeric,
-                  base: infer_resulting_base( args ),
-                  value: BigMath.sin( BigDecimal( args[0][:value], precision ), precision ) }
-    end
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
+                                            value: BigMath.sin( BigDecimal( args[0][:value], precision ), precision ) }
+                              end )
 
-    # https://rosettacode.org/wiki/Trigonometric_functions#Ruby
-    # arg sinus
-    def arg_sinus
-      run( '
+        @dictionary.add_word( ['asin'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) compute arg-sinus of n',
+                              proc do
+                                run( '
   dup abs 1 ==
   « 𝛑 2 / * »
   « dup sq 1 swap - sqrt / atan »
   ifte' )
-    end
+                              end )
 
-    # cosinus
-    def cosinus
-      args = stack_extract( [%i[numeric]] )
+        @dictionary.add_word( ['cos'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) compute cosinus of n',
+                              proc do
+                                args = stack_extract( [%i[numeric]] )
 
-      @stack << { type: :numeric,
-                  base: infer_resulting_base( args ),
-                  value: BigMath.cos( BigDecimal( args[0][:value], precision ), precision ) }
-    end
-
-    # arg cosinus
-    def arg_cosinus
-      run( '
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
+                                            value: BigMath.cos( BigDecimal( args[0][:value], precision ), precision ) }
+                              end )
+        @dictionary.add_word( ['acos'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) compute arg-cosinus of n',
+                              proc do
+                                run( '
   dup 0 ==
   « drop 𝛑 2 / »
   «
@@ -51,30 +63,39 @@ module Lang
     ift
   »
   ifte' )
-    end
 
-    # tangent
-    def tangent
-      run( 'dup sin swap cos /' )
-    end
+                              end )
 
-    # arg tangent
-    def arg_tangent
-      args = stack_extract( [%i[numeric]] )
+        @dictionary.add_word( ['tan'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) compute tangent of n',
+                              proc do
+                                run( 'dup sin swap cos /' )
+                              end )
 
-      @stack << { type: :numeric,
-                  base: infer_resulting_base( args ),
-                  value: BigMath.atan( BigDecimal( args[0][:value], precision ), precision ) }
-    end
+        @dictionary.add_word( ['atan'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) compute arc-tangent of n',
+                              proc do
+                                args = stack_extract( [%i[numeric]] )
 
-    # convert degrees to radians
-    def degrees_to_radians
-      run( '180 / 𝛑 *' )
-    end
-
-    # convert radians to degrees
-    def radians_to_degrees
-      run( '𝛑 180 / /' )
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
+                                            value: BigMath.atan( BigDecimal( args[0][:value], precision ), precision ) }
+                              end)
+        @dictionary.add_word( ['d→r', 'd->r'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) convert degree to radian',
+                              proc do
+                                run( '180 / 𝛑 *' )
+                              end )
+        @dictionary.add_word( ['r→d', 'r->d'],
+                              'Trig on reals and complexes',
+                              '( n -- m ) convert radian to degree',
+                              proc do
+                                run( '𝛑 180 / /' )
+                              end)
+      end
     end
   end
 end

@@ -1,29 +1,57 @@
 # frozen_string_literal: true
 
-module Lang
+module RplLang
   module Core
-    module_function
+    module General
+      def populate_dictionary
+        super
 
-    # no operation
-    def nop; end
+        @dictionary.add_word( ['nop'],
+                              'General',
+                              '( -- ) no operation',
+                              proc {} )
 
-    # show version
-    def version
-      @stack += parse( @version.to_s )
-    end
+        @dictionary.add_word( ['help'],
+                              'General',
+                              '( w -- s ) pop help string of the given word',
+                              proc do
+                                args = stack_extract( [%i[name]] )
 
-    # show complete identification string
-    def uname
-      @stack += parse( "\"Rpl Interpreter version #{@version}\"" )
-    end
+                                word = @dictionary.words[ args[0][:value] ]
 
-    def help
-      args = stack_extract( [%i[name]] )
+                                @stack << { type: :string,
+                                            value: "#{args[0][:value]}: #{word.nil? ? 'not a core word' : word[:help]}" }
+                              end )
 
-      word = @dictionary.words[ args[0][:value] ]
+        @dictionary.add_word( ['quit'],
+                              'General',
+                              '( -- ) Stop and quit interpreter',
+                              proc {} )
 
-      @stack << { type: :string,
-                  value: "#{args[0][:value]}: #{word.nil? ? 'not a core word' : word[:help]}" }
+        @dictionary.add_word( ['version'],
+                              'General',
+                              '( -- n ) Pop the interpreter\'s version number',
+                              proc do
+                                @stack += parse( @version.to_s )
+                              end )
+
+        @dictionary.add_word( ['uname'],
+                              'General',
+                              '( -- s ) Pop the interpreter\'s complete indentification string',
+                              proc do
+                                @stack += parse( "\"Rpl Interpreter version #{@version}\"" )
+                              end )
+
+        @dictionary.add_word( ['history'],
+                              'REPL',
+                              '',
+                              proc {} )
+
+        @dictionary.add_word( ['.s'],
+                              'REPL',
+                              'DEBUG',
+                              proc { pp @stack } )
+      end
     end
   end
 end
