@@ -16,6 +16,7 @@ module RplLang
                                 @stack << { type: :list,
                                             value: args.reverse }
                               end )
+
         @dictionary.add_word( ['list→', 'list->'],
                               'Lists',
                               '( […] -- … ) unpack list on stack',

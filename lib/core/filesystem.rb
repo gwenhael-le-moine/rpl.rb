@@ -17,12 +17,14 @@ module RplLang
                                 @stack << { type: :string,
                                             value: File.read( path ) }
                               end )
+
         @dictionary.add_word( ['feval'],
                               'Filesystem',
                               '( filename -- … ) read and run file',
                               proc do
                                 run( 'fread eval' )
                               end )
+
         @dictionary.add_word( ['fwrite'],
                               'Filesystem',
                               '( content filename -- ) write content into filename',

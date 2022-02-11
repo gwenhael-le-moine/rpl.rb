@@ -15,7 +15,7 @@ require_relative './lib/core/string'
 require_relative './lib/core/test'
 require_relative './lib/core/time-date'
 require_relative './lib/core/trig'
-require_relative './lib/core/logs'
+require_relative './lib/core/logarithm'
 require_relative './lib/core/filesystem'
 require_relative './lib/core/list'
 
@@ -30,7 +30,7 @@ class Rpl < Interpreter
   prepend RplLang::Core::FileSystem
   prepend RplLang::Core::General
   prepend RplLang::Core::List
-  prepend RplLang::Core::Logs
+  prepend RplLang::Core::Logarithm
   prepend RplLang::Core::Mode
   prepend RplLang::Core::Operations
   prepend RplLang::Core::Program

@@ -2,7 +2,7 @@
 
 module RplLang
   module Core
-    module Logs
+    module Logarithm
       def populate_dictionary
         super
 
