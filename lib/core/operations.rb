@@ -208,7 +208,6 @@ module RplLang
                                             value: value }
                               end )
 
-
         # Operations on reals
         @dictionary.add_word( ['%'],
                               'Operations on reals',
@@ -295,14 +294,18 @@ module RplLang
                               end )
 
         # @dictionary.add_word( ['mant'],
-        # 'Operations on reals',
-        # '',
-        #                  proc { __todo } ) # mantissa of a real number
+        #                       'Operations on reals',
+        #                       'mantissa of a real number',
+        #                       proc do
+
+        #                       end )
 
         # @dictionary.add_word( ['xpon'],
-        # 'Operations on reals',
-        # '',
-        #                  proc { __todo } ) # exponant of a real number
+        #                       'Operations on reals',
+        #                       'exponant of a real number',
+        #                       proc do
+
+        #                       end )
 
         @dictionary.add_word( ['ip'],
                               'Operations on reals',
@@ -323,31 +326,63 @@ module RplLang
                               end )
 
 
-        # OPERATIONS ON COMPLEXES
+        # Operations on complexes
         # @dictionary.add_word( ['re'],
-        #                  proc { __todo } ) # complex real part
+        #                       'Operations on complexes',
+        #                       'complex real part',
+        #                       proc do
+
+        #                       end )
+
         # @dictionary.add_word( 'im',
-        #                  proc { __todo } ) # complex imaginary part
+        #                       'Operations on complexes',
+        #                       'complex imaginary part',
+        #                       proc do
+
+        #                       end )
+
         # @dictionary.add_word( ['conj'],
-        #                  proc { __todo } ) # complex conjugate
+        #                       'Operations on complexes',
+        #                       'complex conjugate',
+        #                       proc do
+
+        #                       end )
+
         # @dictionary.add_word( 'arg',
-        #                  proc { __todo } ) # complex argument in radians
-        # @dictionary.add_word( ['c->r'],
-        #                  proc { __todo } ) # transform a complex in 2 reals
-        # @dictionary.add_word( 'c→r',
-        #                  proc { __todo } )
-        # @dictionary.add_word( ['r->c'],
-        #                  proc { __todo } ) # transform 2 reals in a complex
-        # @dictionary.add_word( 'r→c',
-        #                  proc { __todo } )
-        # @dictionary.add_word( ['p->r'],
-        #                  proc { __todo } ) # cartesian to polar
-        # @dictionary.add_word( 'p→r',
-        #                  proc { __todo } )
-        # @dictionary.add_word( ['r->p'],
-        #                  proc { __todo } ) # polar to cartesian
-        # @dictionary.add_word( 'r→p',
-        #                  proc { __todo } )
+        #                       'Operations on complexes',
+        #                       'complex argument in radians',
+        #                       proc do
+
+        #                       end )
+
+        # @dictionary.add_word( ['c→r', 'c->r'],
+        #                       'Operations on complexes',
+        #                       'transform a complex in 2 reals',
+        #                       proc do
+
+        #                       end )
+
+        # @dictionary.add_word( ['r→c', 'r->c'],
+        #                       'Operations on complexes',
+        #                       'transform 2 reals in a complex',
+        #                       proc do
+
+        #                       end )
+
+        # @dictionary.add_word( ['p→r', 'p->r'],
+        #                       'Operations on complexes',
+        #                       'cartesian to polar',
+        #                       proc do
+
+        #                       end )
+
+        # @dictionary.add_word( ['r→p', 'r->p'],
+        #                       'Operations on complexes',
+        #                       'polar to cartesian',
+        #                       proc do
+
+        #                       end )
+
       end
     end
   end
