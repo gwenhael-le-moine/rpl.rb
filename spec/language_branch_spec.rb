@@ -8,7 +8,7 @@ require_relative '../rpl'
 class TestLanguageBranch < Test::Unit::TestCase
   def test_loop
     interpreter = Rpl.new
-    interpreter.run '11 16 « "hello no." swap + » loop'
+    interpreter.run '« "hello no." swap + » 11 16 loop'
 
     assert_equal [{ value: 'hello no.11', type: :string },
                   { value: 'hello no.12', type: :string },
@@ -21,7 +21,7 @@ class TestLanguageBranch < Test::Unit::TestCase
 
   def test_times
     interpreter = Rpl.new
-    interpreter.run '5 « "hello no." swap + » times'
+    interpreter.run '« "hello no." swap + » 5 times'
 
     assert_equal [{ value: 'hello no.0', type: :string },
                   { value: 'hello no.1', type: :string },
