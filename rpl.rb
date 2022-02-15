@@ -53,7 +53,7 @@ class RplRepl
 
   def run
     Readline.completion_proc = proc do |s|
-      Readline::HISTORY.grep(/^#{Regexp.escape(s)}/)
+      (@interpreter.dictionary.words.keys + @interpreter.dictionary.vars.keys).grep(/^#{Regexp.escape(s)}/)
     end
     Readline.completion_append_character = ' '
 
