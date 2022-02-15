@@ -3,7 +3,7 @@
 
 require 'test/unit'
 
-require_relative '../rpl'
+require 'rpl'
 
 class TestLanguageTimeDate < Test::Unit::TestCase
   def test_time

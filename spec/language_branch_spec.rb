@@ -3,7 +3,7 @@
 
 require 'test/unit'
 
-require_relative '../rpl'
+require 'rpl'
 
 class TestLanguageBranch < Test::Unit::TestCase
   def test_loop

@@ -6,8 +6,6 @@ module RplLang
       def populate_dictionary
         super
 
-
-        # Mode
         @dictionary.add_word( ['prec'],
                               'Mode',
                               '( a -- ) set precision to a',

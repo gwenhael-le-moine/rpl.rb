@@ -325,7 +325,6 @@ module RplLang
                                             value: args[0][:value].frac }
                               end )
 
-
         # Operations on complexes
         # @dictionary.add_word( ['re'],
         #                       'Operations on complexes',
@@ -382,7 +381,6 @@ module RplLang
         #                       proc do
 
         #                       end )
-
       end
     end
   end

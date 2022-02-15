@@ -63,7 +63,6 @@ module RplLang
     ift
   »
   ifte' )
-
                               end )
 
         @dictionary.add_word( ['tan'],

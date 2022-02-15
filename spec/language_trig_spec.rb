@@ -3,7 +3,7 @@
 
 require 'test/unit'
 
-require_relative '../rpl'
+require 'rpl'
 
 class TesttLanguageOperations < Test::Unit::TestCase
   def test_pi

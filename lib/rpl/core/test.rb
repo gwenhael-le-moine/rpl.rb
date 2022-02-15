@@ -112,7 +112,7 @@ module RplLang
                               proc do
                                 @stack << { type: :boolean,
                                             value: true }
-                              end ) # specific
+                              end )
 
         @dictionary.add_word( ['false'],
                               'Test',
@@ -120,7 +120,7 @@ module RplLang
                               proc do
                                 @stack << { type: :boolean,
                                             value: false }
-                              end ) # specific
+                              end )
       end
     end
   end

@@ -2,7 +2,7 @@
 
 require 'bigdecimal/math'
 
-require_relative './dictionary'
+require 'rpl/dictionary'
 
 class Interpreter
   include BigMath
