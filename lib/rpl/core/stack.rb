@@ -124,7 +124,6 @@ module RplLang
                                 end
 
                                 @stack << args[0]
-
                               end )
 
         @dictionary.add_word( ['rolld'],

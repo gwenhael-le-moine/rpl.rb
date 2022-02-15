@@ -34,8 +34,7 @@ module RplLang
 
                                   run( args[1][:value] )
                                 end
-
-                              end ) # specific
+                              end )
 
         @dictionary.add_word( ['loop'],
                               'Branch',
@@ -49,7 +48,7 @@ module RplLang
 
                                   run( args[2][:value] )
                                 end
-                              end ) # specific
+                              end )
       end
     end
   end

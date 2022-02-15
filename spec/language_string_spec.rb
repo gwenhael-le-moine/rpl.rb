@@ -3,7 +3,7 @@
 
 require 'test/unit'
 
-require_relative '../rpl'
+require 'rpl'
 
 class TestLanguageString < Test::Unit::TestCase
   def test_to_string

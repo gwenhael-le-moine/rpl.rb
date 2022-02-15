@@ -95,7 +95,7 @@ module RplLang
                                 end
 
                                 @stack << result
-                              end ) # specific
+                              end )
 
         @dictionary.add_word( ['split'],
                               'String',
@@ -107,7 +107,7 @@ module RplLang
                                   @stack << { type: :string,
                                               value: elt }
                                 end
-                              end ) # specific
+                              end )
       end
     end
   end

@@ -60,7 +60,6 @@ module RplLang
   « swap »
   ift
   over rcl + swap sto' )
-
                               end )
 
         @dictionary.add_word( ['sto-'],
@@ -83,7 +82,6 @@ module RplLang
   « swap »
   ift
   over rcl * swap sto' )
-
                               end )
 
         @dictionary.add_word( ['sto÷', 'sto/'],
@@ -95,7 +93,6 @@ module RplLang
   « swap »
   ift
   over rcl swap / swap sto' )
-
                               end )
 
         @dictionary.add_word( ['sneg'],

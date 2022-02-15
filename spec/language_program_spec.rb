@@ -2,7 +2,7 @@
 
 require 'test/unit'
 
-require_relative '../rpl'
+require 'rpl'
 
 class TestLanguageProgram < Test::Unit::TestCase
   def test_eval
