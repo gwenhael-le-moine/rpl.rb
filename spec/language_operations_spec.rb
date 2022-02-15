@@ -296,4 +296,22 @@ class TesttLanguageOperations < Test::Unit::TestCase
     assert_equal [{ value: 0.14, type: :numeric, base: 10 }],
                  interpreter.stack
   end
+
+  def test_mant
+    interpreter = Rpl.new
+    interpreter.run '123.456 mant -123.456 mant 0 mant'
+    assert_equal [{ value: 0.123456, type: :numeric, base: 10 },
+                  { value: 0.123456, type: :numeric, base: 10 },
+                  { value: 0, type: :numeric, base: 10 }],
+                 interpreter.stack
+  end
+
+  def test_xpon
+    interpreter = Rpl.new
+    interpreter.run '123.456 xpon -123.456 xpon 0 xpon'
+    assert_equal [{ value: 3, type: :numeric, base: 10 },
+                  { value: 3, type: :numeric, base: 10 },
+                  { value: 0, type: :numeric, base: 10 }],
+                 interpreter.stack
+  end
 end
