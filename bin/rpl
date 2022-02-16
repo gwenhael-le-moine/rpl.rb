@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'English'
+require 'optparse'
 require 'readline'
 
 require 'rpl'
@@ -51,4 +53,34 @@ class RplRepl
   end
 end
 
-RplRepl.new.run
+interpreter = Rpl.new
+
+options = { run_REPL: false,
+            files: [],
+            programs: [] }
+
+OptionParser.new do |opts|
+  opts.on('-c', '--code "program"', ' ') do |program|
+    options[:programs] << program
+  end
+
+  opts.on('-f', '--file program.rpl', 'load program.rpl') do |filename|
+    options[:files] << filename
+  end
+
+  opts.on('-i', '--interactive', 'launch interactive REPL') do
+    options[:run_REPL] = true
+  end
+end.parse!
+
+options[:files].each do |filename|
+  interpreter.run "\"#{filename}\" feval"
+end
+
+options[:programs].each do |program|
+  interpreter.run program
+end
+
+RplRepl.new( interpreter ).run if options[:run_REPL]
+
+pp interpreter.stack.map { |elt| interpreter.stringify( elt ) }.join(' ')
