@@ -197,7 +197,7 @@ class Interpreter
 
       "#{prefix}#{suffix}"
     when :list
-      "[#{elt[:value].map { |e| stringify( e ) }.join(', ')}]"
+      "{ #{elt[:value].map { |e| stringify( e ) }.join(' ')} }"
     when :program
       "« #{elt[:value]} »"
     when :string
