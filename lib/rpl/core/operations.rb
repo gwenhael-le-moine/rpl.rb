@@ -300,12 +300,16 @@ module RplLang
 
         #                       end )
 
-        # @dictionary.add_word( ['xpon'],
-        #                       'Operations on reals',
-        #                       'exponant of a real number',
-        #                       proc do
+        @dictionary.add_word( ['xpon'],
+                              'Operations on reals',
+                              'exponant of a real number',
+                              proc do
+                                args = stack_extract( [%i[numeric]] )
 
-        #                       end )
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
+                                            value: args[0][:value].exponent }
+                              end )
 
         @dictionary.add_word( ['ip'],
                               'Operations on reals',
