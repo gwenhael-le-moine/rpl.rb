@@ -55,7 +55,7 @@ end
 
 interpreter = Rpl.new
 
-options = { run_REPL: false,
+options = { run_REPL: ARGV.empty?,
             files: [],
             programs: [] }
 
