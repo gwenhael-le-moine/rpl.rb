@@ -6,11 +6,14 @@ require 'readline'
 require 'rpl'
 
 class RplRepl
-  def initialize
-    @interpreter = Rpl.new
+  def initialize( interpreter )
+    interpreter ||= Rpl.new
+    @interpreter = interpreter
   end
 
   def run
+    print_stack unless @interpreter.stack.empty?
+
     Readline.completion_proc = proc do |s|
       ( @interpreter.dictionary.words.keys + @interpreter.dictionary.vars.keys ).grep(/^#{Regexp.escape(s)}/)
     end
