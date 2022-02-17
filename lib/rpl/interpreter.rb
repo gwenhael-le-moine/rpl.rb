@@ -47,6 +47,8 @@ class Interpreter
     # 1. regroup strings and programs
     opened_programs = 0
     closed_programs = 0
+    opened_lists = 0
+    closed_lists = 0
     string_delimiters = 0
     name_delimiters = 0
     regrouping = false
@@ -56,22 +58,33 @@ class Interpreter
       if elt[0] == '«'
         opened_programs += 1
         elt.gsub!( '«', '« ') if elt.length > 1 && elt[1] != ' '
+      elsif elt[0] == '{'
+        opened_lists += 1
+        elt.gsub!( '{', '{ ') if elt.length > 1 && elt[1] != ' '
+      elsif elt[0] == '"' && elt.length > 1
+        string_delimiters += 1
+      elsif elt[0] == "'" && elt.length > 1
+        name_delimiters += 1
       end
-      string_delimiters += 1 if elt[0] == '"' && elt.length > 1
-      name_delimiters += 1 if elt[0] == "'" && elt.length > 1
 
       elt = "#{regrouped_input.pop} #{elt}".strip if regrouping
 
       regrouped_input << elt
 
-      if elt[-1] == '»'
+      case elt[-1]
+      when '»'
         closed_programs += 1
         elt.gsub!( '»', ' »') if elt.length > 1 && elt[-2] != ' '
+      when '}'
+        closed_lists += 1
+        elt.gsub!( '}', ' }') if elt.length > 1 && elt[-2] != ' '
+      when '"'
+        string_delimiters += 1
+      when "'"
+        name_delimiters += 1
       end
-      string_delimiters += 1 if elt[-1] == '"'
-      name_delimiters += 1 if elt[-1] == "'"
 
-      regrouping = string_delimiters.odd? || name_delimiters.odd? || (opened_programs > closed_programs )
+      regrouping = string_delimiters.odd? || name_delimiters.odd? || (opened_programs > closed_programs ) || (opened_lists > closed_lists )
     end
 
     # 2. parse
@@ -83,6 +96,8 @@ class Interpreter
       parsed_entry[:type] = case elt[0]
                             when '«'
                               :program
+                            when '{'
+                              :list
                             when '"'
                               :string
                             when "'"
@@ -99,6 +114,8 @@ class Interpreter
         parsed_entry[:value] = parsed_entry[:value][1..-2]
       elsif parsed_entry[:type] == :program
         parsed_entry[:value] = parsed_entry[:value][2..-3]
+      elsif parsed_entry[:type] == :list
+        parsed_entry[:value] = parse( parsed_entry[:value][2..-3] )
       elsif parsed_entry[:type] == :numeric
         parsed_entry[:base] = 10 # TODO: parse others possible bases 0x...
 

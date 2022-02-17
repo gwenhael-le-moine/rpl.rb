@@ -61,6 +61,33 @@ class TestParser < MiniTest::Test
     assert_equal [{ value: 'test "test" test', type: :program }], result
   end
 
+  def test_list
+    result = Rpl.new.parse( '{ test }' )
+    assert_equal [{ value: [{ value: 'test', type: :word }], type: :list }], result
+
+    result = Rpl.new.parse( '{test }' )
+    assert_equal [{ value: [{ value: 'test', type: :word }], type: :list }], result
+
+    result = Rpl.new.parse( '{ test}' )
+    assert_equal [{ value: [{ value: 'test', type: :word }], type: :list }], result
+
+    result = Rpl.new.parse( '{test}' )
+    assert_equal [{ value: [{ value: 'test', type: :word }], type: :list }], result
+
+    result = Rpl.new.parse( '{ test test }' )
+    assert_equal [{ value: [{ value: 'test', type: :word },
+                            { value: 'test', type: :word }], type: :list }], result
+
+    result = Rpl.new.parse( '{ test { test } }' )
+    assert_equal [{ value: [{ value: 'test', type: :word },
+                            { value: [{ value: 'test', type: :word }], type: :list }], type: :list }], result
+
+    result = Rpl.new.parse( '{ test "test" test }' )
+    assert_equal [{ value: [{ value: 'test', type: :word },
+                            { value: 'test', type: :string },
+                            { value: 'test', type: :word }], type: :list }], result
+  end
+
   def test_number_number
     result = Rpl.new.parse( '2 3' )
     assert_equal [{ value: 2, type: :numeric, base: 10 }, { value: 3, type: :numeric, base: 10 }], result
