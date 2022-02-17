@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageTimeDate < Test::Unit::TestCase
+class TestLanguageTimeDate < MiniTest::Test
   def test_time
     now = Time.now.to_s
     interpreter = Rpl.new

@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageTest < Test::Unit::TestCase
+class TestLanguageTest < MiniTest::Test
   def test_greater_than
     interpreter = Rpl.new
     interpreter.run '0 0.1 >'

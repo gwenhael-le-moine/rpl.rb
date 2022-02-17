@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageProgram < Test::Unit::TestCase
+class TestLanguageProgram < MiniTest::Test
   def test_sto
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto'

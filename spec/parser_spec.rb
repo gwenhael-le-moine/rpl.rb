@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestParser < Test::Unit::TestCase
+class TestParser < MiniTest::Test
   def test_number
     result = Rpl.new.parse( '1' )
     assert_equal [{ value: 1, type: :numeric, base: 10 }], result

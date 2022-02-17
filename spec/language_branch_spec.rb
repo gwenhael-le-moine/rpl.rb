@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageBranch < Test::Unit::TestCase
+class TestLanguageBranch < MiniTest::Test
   def test_loop
     interpreter = Rpl.new
     interpreter.run '« "hello no." swap + » 11 16 loop'

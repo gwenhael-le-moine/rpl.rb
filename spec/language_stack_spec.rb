@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageStack < Test::Unit::TestCase
+class TestLanguageStack < MiniTest::Test
   def test_swap
     interpreter = Rpl.new
     interpreter.run '1 2 swap'

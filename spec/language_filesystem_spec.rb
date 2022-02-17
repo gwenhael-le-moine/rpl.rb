@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageFileSystem < Test::Unit::TestCase
+class TestLanguageFileSystem < MiniTest::Test
   def test_fread
     interpreter = Rpl.new
     interpreter.run '"spec/test.rpl" fread'
@@ -39,7 +39,8 @@ trrr
     assert_equal [],
                  interpreter.stack
 
-    assert_true File.exist?( 'spec/test_fwrite.txt' )
+    assert_equal true,
+                 File.exist?( 'spec/test_fwrite.txt' )
 
     written_content = File.read( 'spec/test_fwrite.txt' )
     assert_equal 'Ceci est un test de fwrite',

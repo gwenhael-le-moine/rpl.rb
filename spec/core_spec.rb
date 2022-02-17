@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestParser < Test::Unit::TestCase
+class TestParser < MiniTest::Test
   def test_stack_extract
     interpreter = Rpl.new( [{ value: 1, type: :numeric },
                             { value: 2, type: :numeric }] )

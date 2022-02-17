@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageString < Test::Unit::TestCase
+class TestLanguageString < MiniTest::Test
   def test_to_string
     interpreter = Rpl.new
     interpreter.run '2 →str'

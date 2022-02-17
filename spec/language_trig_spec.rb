@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'test/unit'
+require 'minitest/autorun'
 
 require 'rpl'
 
-class TesttLanguageOperations < Test::Unit::TestCase
+class TesttLanguageOperations < MiniTest::Test
   def test_pi
     interpreter = Rpl.new
     interpreter.run 'pi'
@@ -55,7 +55,7 @@ class TesttLanguageOperations < Test::Unit::TestCase
                  interpreter.stack
   end
 
-  def test_d→r
+  def test_d2r
     interpreter = Rpl.new
     interpreter.run '90 d→r'
     assert_equal [{ value: BigMath.PI( interpreter.precision ) / 2,
@@ -63,10 +63,10 @@ class TesttLanguageOperations < Test::Unit::TestCase
                  interpreter.stack
   end
 
-  def test_r→d
+  def test_r2d
     interpreter = Rpl.new
     interpreter.run 'pi r→d'
-    assert_equal [{ value: 180, type: :numeric, base: 10 }],
+    assert_equal [{ value: BigDecimal( 180 ), type: :numeric, base: 10 }],
                  interpreter.stack
   end
 end
