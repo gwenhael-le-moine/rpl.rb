@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require 'bigdecimal'
 require 'bigdecimal/math'
+require 'bigdecimal/util'
 
 require 'rpl/dictionary'
 
