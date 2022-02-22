@@ -27,6 +27,20 @@ module RplLang
                                   @stack << elt
                                 end
                               end )
+
+        @dictionary.add_word( ['dolist'],
+                              'Lists',
+                              '( […] prg -- … ) run prg on each element of a list',
+                              proc do
+                                args = stack_extract( [%i[program], %i[list]] )
+
+                                args[1][:value].each do |elt|
+                                  @stack << elt
+                                  run( args[0][:value] )
+                                end
+
+                                run( "#{args[1][:value].length} →list" )
+                              end )
       end
     end
   end
