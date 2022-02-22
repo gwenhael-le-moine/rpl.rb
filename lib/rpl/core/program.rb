@@ -12,7 +12,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [:any] )
 
-                                if %i[list string numeric boolean].include?( args[0][:type] )
+                                if %i[list numeric boolean].include?( args[0][:type] )
                                   @stack << args[0] # these types evaluate to themselves
                                 else
                                   run( args[0][:value].to_s )

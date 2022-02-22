@@ -8,15 +8,9 @@ require 'rpl'
 class TestLanguageFileSystem < MiniTest::Test
   def test_fread
     interpreter = Rpl.new
-    interpreter.run '"spec/test.rpl" fread'
+    interpreter.run '"./spec/test.rpl" fread'
 
-    assert_equal [{ value: "1 2 +
-
-« dup dup * * »
-'trrr' sto
-
-trrr
-", type: :string }],
+    assert_equal [{:type=>:string, :value=>"1 2 +\n\n« dup dup * * »\n'trrr' sto\n\ntrrr\n"}],
                  interpreter.stack
 
     interpreter.run 'eval vars'
