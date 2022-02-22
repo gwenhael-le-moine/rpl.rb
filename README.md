@@ -12,17 +12,20 @@ To run the test suite: `find ./spec/ -name \*.rb -exec ruby -Ilib {} \;`
   * UI toolkit (based on https://github.com/AndyObtiva/glimmer-dsl-libui ?)
 
 # Not implemented
-  * if
-  * then
-  * else
-  * end
-  * start
-  * for
-  * next
-  * step
-  * do
-  * until
-  * while
-  * repeat
-  * ->, →
+  * use IFT, IFTE
+    . if
+    . then
+    . else
+    . end
+  * use LOOP, TIMES
+    . start
+    . for
+    . next
+    . step
+    . do
+    . until
+    . while
+    . repeat
+  * use LSTO
+    . ->, →
   * edit
