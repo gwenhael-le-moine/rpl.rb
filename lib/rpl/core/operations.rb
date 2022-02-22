@@ -293,12 +293,16 @@ module RplLang
                                 @stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
                               end )
 
-        # @dictionary.add_word( ['mant'],
-        #                       'Operations on reals',
-        #                       'mantissa of a real number',
-        #                       proc do
+        @dictionary.add_word( ['mant'],
+                              'Operations on reals',
+                              'mantissa of a real number',
+                              proc do
+                                args = stack_extract( [%i[numeric]] )
 
-        #                       end )
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
+                                            value: BigDecimal( args[0][:value].to_s.split('e').first.to_f.abs, @precision ) }
+                              end )
 
         @dictionary.add_word( ['xpon'],
                               'Operations on reals',

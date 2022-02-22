@@ -300,9 +300,9 @@ class TesttLanguageOperations < MiniTest::Test
   def test_mant
     interpreter = Rpl.new
     interpreter.run '123.456 mant -123.456 mant 0 mant'
-    assert_equal [{ value: 0.123456, type: :numeric, base: 10 },
-                  { value: 0.123456, type: :numeric, base: 10 },
-                  { value: 0, type: :numeric, base: 10 }],
+    assert_equal [{ type: :numeric, base: 10, value: BigDecimal( 0.123456, interpreter.precision ) },
+                  { type: :numeric, base: 10, value: BigDecimal( 0.123456, interpreter.precision ) },
+                  { type: :numeric, base: 10, value: BigDecimal( 0 ) }],
                  interpreter.stack
   end
 
