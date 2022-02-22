@@ -155,4 +155,31 @@ class TestParser < MiniTest::Test
                   { value: 'sto', type: :word }],
                  result
   end
+
+  def test_with_multiline
+    result = Rpl.new.parse( "« 2
+
+dup * »
+
+ 'carré' sto" )
+
+    assert_equal [{ value: '2 dup *', type: :program },
+                  { value: 'carré', type: :name },
+                  { value: 'sto', type: :word }],
+                 result
+  end
+
+  def test_with_comments
+    result = Rpl.new.parse( "« 2 #deux
+# on duplique le deux
+dup * »
+
+# on va STOcker ce programme dans la variable 'carré'
+ 'carré' sto" )
+
+    assert_equal [{ value: '2 dup *', type: :program },
+                  { value: 'carré', type: :name },
+                  { value: 'sto', type: :word }],
+                 result
+  end
 end

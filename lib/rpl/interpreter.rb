@@ -41,6 +41,23 @@ class Interpreter
       end
     end
 
+    unless input.index("\n").nil?
+      input = input
+                .split("\n")
+                .map do |line|
+        comment_begin_index = line.index('#')
+
+        if comment_begin_index.nil?
+          line
+        elsif comment_begin_index == 0
+          ''
+        else
+          line[0..(comment_begin_index - 1)]
+        end
+      end
+                .join(' ')
+    end
+
     splitted_input = input.split(' ')
 
     # 2-passes:
