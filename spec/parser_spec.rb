@@ -9,6 +9,15 @@ class TestParser < MiniTest::Test
   def test_number
     result = Rpl.new.parse( '1' )
     assert_equal [{ value: 1, type: :numeric, base: 10 }], result
+
+    result = Rpl.new.parse( '0b101' )
+    assert_equal [{ value: BigDecimal( 5 ), type: :numeric, base: 2 }], result
+
+    result = Rpl.new.parse( '0o57' )
+    assert_equal [{ value: BigDecimal( 47 ), type: :numeric, base: 8 }], result
+
+    result = Rpl.new.parse( '03_10' )
+    assert_equal [{ value: BigDecimal( 3 ), type: :numeric, base: 3 }], result
   end
 
   def test_word
