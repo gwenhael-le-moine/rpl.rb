@@ -23,6 +23,19 @@ module RplLang
                                             value: "#{args[0][:value]}: #{word.nil? ? 'not a core word' : word[:help]}" }
                               end )
 
+        @dictionary.add_word( ['words'],
+                              'REPL',
+                              'DEBUG',
+                              proc do
+                                @dictionary.words
+                                           .to_a
+                                           .group_by { |word| word.last[:category] }
+                                           .each do |cat, words|
+                                  puts cat
+                                  puts "    #{words.map { |word| word.first }.join(', ')}"
+                                end
+                              end )
+
         @dictionary.add_word( ['quit'],
                               'General',
                               '( -- ) Stop and quit interpreter',
@@ -51,6 +64,21 @@ module RplLang
                               'REPL',
                               'DEBUG',
                               proc { pp @stack } )
+
+        @dictionary.add_word( ['.d'],
+                              'REPL',
+                              'DEBUG',
+                              proc { pp @dictionary } )
+
+        @dictionary.add_word( ['.v'],
+                              'REPL',
+                              'DEBUG',
+                              proc { pp @dictionary.vars } )
+
+        @dictionary.add_word( ['.lv'],
+                              'REPL',
+                              'DEBUG',
+                              proc { pp @dictionary.local_vars_layers } )
       end
     end
   end
