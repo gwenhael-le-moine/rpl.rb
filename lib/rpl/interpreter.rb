@@ -22,8 +22,6 @@ class Interpreter
 
     @dictionary = dictionary
     @stack = stack
-
-    populate_dictionary if @dictionary.words.empty?
   end
 
   def default_precision
