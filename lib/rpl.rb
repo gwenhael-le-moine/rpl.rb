@@ -9,13 +9,12 @@ require 'rpl/core/operations'
 require 'rpl/core/program'
 require 'rpl/core/stack'
 require 'rpl/core/store'
-require 'rpl/core/string'
+require 'rpl/core/string-list'
 require 'rpl/core/test'
 require 'rpl/core/time-date'
 require 'rpl/core/trig'
 require 'rpl/core/logarithm'
 require 'rpl/core/filesystem'
-require 'rpl/core/list'
 
 class Rpl < Interpreter
   def initialize( stack = [], dictionary = Dictionary.new )
@@ -27,14 +26,13 @@ class Rpl < Interpreter
   prepend RplLang::Core::Branch
   prepend RplLang::Core::FileSystem
   prepend RplLang::Core::General
-  prepend RplLang::Core::List
   prepend RplLang::Core::Logarithm
   prepend RplLang::Core::Mode
   prepend RplLang::Core::Operations
   prepend RplLang::Core::Program
   prepend RplLang::Core::Stack
   prepend RplLang::Core::Store
-  prepend RplLang::Core::String
+  prepend RplLang::Core::StringAndList
   prepend RplLang::Core::Test
   prepend RplLang::Core::TimeAndDate
   prepend RplLang::Core::Trig

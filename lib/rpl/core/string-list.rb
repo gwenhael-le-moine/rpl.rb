@@ -2,7 +2,7 @@
 
 module RplLang
   module Core
-    module String
+    module StringAndList
       def populate_dictionary
         super
 
@@ -25,6 +25,28 @@ module RplLang
                                 @stack += parse( args[0][:value] )
                               end )
 
+        @dictionary.add_word( ['→list', '->list'],
+                              'Lists',
+                              '( … x -- […] ) pack x stacks levels into a list',
+                              proc do
+                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( %i[any] * args[0][:value] )
+
+                                @stack << { type: :list,
+                                            value: args.reverse }
+                              end )
+
+        @dictionary.add_word( ['list→', 'list->'],
+                              'Lists',
+                              '( […] -- … ) unpack list on stack',
+                              proc do
+                                args = stack_extract( [%i[list]] )
+
+                                args[0][:value].each do |elt|
+                                  @stack << elt
+                                end
+                              end )
+
         @dictionary.add_word( ['chr'],
                               'String',
                               '( n -- c ) convert ASCII character code in stack level 1 into a string',
@@ -43,18 +65,18 @@ module RplLang
 
                                 @stack << { type: :numeric,
                                             base: 10,
-                                            value: args[0][:value].ord }
+                                            value: BigDecimal( args[0][:value].ord ) }
                               end )
 
         @dictionary.add_word( ['size'],
                               'String',
-                              '( s -- n ) return the length of the string',
+                              '( s -- n ) return the length of the string or list',
                               proc do
-                                args = stack_extract( [%i[string]] )
+                                args = stack_extract( [%i[string list]] )
 
                                 @stack << { type: :numeric,
                                             base: 10,
-                                            value: args[0][:value].length }
+                                            value: BigDecimal( args[0][:value].length ) }
                               end )
 
         @dictionary.add_word( ['pos'],
@@ -65,7 +87,7 @@ module RplLang
 
                                 @stack << { type: :numeric,
                                             base: 10,
-                                            value: args[1][:value].index( args[0][:value] ) }
+                                            value: BigDecimal( args[1][:value].index( args[0][:value] ) ) }
                               end )
 
         @dictionary.add_word( ['sub'],
@@ -80,7 +102,7 @@ module RplLang
 
         @dictionary.add_word( ['rev'],
                               'String',
-                              '( s -- s ) reverse string',
+                              '( s -- s ) reverse string or list',
                               proc do
                                 args = stack_extract( [%i[string list]] )
 
@@ -107,6 +129,20 @@ module RplLang
                                   @stack << { type: :string,
                                               value: elt }
                                 end
+                              end )
+
+        @dictionary.add_word( ['dolist'],
+                              'Lists',
+                              '( […] prg -- … ) run prg on each element of a list',
+                              proc do
+                                args = stack_extract( [%i[program], %i[list]] )
+
+                                args[1][:value].each do |elt|
+                                  @stack << elt
+                                  run( args[0][:value] )
+                                end
+
+                                run( "#{args[1][:value].length} →list" )
                               end )
       end
     end
