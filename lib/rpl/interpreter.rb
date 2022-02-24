@@ -129,24 +129,27 @@ class Interpreter
 
       if %I[string name].include?( parsed_entry[:type] )
         parsed_entry[:value] = parsed_entry[:value][1..-2]
+
       elsif %I[program].include?( parsed_entry[:type] )
         parsed_entry[:value] = parsed_entry[:value][2..-3]
+
       elsif %I[list].include?( parsed_entry[:type] )
         parsed_entry[:value] = parse( parsed_entry[:value][2..-3] )
+
       elsif %I[numeric].include?( parsed_entry[:type] )
         underscore_position = parsed_entry[:value].index('_')
 
-        if parsed_entry[:value][0] == '0' && ( ['b', 'o', 'x'].include?( parsed_entry[:value][1] ) || !underscore_position.nil? )
+        if parsed_entry[:value][0] == '0' && ( %w[b o x].include?( parsed_entry[:value][1] ) || !underscore_position.nil? )
           if parsed_entry[:value][1] == 'x'
             parsed_entry[:base] = 16
           elsif parsed_entry[:value][1] == 'b'
             parsed_entry[:base] = 2
           elsif parsed_entry[:value][1] == 'o'
             parsed_entry[:base] = 8
-            parsed_entry[:value] = parsed_entry[:value][2..]
+            parsed_entry[:value] = parsed_entry[:value][2..-1]
           elsif !underscore_position.nil?
             parsed_entry[:base] = parsed_entry[:value][1..(underscore_position - 1)].to_i
-            parsed_entry[:value] = parsed_entry[:value][(underscore_position + 1)..]
+            parsed_entry[:value] = parsed_entry[:value][(underscore_position + 1)..-1]
           end
         else
           parsed_entry[:base] = 10
