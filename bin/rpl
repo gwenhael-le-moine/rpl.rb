@@ -10,6 +10,7 @@ require 'rpl'
 class RplRepl
   def initialize( interpreter )
     interpreter ||= Rpl.new
+
     @interpreter = interpreter
   end
 
@@ -33,27 +34,21 @@ class RplRepl
       begin
         @interpreter.run( input )
       rescue ArgumentError => e
-        p e
+        pp e
       end
 
       print_stack
     end
   end
 
-  def format_element( elt )
-    @interpreter.stringify( elt )
-  end
-
   def print_stack
     stack_size = @interpreter.stack.size
 
     @interpreter.stack.each_with_index do |elt, i|
-      puts "#{stack_size - i}: #{format_element( elt )}"
+      puts "#{stack_size - i}: #{@interpreter.stringify( elt )}"
     end
   end
 end
-
-interpreter = Rpl.new
 
 options = { run_REPL: ARGV.empty?,
             files: [],
@@ -73,14 +68,21 @@ OptionParser.new do |opts|
   end
 end.parse!
 
+# Instantiate interpreter
+interpreter = Rpl.new
+
+# first run provided files if any
 options[:files].each do |filename|
   interpreter.run "\"#{filename}\" feval"
 end
 
+# second run provided code if any
 options[:programs].each do |program|
   interpreter.run program
 end
 
+# third launch REPL if (explicitely or implicitely) asked
 RplRepl.new( interpreter ).run if options[:run_REPL]
 
+# last print resulting stack on exit (formatted so that it can be fed back later to interpreter)
 pp interpreter.stack.map { |elt| interpreter.stringify( elt ) }.join(' ')

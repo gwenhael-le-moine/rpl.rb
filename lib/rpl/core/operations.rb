@@ -84,7 +84,8 @@ module RplLang
                               proc do
                                 args = stack_extract( [%i[numeric], %i[numeric]] )
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: args[1][:value] - args[0][:value] }
                               end )
 
@@ -101,7 +102,8 @@ module RplLang
                               proc do
                                 args = stack_extract( [%i[numeric], %i[numeric]] )
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: args[1][:value] * args[0][:value] }
                               end )
 
@@ -111,7 +113,8 @@ module RplLang
                               proc do
                                 args = stack_extract( [%i[numeric], %i[numeric]] )
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: args[1][:value] / args[0][:value] }
                               end )
 
@@ -128,7 +131,8 @@ module RplLang
                               proc do
                                 args = stack_extract( [%i[numeric], %i[numeric]] )
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: args[1][:value]**args[0][:value] }
                               end )
 
@@ -138,7 +142,8 @@ module RplLang
                               proc do
                                 args = stack_extract( [%i[numeric]] )
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: BigMath.sqrt( BigDecimal( args[0][:value], precision ), precision ) }
                               end )
 
@@ -155,7 +160,8 @@ module RplLang
                               proc do
                                 args = stack_extract( [%i[numeric]] )
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: args[0][:value].abs }
                               end )
 
@@ -204,7 +210,8 @@ module RplLang
                                           0
                                         end
 
-                                @stack << { type: :numeric, base: infer_resulting_base( args ),
+                                @stack << { type: :numeric,
+                                            base: infer_resulting_base( args ),
                                             value: value }
                               end )
 
