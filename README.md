@@ -7,6 +7,10 @@ To run REPL locally: `ruby -Ilib bin/rpl`
 To run the test suite: `find ./spec/ -name \*.rb -exec ruby -Ilib {} \;`
 
 # TODO-list
+  * objectified types:
+    ** rewrite stack_extract
+    ** rewrite runner
+    ** adapt REPL
   * pseudo filesystem: subdir for variables
   * UI toolkit (based on https://github.com/AndyObtiva/glimmer-dsl-libui ?)
 
