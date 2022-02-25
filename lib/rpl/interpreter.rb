@@ -30,32 +30,29 @@ class Interpreter
 
   def parse( input )
     is_numeric = lambda do |elt|
+      !Float(elt).nil?
+    rescue ArgumentError
       begin
-        !Float(elt).nil?
+        !Integer(elt).nil?
       rescue ArgumentError
-        begin
-          !Integer(elt).nil?
-        rescue ArgumentError
-          false
-        end
+        false
       end
     end
 
     unless input.index("\n").nil?
-      input = input
-                .split("\n")
-                .map do |line|
+      input = input.split("\n")
+                   .map do |line|
         comment_begin_index = line.index('#')
 
         if comment_begin_index.nil?
           line
-        elsif comment_begin_index == 0
+        elsif comment_begin_index.zero?
           ''
         else
           line[0..(comment_begin_index - 1)]
         end
       end
-                .join(' ')
+                   .join(' ')
     end
 
     splitted_input = input.split(' ')
@@ -118,7 +115,7 @@ class Interpreter
                             when '"'
                               :string
                             when "'"
-                              :name # TODO: check for forbidden space
+                              :name
                             else
                               if is_numeric.call( elt )
                                 :numeric

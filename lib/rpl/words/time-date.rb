@@ -3,7 +3,7 @@
 require 'date'
 
 module RplLang
-  module Core
+  module Words
     module TimeAndDate
       def populate_dictionary
         super

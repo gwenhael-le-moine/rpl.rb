@@ -8,21 +8,32 @@ Gem::Specification.new do |s|
   s.authors     = ['Gwenhael Le Moine']
   s.email       = 'gwenhael@le-moine.org'
   s.files       = ['lib/rpl.rb',
+
                    'lib/rpl/dictionary.rb',
                    'lib/rpl/interpreter.rb',
-                   'lib/rpl/core/branch.rb',
-                   'lib/rpl/core/filesystem.rb',
-                   'lib/rpl/core/general.rb',
-                   'lib/rpl/core/logarithm.rb',
-                   'lib/rpl/core/mode.rb',
-                   'lib/rpl/core/operations.rb',
-                   'lib/rpl/core/program.rb',
-                   'lib/rpl/core/stack.rb',
-                   'lib/rpl/core/store.rb',
-                   'lib/rpl/core/string-list.rb',
-                   'lib/rpl/core/test.rb',
-                   'lib/rpl/core/time-date.rb',
-                   'lib/rpl/core/trig.rb']
+                   'lib/rpl/types.rb',
+                   'lib/rpl/words.rb',
+
+                   'lib/rpl/types/boolean.rb',
+                   'lib/rpl/types/name.rb',
+                   'lib/rpl/types/list.rb',
+                   'lib/rpl/types/string.rb',
+                   'lib/rpl/types/program.rb',
+                   'lib/rpl/types/numeric.rb',
+
+                   'lib/rpl/words/branch.rb',
+                   'lib/rpl/words/filesystem.rb',
+                   'lib/rpl/words/general.rb',
+                   'lib/rpl/words/logarithm.rb',
+                   'lib/rpl/words/mode.rb',
+                   'lib/rpl/words/operations.rb',
+                   'lib/rpl/words/program.rb',
+                   'lib/rpl/words/stack.rb',
+                   'lib/rpl/words/store.rb',
+                   'lib/rpl/words/string-list.rb',
+                   'lib/rpl/words/test.rb',
+                   'lib/rpl/words/time-date.rb',
+                   'lib/rpl/words/trig.rb']
   s.homepage    = 'https://github.com/gwenhael-le-moine/rpl.rb'
   s.license     = 'GPL-3.0'
 

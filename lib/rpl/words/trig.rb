@@ -3,7 +3,7 @@
 # https://rosettacode.org/wiki/Trigonometric_functions#Ruby
 
 module RplLang
-  module Core
+  module Words
     module Trig
       def populate_dictionary
         super

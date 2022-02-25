@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RplLang
-  module Core
+  module Words
     module Program
       def populate_dictionary
         super
