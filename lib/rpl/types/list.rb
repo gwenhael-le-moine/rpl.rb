@@ -1,20 +1,24 @@
 # frozen_string_literal: true
 
-class RplList
-  attr_accessor :value
+require 'rpl/parser'
 
-  def initialize( value )
-    raise RplTypeError unless self.class.can_parse?( value )
+module Types
+  class RplList
+    attr_accessor :value
 
-    # we systematicalyl trim enclosing { }
-    @value = value[2..-3] # TODO: parse each element
-  end
+    def initialize( value )
+      raise RplTypeError unless self.class.can_parse?( value )
 
-  def to_s
-    "{ #{@value.map(&:to_s).join(' ')} }"
-  end
+      # we systematicalyl trim enclosing { }
+      @value = Parser.parse( value[2..-3] )
+    end
 
-  def self.can_parse?( value )
-    value[0] == '{' && value[-1] == '}'
+    def to_s
+      "{ #{@value.map(&:to_s).join(' ')} }"
+    end
+
+    def self.can_parse?( value )
+      value[0..1] == '{ ' && value[-2..-1] == ' }'
+    end
   end
 end

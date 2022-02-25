@@ -6,6 +6,8 @@ require 'minitest/autorun'
 require 'rpl/types'
 
 class TestTypes < MiniTest::Test
+  include Types
+
   def test_boolean
     assert_equal true, RplBoolean.can_parse?( true )
     assert_equal true, RplBoolean.can_parse?( false )
@@ -34,6 +36,8 @@ class TestTypes < MiniTest::Test
   def test_name
     assert_equal true, RplName.can_parse?( "'test'" )
     assert_equal true, RplName.can_parse?( "'test test'" ) # let's just allow spaces in names
+    assert_equal true, RplName.can_parse?( 'test' )
+    assert_equal true, RplName.can_parse?( 'test test' ) # let's just allow spaces in names
     assert_equal false, RplName.can_parse?( "'test" )
     assert_equal false, RplName.can_parse?( "test'" )
     assert_equal false, RplName.can_parse?( "''" )
@@ -81,9 +85,6 @@ class TestTypes < MiniTest::Test
     assert_equal 'test test', RplProgram.new( '« test test »' ).value
   end
 
-  def test_list
-  end
-
   def test_numeric
     assert_equal true, RplNumeric.can_parse?( BigDecimal( 1 ) )
     assert_equal true, RplNumeric.can_parse?( RplNumeric.new( 1 ) )
@@ -109,6 +110,8 @@ class TestTypes < MiniTest::Test
     assert_equal false, RplNumeric.can_parse?( 'ba7' )
     assert_equal false, RplNumeric.can_parse?( '0aba7' )
 
+    assert_equal RplNumeric, RplNumeric.new( 1 ).class
+    assert_equal RplNumeric, RplNumeric.new( 1.2 ).class
     assert_equal RplNumeric, RplNumeric.new( BigDecimal( 1 ) ).class
     assert_equal RplNumeric, RplNumeric.new( RplNumeric.new( 1 ) ).class
     assert_equal RplNumeric, RplNumeric.new( '1' ).class
@@ -125,6 +128,8 @@ class TestTypes < MiniTest::Test
     assert_equal RplNumeric, RplNumeric.new( '0o57' ).class
     assert_equal RplNumeric, RplNumeric.new( '013_ba7' ).class
 
+    assert_equal BigDecimal(1), RplNumeric.new( 1 ).value
+    assert_equal BigDecimal(1.2, 12), RplNumeric.new( 1.2 ).value
     assert_equal BigDecimal(1), RplNumeric.new( '1' ).value
     assert_equal BigDecimal(1.1, 12), RplNumeric.new( '1.1' ).value
     assert_equal BigDecimal(0.1, 12), RplNumeric.new( '.1' ).value
@@ -144,5 +149,18 @@ class TestTypes < MiniTest::Test
     assert_equal 16, RplNumeric.new( '0xfed' ).base
     assert_equal 8, RplNumeric.new( '0o57' ).base
     assert_equal 13, RplNumeric.new( '013_ba7' ).base
+  end
+
+  def test_list
+    assert_equal true, RplList.can_parse?( '{ 1 2 3 }' )
+    assert_equal false, RplList.can_parse?( '{ 1 2 3' )
+    assert_equal false, RplList.can_parse?( '1' )
+
+    assert_equal RplList, RplList.new( '{ 1 2 3 }' ).class
+
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 )],
+                 RplList.new( '{ 1 2 3 }' ).value
   end
 end

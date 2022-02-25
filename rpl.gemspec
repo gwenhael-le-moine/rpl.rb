@@ -7,10 +7,14 @@ Gem::Specification.new do |s|
   s.description = "A language inspired by HP's RPL and https://github.com/louisrubet/rpn/"
   s.authors     = ['Gwenhael Le Moine']
   s.email       = 'gwenhael@le-moine.org'
+  s.homepage    = 'https://github.com/gwenhael-le-moine/rpl.rb'
+  s.license     = 'GPL-3.0'
+
   s.files       = ['lib/rpl.rb',
 
                    'lib/rpl/dictionary.rb',
                    'lib/rpl/interpreter.rb',
+                   'lib/rpl/parser.rb',
                    'lib/rpl/types.rb',
                    'lib/rpl/words.rb',
 
@@ -34,8 +38,6 @@ Gem::Specification.new do |s|
                    'lib/rpl/words/test.rb',
                    'lib/rpl/words/time-date.rb',
                    'lib/rpl/words/trig.rb']
-  s.homepage    = 'https://github.com/gwenhael-le-moine/rpl.rb'
-  s.license     = 'GPL-3.0'
 
   s.executables << 'rpl'
 
