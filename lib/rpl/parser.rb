@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rpl/types'
-
 class Parser
   include Types
 
