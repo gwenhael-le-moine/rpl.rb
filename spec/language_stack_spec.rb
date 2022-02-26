@@ -6,12 +6,14 @@ require 'minitest/autorun'
 require 'rpl'
 
 class TestLanguageStack < MiniTest::Test
+  include Types
+
   def test_swap
     interpreter = Rpl.new
     interpreter.run '1 2 swap'
 
-    assert_equal [{ value: 2, type: :numeric, base: 10 },
-                  { value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 2 ),
+                  RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
@@ -19,7 +21,7 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 drop'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
@@ -35,7 +37,7 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 dropn'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
@@ -50,9 +52,9 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 rot'
 
-    assert_equal [{ value: 2, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
@@ -60,9 +62,9 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 dup'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 2 )],
                  interpreter.stack
   end
 
@@ -70,10 +72,10 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 dup2'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 )],
                  interpreter.stack
   end
 
@@ -81,13 +83,13 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 dupn'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 4, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 4 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 4 )],
                  interpreter.stack
   end
 
@@ -95,11 +97,11 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 pick'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 4, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 4 ),
+                  RplNumeric.new( 2 )],
                  interpreter.stack
   end
 
@@ -107,15 +109,15 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'depth'
 
-    assert_equal [{ value: 0, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 2 depth'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 2 )],
                  interpreter.stack
   end
 
@@ -123,10 +125,10 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 roll'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 4, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 4 ),
+                  RplNumeric.new( 2 )],
                  interpreter.stack
   end
 
@@ -134,10 +136,10 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 4 3 2 rolld'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 4 )],
                  interpreter.stack
   end
 
@@ -145,11 +147,11 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 over'
 
-    assert_equal [{ value: 1, type: :numeric, base: 10 },
-                  { value: 2, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 4, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 ),
+                  RplNumeric.new( 2 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 4 ),
+                  RplNumeric.new( 3 )],
                  interpreter.stack
   end
 end

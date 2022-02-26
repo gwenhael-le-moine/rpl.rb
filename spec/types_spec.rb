@@ -38,9 +38,12 @@ class TestTypes < MiniTest::Test
     assert_equal true, RplName.can_parse?( "'test test'" ) # let's just allow spaces in names
     assert_equal true, RplName.can_parse?( 'test' )
     assert_equal true, RplName.can_parse?( 'test test' ) # let's just allow spaces in names
-    assert_equal false, RplName.can_parse?( "'test" )
-    assert_equal false, RplName.can_parse?( "test'" )
+    assert_equal true, RplName.can_parse?( "'test" )
+    assert_equal true, RplName.can_parse?( "test'" )
     assert_equal false, RplName.can_parse?( "''" )
+    assert_equal false, RplName.can_parse?( "'1" )
+    assert_equal false, RplName.can_parse?( "1'" )
+    assert_equal false, RplName.can_parse?( '1' )
 
     assert_equal RplName, RplName.new( "'test'" ).class
     assert_equal RplName, RplName.new( "'test test'" ).class

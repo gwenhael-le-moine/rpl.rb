@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Stack
+      include Types
+
       def populate_dictionary
         super
 
@@ -18,9 +20,7 @@ module RplLang
         @dictionary.add_word( ['drop'],
                               'Stack',
                               '( a -- ) drop first stack element',
-                              proc do
-                                run( '1 dropn' )
-                              end )
+                              RplProgram.new( '« 1 dropn »' ) )
 
         @dictionary.add_word( ['drop2'],
                               'Stack',
@@ -33,9 +33,9 @@ module RplLang
                               'Stack',
                               '( a b … n -- ) drop first n stack elements',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                _args = stack_extract( %i[any] * args[0][:value] )
+                                _args = stack_extract( %i[any] * args[0].value )
                               end )
 
         @dictionary.add_word( ['del'],
@@ -57,24 +57,20 @@ module RplLang
         @dictionary.add_word( ['dup'],
                               'Stack',
                               '( a -- a a ) duplicate first stack element',
-                              proc do
-                                run( '1 dupn' )
-                              end )
+                              RplProgram.new( '« 1 dupn »' ) )
 
         @dictionary.add_word( ['dup2'],
                               'Stack',
                               '( a b -- a b a b ) duplicate first two stack elements',
-                              proc do
-                                run( '2 dupn' )
-                              end )
+                              RplProgram.new( '« 2 dupn »' ) )
 
         @dictionary.add_word( ['dupn'],
                               'Stack',
                               '( a b … n -- a b … a b … ) duplicate first n stack elements',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
-                                n = args[0][:value].to_i
-                                args = stack_extract( %i[any] * args[0][:value] )
+                                args = stack_extract( [[RplNumeric]] )
+                                n = args[0].value.to_i
+                                args = stack_extract( %i[any] * args[0].value )
 
                                 args.reverse!
 
@@ -89,9 +85,9 @@ module RplLang
                               'Stack',
                               '( … b … n -- … b … b ) push a copy of the given stack level onto the stack',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
-                                n = args[0][:value].to_i
-                                args = stack_extract( %i[any] * args[0][:value] )
+                                args = stack_extract( [[RplNumeric]] )
+                                n = args[0].value.to_i
+                                args = stack_extract( %i[any] * args[0].value )
 
                                 args.reverse!
 
@@ -106,16 +102,16 @@ module RplLang
                               'Stack',
                               '( … -- … n ) push stack depth onto the stack',
                               proc do
-                                @stack << { type: :numeric, base: 10, value: BigDecimal( stack.size ) }
+                                @stack << RplNumeric.new( stack.size )
                               end )
 
         @dictionary.add_word( ['roll'],
                               'Stack',
                               '( … a -- a … ) move a stack element to the top of the stack',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
-                                n = args[0][:value]
-                                args = stack_extract( %i[any] * args[0][:value] )
+                                args = stack_extract( [[RplNumeric]] )
+                                n = args[0].value
+                                args = stack_extract( %i[any] * args[0].value )
 
                                 args.reverse!
 
@@ -130,9 +126,9 @@ module RplLang
                               'Stack',
                               '( a … -- … a ) move the element on top of the stack to a higher stack position',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
-                                n = args[0][:value]
-                                args = stack_extract( %i[any] * args[0][:value] )
+                                args = stack_extract( [[RplNumeric]] )
+                                n = args[0].value
+                                args = stack_extract( %i[any] * args[0].value )
 
                                 args.reverse!
 
@@ -146,9 +142,7 @@ module RplLang
         @dictionary.add_word( ['over'],
                               'Stack',
                               '( a b -- a b a ) push a copy of the element in stack level 2 onto the stack',
-                              proc do
-                                run( '2 pick' )
-                              end )
+                              RplProgram.new( '« 2 pick »' ) )
       end
     end
   end

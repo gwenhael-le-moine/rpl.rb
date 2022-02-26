@@ -6,16 +6,18 @@ require 'minitest/autorun'
 require 'rpl'
 
 class TestLanguageBranch < MiniTest::Test
+  include Types
+
   def test_loop
     interpreter = Rpl.new
     interpreter.run '« "hello no." swap + » 11 16 loop'
 
-    assert_equal [{ value: 'hello no.11', type: :string },
-                  { value: 'hello no.12', type: :string },
-                  { value: 'hello no.13', type: :string },
-                  { value: 'hello no.14', type: :string },
-                  { value: 'hello no.15', type: :string },
-                  { value: 'hello no.16', type: :string }],
+    assert_equal [RplString.new( '"hello no.11"' ),
+                  RplString.new( '"hello no.12"' ),
+                  RplString.new( '"hello no.13"' ),
+                  RplString.new( '"hello no.14"' ),
+                  RplString.new( '"hello no.15"' ),
+                  RplString.new( '"hello no.16"' )],
                  interpreter.stack
   end
 
@@ -23,11 +25,11 @@ class TestLanguageBranch < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '« "hello no." swap + » 5 times'
 
-    assert_equal [{ value: 'hello no.0', type: :string },
-                  { value: 'hello no.1', type: :string },
-                  { value: 'hello no.2', type: :string },
-                  { value: 'hello no.3', type: :string },
-                  { value: 'hello no.4', type: :string }],
+    assert_equal [RplString.new( '"hello no.0"' ),
+                  RplString.new( '"hello no.1"' ),
+                  RplString.new( '"hello no.2"' ),
+                  RplString.new( '"hello no.3"' ),
+                  RplString.new( '"hello no.4"' )],
                  interpreter.stack
   end
 
@@ -35,13 +37,13 @@ class TestLanguageBranch < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'true « 2 3 + » « 2 3 - » ifte'
 
-    assert_equal [{ value: 5, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 5 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run 'false « 2 3 + » « 2 3 - » ifte'
 
-    assert_equal [{ value: -1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -1 )],
                  interpreter.stack
   end
 
@@ -49,7 +51,7 @@ class TestLanguageBranch < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'true « 2 3 + » ift'
 
-    assert_equal [{ value: 5, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 5 )],
                  interpreter.stack
 
     interpreter = Rpl.new

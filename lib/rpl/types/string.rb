@@ -18,5 +18,10 @@ module Types
     def self.can_parse?( value )
       value[0] == '"' && value[-1] == '"'
     end
+
+    def ==( other )
+      other.class == RplString and
+        other.value == value
+    end
   end
 end

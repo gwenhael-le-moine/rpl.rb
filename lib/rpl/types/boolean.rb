@@ -23,5 +23,10 @@ module Types
 
       %w[TrueClass FalseClass].include?( value.class.to_s )
     end
+
+    def ==( other )
+      other.class == RplBoolean and
+        other.value == value
+    end
   end
 end

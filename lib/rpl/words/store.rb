@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Store
+      include Types
+
       def populate_dictionary
         super
 
@@ -10,9 +12,9 @@ module RplLang
                               'Store',
                               '( content name -- ) store to variable',
                               proc do
-                                args = stack_extract( [%i[name], :any] )
+                                args = stack_extract( [[RplName], :any] )
 
-                                @dictionary.add_var( args[0][:value],
+                                @dictionary.add_var( args[0].value,
                                                      args[1] )
                               end )
 
@@ -20,9 +22,9 @@ module RplLang
                               'Store',
                               '( name -- … ) push content of variable name onto stack',
                               proc do
-                                args = stack_extract( [%i[name]] )
+                                args = stack_extract( [[RplName]] )
 
-                                content = @dictionary.lookup( args[0][:value] )
+                                content = @dictionary.lookup( args[0].value )
 
                                 @stack << content unless content.nil?
                               end )
@@ -31,17 +33,16 @@ module RplLang
                               'Store',
                               '( name -- ) delete variable',
                               proc do
-                                args = stack_extract( [%i[name]] )
+                                args = stack_extract( [[RplName]] )
 
-                                @dictionary.remove_var( args[0][:value] )
+                                @dictionary.remove_var( args[0].value )
                               end )
 
         @dictionary.add_word( ['vars'],
                               'Store',
                               '( -- […] ) list variables',
                               proc do
-                                @stack << { type: :list,
-                                            value: (@dictionary.vars.keys + @dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys }).map { |name| { type: :name, value: name } } }
+                                @stack << RplList.new( (@dictionary.vars.keys + @dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys }).map { |name| RplName.new( name ) } )
                               end )
 
         @dictionary.add_word( ['clusr'],
@@ -54,68 +55,52 @@ module RplLang
         @dictionary.add_word( ['sto+'],
                               'Store',
                               '( a n -- ) add content to variable\'s value',
-                              proc do
-                                run( '
-  dup type "name" ==
+                              RplProgram.new( '« dup type "Name" ==
   « swap »
   ift
-  over rcl + swap sto' )
-                              end )
+  over rcl + swap sto »' ) )
 
         @dictionary.add_word( ['sto-'],
                               'Store',
                               '( a n -- ) subtract content to variable\'s value',
-                              proc do
-                                run( '
-  dup type "name" ==
+                              RplProgram.new( '« dup type "Name" ==
   « swap »
   ift
-  over rcl swap - swap sto' )
-                              end )
+  over rcl swap - swap sto »' ) )
 
         @dictionary.add_word( ['sto×', 'sto*'],
                               'Store',
                               '( a n -- ) multiply content of variable\'s value',
-                              proc do
-                                run( '
-  dup type "name" ==
+                              RplProgram.new( '« dup type "Name" ==
   « swap »
   ift
-  over rcl * swap sto' )
-                              end )
+  over rcl * swap sto »' ) )
 
         @dictionary.add_word( ['sto÷', 'sto/'],
                               'Store',
                               '( a n -- ) divide content of variable\'s value',
-                              proc do
-                                run( '
-  dup type "name" ==
+                              RplProgram.new( '« dup type "Name" ==
   « swap »
   ift
-  over rcl swap / swap sto' )
-                              end )
+  over rcl swap / swap sto »' ) )
 
         @dictionary.add_word( ['sneg'],
                               'Store',
                               '( a n -- ) negate content of variable\'s value',
-                              proc do
-                                run( 'dup rcl chs swap sto' )
-                              end )
+                              RplProgram.new( '« dup rcl chs swap sto »' ) )
 
         @dictionary.add_word( ['sinv'],
                               'Store',
                               '( a n -- ) invert content of variable\'s value',
-                              proc do
-                                run( 'dup rcl inv swap sto' )
-                              end )
+                              RplProgram.new( '« dup rcl inv swap sto »' ) )
 
         @dictionary.add_word( ['↴', 'lsto'],
                               'Program',
                               '( content name -- ) store to local variable',
                               proc do
-                                args = stack_extract( [%i[name], :any] )
+                                args = stack_extract( [[RplName], :any] )
 
-                                @dictionary.add_local_var( args[0][:value],
+                                @dictionary.add_local_var( args[0].value,
                                                            args[1] )
                               end )
       end

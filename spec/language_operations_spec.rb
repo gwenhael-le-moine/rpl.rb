@@ -6,312 +6,309 @@ require 'minitest/autorun'
 require 'rpl'
 
 class TesttLanguageOperations < MiniTest::Test
+  include Types
+
   def test_add
     interpreter = Rpl.new
     interpreter.run '1 2 +'
-    assert_equal [{ value: 3, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 3 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 "a" +'
-    assert_equal [{ value: '1a', type: :string }],
+    assert_equal [RplString.new( '"1a"' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 \'a\' +'
-    assert_equal [{ value: '1a', type: :string }],
+    assert_equal [RplName.new( "'1a'" )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 dup dup →list +'
-    assert_equal [{ value: [{ value: 1, type: :numeric, base: 10 },
-                            { value: 1, type: :numeric, base: 10 }],
-                    type: :list }],
+    assert_equal [RplList.new( [RplNumeric.new( 1 ),
+                                RplNumeric.new( 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '"a" "b" +'
-    assert_equal [{ value: 'ab', type: :string }],
+    assert_equal [RplString.new( '"ab"' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '"a" \'b\' +'
-    assert_equal [{ value: 'ab', type: :string }],
+    assert_equal [RplString.new( '"ab"' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '"a" 1 +'
-    assert_equal [{ value: 'a1', type: :string }],
+    assert_equal [RplString.new( '"a1"' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '"a" 1 dup →list +'
-    assert_equal [{ value: [{ value: 'a', type: :string },
-                            { value: 1, type: :numeric, base: 10 }],
-                    type: :list }],
+    assert_equal [RplList.new( [RplString.new( '"a"' ),
+                                RplNumeric.new( 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '\'a\' 1 +'
-    assert_equal [{ value: 'a1', type: :name }],
+    assert_equal [RplName.new( 'a1' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '\'a\' "b" +'
-    assert_equal [{ value: 'ab', type: :string }],
+    assert_equal [RplString.new( '"ab"' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '\'a\' \'b\' +'
-    assert_equal [{ value: 'ab', type: :name }],
+    assert_equal [RplName.new( "'ab'" )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '\'a\' 1 dup →list +'
-    assert_equal [{ value: [{ value: 'a', type: :name },
-                            { value: 1, type: :numeric, base: 10 }],
-                    type: :list }],
+    assert_equal [RplList.new( [RplName.new( 'a' ),
+                                RplNumeric.new( 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 a "test" 3 →list dup rev +'
-    assert_equal [{ type: :list,
-                    value: [{ value: 1, type: :numeric, base: 10 },
-                            { type: :name, value: 'a' },
-                            { value: 'test', type: :string },
-                            { value: 'test', type: :string },
-                            { type: :name, value: 'a' },
-                            { value: 1, type: :numeric, base: 10 }] }],
+    assert_equal [RplList.new( [RplNumeric.new( 1 ),
+                                RplName.new( 'a' ),
+                                RplString.new( '"test"' ),
+                                RplString.new( '"test"' ),
+                                RplName.new( 'a' ),
+                                RplNumeric.new( 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 a "test" 3 →list 9 +'
-    assert_equal [{ type: :list,
-                    value: [{ value: 1, type: :numeric, base: 10 },
-                            { type: :name, value: 'a' },
-                            { value: 'test', type: :string },
-                            { value: 9, type: :numeric, base: 10 }] }],
+    assert_equal [RplList.new( [RplNumeric.new( 1 ),
+                                RplName.new( 'a' ),
+                                RplString.new( '"test"' ),
+                                RplNumeric.new( 9 )] )],
                  interpreter.stack
   end
 
   def test_subtract
     interpreter = Rpl.new
     interpreter.run '1 2 -'
-    assert_equal [{ value: -1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -1 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '2 1 -'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
   def test_negate
     interpreter = Rpl.new
     interpreter.run '-1 chs'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 chs'
-    assert_equal [{ value: -1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -1 )],
                  interpreter.stack
   end
 
   def test_multiply
     interpreter = Rpl.new
     interpreter.run '3 4 *'
-    assert_equal [{ value: 12, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 12 )],
                  interpreter.stack
   end
 
   def test_divide
     interpreter = Rpl.new
     interpreter.run '3.0 4 /'
-    assert_equal [{ value: 0.75, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0.75 )],
                  interpreter.stack
   end
 
   def test_inverse
     interpreter = Rpl.new
     interpreter.run '4 inv'
-    assert_equal [{ value: 0.25, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0.25 )],
                  interpreter.stack
   end
 
   def test_power
     interpreter = Rpl.new
     interpreter.run '3 4 ^'
-    assert_equal [{ value: 81, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 81 )],
                  interpreter.stack
   end
 
   def test_sqrt
     interpreter = Rpl.new
     interpreter.run '16 √'
-    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 4 )],
                  interpreter.stack
   end
 
   def test_sq
     interpreter = Rpl.new
     interpreter.run '4 sq'
-    assert_equal [{ value: 16, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 16 )],
                  interpreter.stack
   end
 
   def test_abs
     interpreter = Rpl.new
     interpreter.run '-1 abs'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 abs'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
   def test_dec
     interpreter = Rpl.new
     interpreter.run '0x1 dec'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
   def test_hex
     interpreter = Rpl.new
     interpreter.run '1 hex'
-    assert_equal [{ value: 1, type: :numeric, base: 16 }],
+    assert_equal [RplNumeric.new( 1, 16 )],
                  interpreter.stack
   end
 
   def test_bin
     interpreter = Rpl.new
     interpreter.run '1 bin'
-    assert_equal [{ value: 1, type: :numeric, base: 2 }],
+    assert_equal [RplNumeric.new( 1, 2 )],
                  interpreter.stack
   end
 
   def test_base
     interpreter = Rpl.new
     interpreter.run '1 31 base'
-    assert_equal [{ value: 1, type: :numeric, base: 31 }],
+    assert_equal [RplNumeric.new( 1, 31 )],
                  interpreter.stack
   end
 
   def test_sign
     interpreter = Rpl.new
     interpreter.run '-10 sign'
-    assert_equal [{ value: -1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -1 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '10 sign'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '0 sign'
-    assert_equal [{ value: 0, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0 )],
                  interpreter.stack
   end
 
   def test_percent
     interpreter = Rpl.new
     interpreter.run '2 33 %'
-    assert_equal [{ value: 0.66, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0.66 )],
                  interpreter.stack
   end
 
   def test_inverse_percent
     interpreter = Rpl.new
     interpreter.run '2 0.66 %CH'
-    assert_equal [{ value: 33, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 33 )],
                  interpreter.stack
   end
 
   def test_mod
     interpreter = Rpl.new
     interpreter.run '9 4 mod'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
   def test_fact
     interpreter = Rpl.new
     interpreter.run '5 !'
-    assert_equal [{ value: 24, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 24 )],
                  interpreter.stack
   end
 
   def test_floor
     interpreter = Rpl.new
     interpreter.run '5.23 floor'
-    assert_equal [{ value: 5, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 5 )],
                  interpreter.stack
   end
 
   def test_ceil
     interpreter = Rpl.new
     interpreter.run '5.23 ceil'
-    assert_equal [{ value: 6, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 6 )],
                  interpreter.stack
   end
 
   def test_min
     interpreter = Rpl.new
     interpreter.run '1 2 min'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '2 1 min'
-    assert_equal [{ value: 1, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
   end
 
   def test_max
     interpreter = Rpl.new
     interpreter.run '1 2 max'
-    assert_equal [{ value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 2 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '2 1 max'
-    assert_equal [{ value: 2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 2 )],
                  interpreter.stack
   end
 
   def test_ip
     interpreter = Rpl.new
     interpreter.run '3.14 ip'
-    assert_equal [{ value: 3, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 3 )],
                  interpreter.stack
   end
 
   def test_fp
     interpreter = Rpl.new
     interpreter.run '3.14 fp'
-    assert_equal [{ value: 0.14, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0.14 )],
                  interpreter.stack
   end
 
   def test_mant
     interpreter = Rpl.new
     interpreter.run '123.456 mant -123.456 mant 0 mant'
-    assert_equal [{ type: :numeric, base: 10, value: BigDecimal( 0.123456, interpreter.precision ) },
-                  { type: :numeric, base: 10, value: BigDecimal( 0.123456, interpreter.precision ) },
-                  { type: :numeric, base: 10, value: BigDecimal( 0 ) }],
+    assert_equal [RplNumeric.new( 0.123456 ),
+                  RplNumeric.new( 0.123456 ),
+                  RplNumeric.new( 0 )],
                  interpreter.stack
   end
 
   def test_xpon
     interpreter = Rpl.new
     interpreter.run '123.456 xpon -123.456 xpon 0 xpon'
-    assert_equal [{ value: 3, type: :numeric, base: 10 },
-                  { value: 3, type: :numeric, base: 10 },
-                  { value: 0, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 3 ),
+                  RplNumeric.new( 3 ),
+                  RplNumeric.new( 0 )],
                  interpreter.stack
   end
 end

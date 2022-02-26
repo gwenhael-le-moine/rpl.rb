@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Program
+      include Types
+
       def populate_dictionary
         super
 
@@ -12,10 +14,10 @@ module RplLang
                               proc do
                                 args = stack_extract( [:any] )
 
-                                if %i[list numeric boolean].include?( args[0][:type] )
+                                if [RplList, RplNumeric, RplBoolean].include?( args[0].class )
                                   @stack << args[0] # these types evaluate to themselves
                                 else
-                                  run( args[0][:value].to_s )
+                                  run( args[0].value.to_s )
                                 end
                               end )
       end

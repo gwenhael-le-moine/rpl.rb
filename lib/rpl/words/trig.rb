@@ -5,6 +5,8 @@
 module RplLang
   module Words
     module Trig
+      include Types
+
       def populate_dictionary
         super
 
@@ -12,49 +14,38 @@ module RplLang
                               'Trig on reals and complexes',
                               '( … -- 𝛑 ) push 𝛑',
                               proc do
-                                @stack << { type: :numeric,
-                                            base: 10,
-                                            value: BigMath.PI( precision ) }
+                                @stack << RplNumeric.new( BigMath.PI( RplNumeric.precision ) )
                               end )
 
         @dictionary.add_word( ['sin'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute sinus of n',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: BigMath.sin( BigDecimal( args[0][:value], precision ), precision ) }
+                                @stack << RplNumeric.new( BigMath.sin( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
                               end )
 
         @dictionary.add_word( ['asin'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute arg-sinus of n',
-                              proc do
-                                run( '
-  dup abs 1 ==
+                              RplProgram.new( '« dup abs 1 ==
   « 𝛑 2 / * »
   « dup sq 1 swap - sqrt / atan »
-  ifte' )
-                              end )
+  ifte »' ) )
 
         @dictionary.add_word( ['cos'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute cosinus of n',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: BigMath.cos( BigDecimal( args[0][:value], precision ), precision ) }
+                                @stack << RplNumeric.new( BigMath.cos( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
                               end )
         @dictionary.add_word( ['acos'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute arg-cosinus of n',
-                              proc do
-                                run( '
-  dup 0 ==
+                              RplProgram.new( '« dup 0 ==
   « drop 𝛑 2 / »
   «
     dup sq 1 swap - sqrt / atan
@@ -62,38 +53,31 @@ module RplLang
     « 𝛑 + »
     ift
   »
-  ifte' )
-                              end )
+  ifte »' ) )
 
         @dictionary.add_word( ['tan'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute tangent of n',
-                              proc do
-                                run( 'dup sin swap cos /' )
-                              end )
+                              RplProgram.new( '« dup sin swap cos / »' ) )
 
         @dictionary.add_word( ['atan'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute arc-tangent of n',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: BigMath.atan( BigDecimal( args[0][:value], precision ), precision ) }
-                              end)
+                                @stack << RplNumeric.new( BigMath.atan( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
+                              end )
+
         @dictionary.add_word( ['d→r', 'd->r'],
                               'Trig on reals and complexes',
                               '( n -- m ) convert degree to radian',
-                              proc do
-                                run( '180 / 𝛑 *' )
-                              end )
+                              RplProgram.new( '« 180 / 𝛑 * »' ) )
+
         @dictionary.add_word( ['r→d', 'r->d'],
                               'Trig on reals and complexes',
                               '( n -- m ) convert radian to degree',
-                              proc do
-                                run( '𝛑 180 / /' )
-                              end)
+                              RplProgram.new( '« 𝛑 180 / / »' ) )
       end
     end
   end

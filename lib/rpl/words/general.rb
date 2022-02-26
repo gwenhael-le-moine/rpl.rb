@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module General
+      include Types
+
       def populate_dictionary
         super
 
@@ -15,12 +17,11 @@ module RplLang
                               'General',
                               '( w -- s ) pop help string of the given word',
                               proc do
-                                args = stack_extract( [%i[name]] )
+                                args = stack_extract( [[RplName]] )
 
-                                word = @dictionary.words[ args[0][:value] ]
+                                word = @dictionary.words[ args[0].value ]
 
-                                @stack << { type: :string,
-                                            value: "#{args[0][:value]}: #{word.nil? ? 'not a core word' : word[:help]}" }
+                                @stack << RplString.new( "\"#{args[0].value}: #{word.nil? ? 'not a core word' : word[:help]}\"" )
                               end )
 
         @dictionary.add_word( ['words'],
@@ -45,14 +46,14 @@ module RplLang
                               'General',
                               '( -- n ) Pop the interpreter\'s version number',
                               proc do
-                                @stack += parse( @version.to_s )
+                                @stack += Parser.parse( @version.to_s )
                               end )
 
         @dictionary.add_word( ['uname'],
                               'General',
                               '( -- s ) Pop the interpreter\'s complete indentification string',
                               proc do
-                                @stack += parse( "\"Rpl Interpreter version #{@version}\"" )
+                                @stack += Parser.parse( "\"Rpl Interpreter version #{@version}\"" )
                               end )
 
         @dictionary.add_word( ['history'],

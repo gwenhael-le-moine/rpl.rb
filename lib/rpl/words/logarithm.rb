@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Logarithm
+      include Types
+
       def populate_dictionary
         super
 
@@ -10,9 +12,7 @@ module RplLang
                               'Logs on reals and complexes',
                               '( … -- ℇ ) push ℇ',
                               proc do
-                                @stack << { type: :numeric,
-                                            base: 10,
-                                            value: BigMath.E( @precision ) }
+                                @stack << RplNumeric.new( BigMath.E( RplNumeric.precision ) )
                               end )
 
         # @dictionary.add_word( ['ln'],

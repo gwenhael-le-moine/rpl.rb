@@ -6,12 +6,14 @@ require 'minitest/autorun'
 require 'rpl'
 
 class TestLanguageTimeDate < MiniTest::Test
+  include Types
+
   def test_time
     now = Time.now.to_s
     interpreter = Rpl.new
     interpreter.run 'time'
 
-    assert_equal [{ value: now, type: :string }],
+    assert_equal [RplString.new( "\"#{now}\"" )],
                  interpreter.stack
   end
 
@@ -20,7 +22,7 @@ class TestLanguageTimeDate < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'date'
 
-    assert_equal [{ value: now, type: :string }],
+    assert_equal [RplString.new( "\"#{now}\"" )],
                  interpreter.stack
   end
 
@@ -29,7 +31,7 @@ class TestLanguageTimeDate < MiniTest::Test
     interpreter.run 'ticks'
 
     # TODO: better test, but how?
-    assert_equal :numeric,
-                 interpreter.stack[0][:type]
+    assert_equal RplNumeric,
+                 interpreter.stack[0].class
   end
 end

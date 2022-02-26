@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module StringAndList
+      include Types
+
       def populate_dictionary
         super
 
@@ -12,37 +14,35 @@ module RplLang
                               proc do
                                 args = stack_extract( [:any] )
 
-                                @stack << { type: :string,
-                                            value: stringify( args[0] ) }
+                                @stack << RplString.new( "\"#{args[0]}\"" )
                               end )
 
         @dictionary.add_word( ['str→', 'str->'],
                               'String',
                               '( s -- a ) convert string to element',
                               proc do
-                                args = stack_extract( [%i[string]] )
+                                args = stack_extract( [[RplString]] )
 
-                                @stack += parse( args[0][:value] )
+                                @stack += Parser.parse( args[0].value )
                               end )
 
         @dictionary.add_word( ['→list', '->list'],
                               'Lists',
                               '( … x -- […] ) pack x stacks levels into a list',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
-                                args = stack_extract( %i[any] * args[0][:value] )
+                                args = stack_extract( [[RplNumeric]] )
+                                args = stack_extract( %i[any] * args[0].value )
 
-                                @stack << { type: :list,
-                                            value: args.reverse }
+                                @stack << RplList.new( args.reverse )
                               end )
 
         @dictionary.add_word( ['list→', 'list->'],
                               'Lists',
                               '( […] -- … ) unpack list on stack',
                               proc do
-                                args = stack_extract( [%i[list]] )
+                                args = stack_extract( [[RplList]] )
 
-                                args[0][:value].each do |elt|
+                                args[0].value.each do |elt|
                                   @stack << elt
                                 end
                               end )
@@ -51,83 +51,66 @@ module RplLang
                               'String',
                               '( n -- c ) convert ASCII character code in stack level 1 into a string',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :string,
-                                            value: args[0][:value].to_i.chr }
+                                @stack << RplString.new( "\"#{args[0].value.to_i.chr}\"" )
                               end )
 
         @dictionary.add_word( ['num'],
                               'String',
                               '( s -- n ) return ASCII code of the first character of the string in stack level 1 as a real number',
                               proc do
-                                args = stack_extract( [%i[string]] )
+                                args = stack_extract( [[RplString]] )
 
-                                @stack << { type: :numeric,
-                                            base: 10,
-                                            value: BigDecimal( args[0][:value].ord ) }
+                                @stack << RplNumeric.new( args[0].value.ord )
                               end )
 
         @dictionary.add_word( ['size'],
                               'String',
                               '( s -- n ) return the length of the string or list',
                               proc do
-                                args = stack_extract( [%i[string list]] )
+                                args = stack_extract( [[RplString, RplList]] )
 
-                                @stack << { type: :numeric,
-                                            base: 10,
-                                            value: BigDecimal( args[0][:value].length ) }
+                                @stack << RplNumeric.new( args[0].value.length )
                               end )
 
         @dictionary.add_word( ['pos'],
                               'String',
                               '( s s -- n ) search for the string in level 1 within the string in level 2',
                               proc do
-                                args = stack_extract( [%i[string], %i[string]] )
+                                args = stack_extract( [[RplString], [RplString]] )
 
-                                @stack << { type: :numeric,
-                                            base: 10,
-                                            value: BigDecimal( args[1][:value].index( args[0][:value] ) ) }
+                                @stack << RplNumeric.new( args[1].value.index( args[0].value ) )
                               end )
 
         @dictionary.add_word( ['sub'],
                               'String',
                               '( s n n -- s ) return a substring of the string in level 3',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric], %i[string]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric], [RplString]] )
 
-                                @stack << { type: :string,
-                                            value: args[2][:value][ (args[1][:value] - 1)..(args[0][:value] - 1) ] }
+                                @stack << RplString.new( "\"#{args[2].value[ (args[1].value - 1)..(args[0].value - 1) ]}\"" )
                               end )
 
         @dictionary.add_word( ['rev'],
                               'String',
                               '( s -- s ) reverse string or list',
                               proc do
-                                args = stack_extract( [%i[string list]] )
+                                args = stack_extract( [[RplString, RplList]] )
 
-                                result = args[0]
+                                args[0].value.reverse!
 
-                                case args[0][:type]
-                                when :string
-                                  result = { type: :string,
-                                             value: args[0][:value].reverse }
-                                when :list
-                                  result[:value].reverse!
-                                end
-
-                                @stack << result
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['split'],
                               'String',
                               '( s c -- … ) split string s on character c',
                               proc do
-                                args = stack_extract( [%i[string], %i[string]] )
+                                args = stack_extract( [[RplString], [RplString]] )
 
-                                args[1][:value].split( args[0][:value] ).each do |elt|
-                                  @stack << { type: :string,
-                                              value: elt }
+                                args[1].value.split( args[0].value ).each do |elt|
+                                  @stack << RplString.new( "\"#{elt}\"" )
                                 end
                               end )
 
@@ -135,14 +118,14 @@ module RplLang
                               'Lists',
                               '( […] prg -- … ) run prg on each element of a list',
                               proc do
-                                args = stack_extract( [%i[program], %i[list]] )
+                                args = stack_extract( [[RplProgram], [RplList]] )
 
-                                args[1][:value].each do |elt|
+                                args[1].value.each do |elt|
                                   @stack << elt
-                                  run( args[0][:value] )
+                                  run( args[0].value )
                                 end
 
-                                run( "#{args[1][:value].length} →list" )
+                                run( "#{args[1].value.length} →list" )
                               end )
       end
     end

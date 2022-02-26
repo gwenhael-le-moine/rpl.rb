@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Test
+      include Types
+
       def populate_dictionary
         super
 
@@ -12,8 +14,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] > args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value > args[0].value )
                               end )
 
         @dictionary.add_word( ['≥', '>='],
@@ -22,8 +23,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] >= args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value >= args[0].value )
                               end )
 
         @dictionary.add_word( ['<'],
@@ -32,8 +32,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] < args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value < args[0].value )
                               end )
 
         @dictionary.add_word( ['≤', '<='],
@@ -42,8 +41,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] <= args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value <= args[0].value )
                               end )
 
         @dictionary.add_word( ['≠', '!='],
@@ -52,8 +50,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] != args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value != args[0].value )
                               end )
 
         @dictionary.add_word( ['==', 'same'],
@@ -62,64 +59,57 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] == args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value == args[0].value )
                               end )
 
         @dictionary.add_word( ['and'],
                               'Test',
                               '( a b -- t ) boolean and',
                               proc do
-                                args = stack_extract( [%i[boolean], %i[boolean]] )
+                                args = stack_extract( [[RplBoolean], [RplBoolean]] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] && args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value && args[0].value )
                               end )
 
         @dictionary.add_word( ['or'],
                               'Test',
                               '( a b -- t ) boolean or',
                               proc do
-                                args = stack_extract( [%i[boolean], %i[boolean]] )
+                                args = stack_extract( [[RplBoolean], [RplBoolean]] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] || args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value || args[0].value )
                               end )
 
         @dictionary.add_word( ['xor'],
                               'Test',
                               '( a b -- t ) boolean xor',
                               proc do
-                                args = stack_extract( [%i[boolean], %i[boolean]] )
+                                args = stack_extract( [[RplBoolean], [RplBoolean]] )
 
-                                @stack << { type: :boolean,
-                                            value: args[1][:value] ^ args[0][:value] }
+                                @stack << RplBoolean.new( args[1].value ^ args[0].value )
                               end )
 
         @dictionary.add_word( ['not'],
                               'Test',
                               '( a -- t ) invert boolean value',
                               proc do
-                                args = stack_extract( [%i[boolean]] )
+                                args = stack_extract( [[RplBoolean]] )
 
-                                @stack << { type: :boolean,
-                                            value: !args[0][:value] }
+                                @stack << RplBoolean.new(!args[0].value )
                               end )
 
         @dictionary.add_word( ['true'],
                               'Test',
                               '( -- t ) push true onto stack',
                               proc do
-                                @stack << { type: :boolean,
-                                            value: true }
+                                @stack << RplBoolean.new( true )
                               end )
 
         @dictionary.add_word( ['false'],
                               'Test',
                               '( -- t ) push false onto stack',
                               proc do
-                                @stack << { type: :boolean,
-                                            value: false }
+                                @stack << RplBoolean.new( false )
                               end )
       end
     end

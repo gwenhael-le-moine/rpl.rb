@@ -6,24 +6,26 @@ require 'minitest/autorun'
 require 'rpl'
 
 class TestLanguageFileSystem < MiniTest::Test
+  include Types
+
   def test_fread
     interpreter = Rpl.new
     interpreter.run '"./spec/test.rpl" fread'
 
-    assert_equal [{:type=>:string, :value=>"1 2 +\n\n« dup dup * * »\n'trrr' sto\n\ntrrr\n"}],
+    assert_equal [RplString.new( "\"1 2 +\n\n« dup dup * * »\n'trrr' sto\n\ntrrr\n\"" )],
                  interpreter.stack
 
     interpreter.run 'eval vars'
-    assert_equal [{ value: 27, base: 10, type: :numeric },
-                  { value: [{ type: :name, value: 'trrr' }], type: :list }],
+    assert_equal [RplNumeric.new( 27 ),
+                  RplList.new( [ RplName.new( 'trrr' ) ] )],
                  interpreter.stack
   end
 
   def test_feval
     interpreter = Rpl.new
     interpreter.run '"spec/test.rpl" feval vars'
-    assert_equal [{ value: 27, base: 10, type: :numeric },
-                  { value: [{ type: :name, value: 'trrr' }], type: :list }],
+    assert_equal [RplNumeric.new( 27 ),
+                  RplList.new( [ RplName.new( 'trrr' ) ] )],
                  interpreter.stack
   end
 

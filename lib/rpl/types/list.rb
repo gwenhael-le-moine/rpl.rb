@@ -9,8 +9,12 @@ module Types
     def initialize( value )
       raise RplTypeError unless self.class.can_parse?( value )
 
-      # we systematicalyl trim enclosing { }
-      @value = Parser.parse( value[2..-3] )
+      @value = if value.instance_of?( Array )
+                 value
+               else
+                 # we systematicalyl trim enclosing { }
+                 Parser.parse( value[2..-3] )
+               end
     end
 
     def to_s
@@ -18,7 +22,13 @@ module Types
     end
 
     def self.can_parse?( value )
-      value[0..1] == '{ ' && value[-2..-1] == ' }'
+      value.instance_of?( Array ) or
+        value[0..1] == '{ ' && value[-2..-1] == ' }'
+    end
+
+    def ==( other )
+      other.class == RplList and
+        other.value == value
     end
   end
 end

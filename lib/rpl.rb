@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'rpl/types'
-
 require 'rpl/interpreter'
-
+require 'rpl/types'
 require 'rpl/words'
 
 class Rpl < Interpreter
+  include Types
+
   def initialize( stack = [], dictionary = Dictionary.new )
     super
 

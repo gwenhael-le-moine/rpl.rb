@@ -7,10 +7,22 @@ module Types
     attr_accessor :value,
                   :base
 
+    @@precision = 12 # rubocop:disable Style/ClassVars
+
+    def self.default_precision
+      @@precision = 12 # rubocop:disable Style/ClassVars
+    end
+
+    def self.precision
+      @@precision
+    end
+
+    def self.precision=( precision )
+      @@precision = precision.to_i # rubocop:disable Style/ClassVars
+    end
+
     def initialize( value, base = 10 )
       raise RplTypeError unless self.class.can_parse?( value )
-
-      @@precision = 12 # rubocop:disable Style/ClassVars
 
       @base = base
 
@@ -51,12 +63,6 @@ module Types
           @value = BigDecimal( value, @@precision )
         end
       end
-    end
-
-    def self.precision=( precision )
-      raise RplTypeError unless precision.is_a? RplNumeric
-
-      @@precision = precision.value.to_i # rubocop:disable Style/ClassVars
     end
 
     def to_s
@@ -104,12 +110,6 @@ module Types
       other.class == RplNumeric and
         other.base == base and
         other.value == value
-    end
-
-    def self.infer_resulting_base( numerics )
-      10 if numerics.length.zero?
-
-      numerics.last.base
     end
   end
 end

@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Operations
+      include Types
+
       def populate_dictionary
         super
 
@@ -11,69 +13,70 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a b -- c ) addition',
                               proc do
-                                addable = %i[numeric string name list]
+                                addable = [RplNumeric, RplString, RplName, RplList]
                                 args = stack_extract( [addable, addable] )
-                                # | +         | 1 numeric | 1 string | 1 name | 1 list |
+                                # | +         | 1 numeric | 1 string | 1 name |v1 list |
                                 # |-----------+-----------+----------+--------+--------|
-                                # | 0 numeric | numeric   | string   | name   | list   |
-                                # | 0 string  | string    | string   | string | list   |
-                                # | 0 name    | string    | string   | name   | list   |
-                                # | 0 list    | list      | list     | list   | list   |
+                                # | 0 numeric | numeric   | string   | name   |vlist   |
+                                # |v0 string  |vstring    |vstring   |vstring |vlist   |
+                                # |v0 name    |vstring    |vstring   |vname   |vlist   |
+                                # |v0 list    |vlist      |vlist     |vlist   |vlist   |
 
-                                result = { type: case args[0][:type]
-                                                 when :numeric
-                                                   args[1][:type]
+                                args.reverse!
 
-                                                 when :string
-                                                   case args[1][:type]
-                                                   when :list
-                                                     :list
-                                                   else
-                                                     :string
-                                                   end
+                                result = if args[0].instance_of?( RplList )
+                                           if args[1].instance_of?( RplList )
+                                             args[0].value.concat( args[1].value )
+                                           else
+                                             args[0].value << args[1]
+                                           end
+                                           args[0]
 
-                                                 when :name
-                                                   case args[1][:type]
-                                                   when :name
-                                                     :name
-                                                   when :list
-                                                     :list
-                                                   else
-                                                     :string
-                                                   end
+                                         elsif args[1].instance_of?( RplList )
+                                           if args[0].instance_of?( RplList )
+                                             args[0].value.concat( args[1].value )
+                                             args[0]
+                                           else
+                                             args[1].value.unshift( args[0] )
+                                             args[1]
+                                           end
 
-                                                 when :list
-                                                   :list
+                                         elsif args[0].instance_of?( RplString )
+                                           args[0].value = if args[1].instance_of?( RplString ) ||
+                                                              args[1].instance_of?( RplName )
+                                                             "#{args[0].value}#{args[1].value}"
+                                                           else
+                                                             "#{args[0].value}#{args[1]}"
+                                                           end
+                                           args[0]
 
-                                                 else
-                                                   args[0][:type]
-                                                 end }
+                                         elsif args[0].instance_of?( RplName )
 
-                                if result[:type] == :list
-                                  args.each do |elt|
-                                    next unless elt[:type] != :list
+                                           if args[1].instance_of?( RplName )
+                                             args[0].value = "#{args[0].value}#{args[1].value}"
+                                             args[0]
+                                           else
+                                             if args[1].instance_of?( RplString )
+                                               RplString.new( "\"#{args[0].value}#{args[1].value}\"" )
+                                             elsif args[1].instance_of?( RplNumeric )
+                                               args[0].value = "#{args[0].value}#{args[1]}"
+                                               args[0]
+                                             else
+                                               RplString.new( "\"#{args[0]}#{args[1]}\"" )
+                                             end
+                                           end
 
-                                    elt_copy = Marshal.load(Marshal.dump( elt ))
-                                    elt[:type] = :list
-                                    elt[:value] = [elt_copy]
-                                  end
-                                end
+                                         elsif args[0].instance_of?( RplNumeric )
+                                           if args[1].instance_of?( RplNumeric )
+                                             args[0].value += args[1].value
+                                             args[0]
 
-                                value_to_string = lambda do |e|
-                                  if e[:type] == :numeric
-                                    stringify( e )
-                                  else
-                                    e[:value].to_s
-                                  end
-                                end
-
-                                result[:value] = if %i[name string].include?( result[:type] )
-                                                   "#{value_to_string.call( args[1] )}#{value_to_string.call( args[0] )}"
-                                                 else
-                                                   args[1][:value] + args[0][:value]
-                                                 end
-
-                                result[:base] = args[0][:base] if result[:type] == :numeric
+                                           elsif args[1].instance_of?( RplString ) ||
+                                                 args[1].instance_of?( RplName )
+                                             args[1].value = "#{args[0]}#{args[1].value}"
+                                             args[1]
+                                           end
+                                         end
 
                                 @stack << result
                               end )
@@ -82,11 +85,11 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a b -- c ) subtraction',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[1][:value] - args[0][:value] }
+                                args[1].value = args[1].value - args[0].value
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['chs'],
@@ -100,22 +103,22 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a b -- c ) multiplication',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[1][:value] * args[0][:value] }
+                                args[1].value = args[1].value * args[0].value
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['÷', '/'],
                               'Usual operations on reals and complexes',
                               '( a b -- c ) division',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[1][:value] / args[0][:value] }
+                                args[1].value = args[1].value / args[0].value
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['inv'],
@@ -129,22 +132,22 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a b -- c ) a to the power of b',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[1][:value]**args[0][:value] }
+                                args[1].value = args[1].value**args[0].value
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['√', 'sqrt'],
                               'Usual operations on reals and complexes',
                               '( a -- b ) square root',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: BigMath.sqrt( BigDecimal( args[0][:value], precision ), precision ) }
+                                args[0].value = BigMath.sqrt( args[0].value, RplNumeric.precision )
+
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['²', 'sq'],
@@ -158,11 +161,11 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a -- b ) absolute value',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[0][:value].abs }
+                                args[0].value = args[0].value.abs
+
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['dec'],
@@ -190,9 +193,9 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a b -- a ) set numeric\'s base to b',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1][:base] = args[0][:value]
+                                args[1].base = args[0].value
 
                                 @stack << args[1]
                               end )
@@ -201,18 +204,16 @@ module RplLang
                               'Usual operations on reals and complexes',
                               '( a -- b ) sign of element',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
-                                value = if args[0][:value].positive?
-                                          1
-                                        elsif args[0][:value].negative?
-                                          -1
-                                        else
-                                          0
-                                        end
+                                args = stack_extract( [[RplNumeric]] )
+                                args[0].value = if args[0].value.positive?
+                                                  1
+                                                elsif args[0].value.negative?
+                                                  -1
+                                                else
+                                                  0
+                                                end
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: value }
+                                @stack << args[0]
                               end )
 
         # Operations on reals
@@ -220,106 +221,104 @@ module RplLang
                               'Operations on reals',
                               '( a b -- c ) b% of a',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[0][:value] * ( args[1][:value] / 100.0 ) }
+                                args[1].value = args[0].value * ( args[1].value / 100.0 )
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['%CH'],
                               'Operations on reals',
                               '( a b -- c ) b is c% of a',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: 100.0 * ( args[0][:value] / args[1][:value] ) }
+                                args[1].value = 100.0 * ( args[0].value / args[1].value )
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['mod'],
                               'Operations on reals',
                               '( a b -- c ) modulo',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[1][:value] % args[0][:value] }
+                                args[1].value = args[1].value % args[0].value
+
+                                @stack << args[1]
                               end )
 
         @dictionary.add_word( ['!', 'fact'],
                               'Operations on reals',
                               '( a -- b ) factorial',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: Math.gamma( args[0][:value] ) }
+                                args[0].value = Math.gamma( args[0].value )
+
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['floor'],
                               'Operations on reals',
                               '( a -- b ) highest integer under a',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[0][:value].floor }
+                                args[0].value = args[0].value.floor
+
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['ceil'],
                               'Operations on reals',
                               '( a -- b ) highest integer over a',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[0][:value].ceil }
+                                args[0].value = args[0].value.ceil
+
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['min'],
                               'Operations on reals',
                               '( a b -- a/b ) leave lowest of a or b',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << ( args[0][:value] < args[1][:value] ? args[0] : args[1] )
+                                @stack << ( args[0].value < args[1].value ? args[0] : args[1] )
                               end )
 
         @dictionary.add_word( ['max'],
                               'Operations on reals',
                               '( a b -- a/b ) leave highest of a or b',
                               proc do
-                                args = stack_extract( [%i[numeric], %i[numeric]] )
+                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                @stack << ( args[0][:value] > args[1][:value] ? args[0] : args[1] )
+                                @stack << ( args[0].value > args[1].value ? args[0] : args[1] )
                               end )
 
         @dictionary.add_word( ['mant'],
                               'Operations on reals',
                               'mantissa of a real number',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: BigDecimal( args[0][:value].to_s.split('e').first.to_f.abs, @precision ) }
+                                @stack << RplNumeric.new( args[0].value.to_s.split('e').first.to_f.abs )
                               end )
 
         @dictionary.add_word( ['xpon'],
                               'Operations on reals',
                               'exponant of a real number',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[0][:value].exponent }
+                                args[0].value = args[0].value.exponent
+
+                                @stack << args[0]
                               end )
 
         @dictionary.add_word( ['ip'],
@@ -333,11 +332,11 @@ module RplLang
                               'Operations on reals',
                               '( n -- f ) fractional part',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @stack << { type: :numeric,
-                                            base: infer_resulting_base( args ),
-                                            value: args[0][:value].frac }
+                                args[0].value = args[0].value.frac
+
+                                @stack << args[0]
                               end )
 
         # Operations on complexes

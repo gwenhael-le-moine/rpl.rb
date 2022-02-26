@@ -4,14 +4,16 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageProgram < MiniTest::Test
+class TestLanguageStore < MiniTest::Test
+  include Types
+
   def test_sto
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto'
     assert_empty interpreter.stack
 
     interpreter.run 'quatre'
-    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 4 )],
                  interpreter.stack
   end
 
@@ -20,21 +22,21 @@ class TestLanguageProgram < MiniTest::Test
     interpreter.run "« 2 'deux' lsto deux dup * » eval 'deux' rcl"
 
     assert_empty interpreter.dictionary.local_vars_layers
-    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run "« 2 'deux' lsto « 3 'trois' lsto trois drop » eval deux dup * » eval 'deux' rcl 'trois' rcl"
 
     assert_empty interpreter.dictionary.local_vars_layers
-    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 4 )],
                  interpreter.stack
   end
 
   def test_rcl
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto \'quatre\' rcl'
-    assert_equal [{ value: '2 dup *', type: :program }],
+    assert_equal [RplProgram.new( '« 2 dup * »' )],
                  interpreter.stack
   end
 
@@ -47,8 +49,8 @@ class TestLanguageProgram < MiniTest::Test
   def test_vars
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto 1 \'un\' sto vars'
-    assert_equal [{ value: [{ type: :name, value: 'quatre' },
-                            { type: :name, value: 'un' }], type: :list }],
+    assert_equal [RplList.new( [RplName.new( 'quatre' ),
+                                RplName.new( 'un' )] )],
                  interpreter.stack
   end
 
@@ -61,62 +63,62 @@ class TestLanguageProgram < MiniTest::Test
   def test_sto_add
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto \'test\' 3 sto+ \'test\' rcl'
-    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto 3 \'test\' sto+ \'test\' rcl'
-    assert_equal [{ value: 4, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 4 )],
                  interpreter.stack
   end
 
   def test_sto_subtract
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto \'test\' 3 sto- \'test\' rcl'
-    assert_equal [{ value: -2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -2 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto 3 \'test\' sto- \'test\' rcl'
-    assert_equal [{ value: -2, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -2 )],
                  interpreter.stack
   end
 
   def test_sto_multiply
     interpreter = Rpl.new
     interpreter.run '2 \'test\' sto \'test\' 3 sto* \'test\' rcl'
-    assert_equal [{ value: 6, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 6 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '2 \'test\' sto 3 \'test\' sto* \'test\' rcl'
-    assert_equal [{ value: 6, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 6 )],
                  interpreter.stack
   end
 
   def test_sto_divide
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto \'test\' 2.0 sto÷ \'test\' rcl'
-    assert_equal [{ value: 1.5, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1.5 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto 2.0 \'test\' sto÷ \'test\' rcl'
-    assert_equal [{ value: 1.5, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 1.5 )],
                  interpreter.stack
   end
 
   def test_sto_negate
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto \'test\' sneg \'test\' rcl'
-    assert_equal [{ value: -3, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( -3 )],
                  interpreter.stack
   end
 
   def test_sto_inverse
     interpreter = Rpl.new
     interpreter.run '2 \'test\' sto \'test\' sinv \'test\' rcl'
-    assert_equal [{ value: 0.5, type: :numeric, base: 10 }],
+    assert_equal [RplNumeric.new( 0.5 )],
                  interpreter.stack
   end
 end

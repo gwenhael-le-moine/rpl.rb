@@ -5,29 +5,24 @@ require 'minitest/autorun'
 require 'rpl'
 
 class TestParser < MiniTest::Test
+  include Types
+
   def test_stack_extract
-    interpreter = Rpl.new( [{ value: 1, type: :numeric },
-                            { value: 2, type: :numeric }] )
+    interpreter = Rpl.new
+    interpreter.run '1 2'
     args = interpreter.stack_extract [:any]
-    assert_equal [{ value: 1, type: :numeric }],
+    assert_equal [RplNumeric.new( 1 )],
                  interpreter.stack
-    assert_equal [{ value: 2, type: :numeric }],
+    assert_equal [RplNumeric.new( 2 )],
                  args
 
-    interpreter = Rpl.new( [{ value: 'test', type: :string },
-                            { value: 2, type: :numeric }] )
-    args = interpreter.stack_extract [[:numeric], :any]
+    interpreter = Rpl.new
+    interpreter.run '"test" 2'
+    args = interpreter.stack_extract [[RplNumeric], :any]
     assert_equal [],
                  interpreter.stack
-    assert_equal [{ value: 2, type: :numeric },
-                  { value: 'test', type: :string }],
+    assert_equal [RplNumeric.new( 2 ),
+                  RplString.new( '"test"' )],
                  args
-  end
-
-  def test_stringify
-    assert_equal '∞',
-                 Rpl.new.stringify( { value: Float::INFINITY,
-                                      base: 10,
-                                      type: :numeric } )
   end
 end

@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module FileSystem
+      include Types
+
       def populate_dictionary
         super
 
@@ -10,29 +12,26 @@ module RplLang
                               'Filesystem',
                               '( filename -- content ) read file and put content on stack as string',
                               proc do
-                                args = stack_extract( [%i[string]] )
+                                args = stack_extract( [[RplString]] )
 
-                                path = File.absolute_path( args[0][:value] )
+                                path = File.absolute_path( args[0].value )
 
-                                @stack << { type: :string,
-                                            value: File.read( path ) }
+                                @stack << RplString.new( "\"#{File.read( path )}\"" )
                               end )
 
         @dictionary.add_word( ['feval'],
                               'Filesystem',
                               '( filename -- … ) read and run file',
-                              proc do
-                                run( 'fread eval' )
-                              end )
+                              RplProgram.new( '« fread eval »' ) )
 
         @dictionary.add_word( ['fwrite'],
                               'Filesystem',
                               '( content filename -- ) write content into filename',
                               proc do
-                                args = stack_extract( [%i[string], :any] )
+                                args = stack_extract( [[RplString], :any] )
 
-                                File.write( File.absolute_path( args[0][:value] ),
-                                            args[1][:value] )
+                                File.write( File.absolute_path( args[0].value ),
+                                            args[1].value )
                               end )
       end
     end

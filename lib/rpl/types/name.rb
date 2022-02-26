@@ -25,8 +25,14 @@ module Types
 
     def self.can_parse?( value )
       ( value.length > 2 and value[0] == "'" and value[-1] == "'" ) or
-        # it's not any other type
-        [RplBoolean, RplList, RplProgram, RplString, RplNumeric].reduce( true ) { |memo, type_class| memo && !type_class.can_parse?( value ) }
+        ( value != "''" and !value.match?(/^[0-9']+$/) and
+          # it's not any other type
+          [RplBoolean, RplList, RplProgram, RplString, RplNumeric].reduce( true ) { |memo, type_class| memo && !type_class.can_parse?( value ) } )
+    end
+
+    def ==( other )
+      other.class == RplName and
+        other.value == value
     end
   end
 end

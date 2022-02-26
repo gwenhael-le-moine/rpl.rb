@@ -3,6 +3,8 @@
 module RplLang
   module Words
     module Mode
+      include Types
+
       def populate_dictionary
         super
 
@@ -10,15 +12,15 @@ module RplLang
                               'Mode',
                               '( a -- ) set precision to a',
                               proc do
-                                args = stack_extract( [%i[numeric]] )
+                                args = stack_extract( [[RplNumeric]] )
 
-                                @precision = args[0][:value]
+                                RplNumeric.precision = args[0].value
                               end )
         @dictionary.add_word( ['default'],
                               'Mode',
                               '( -- ) set default precision',
                               proc do
-                                @precision = default_precision
+                                RplNumeric.default_precision
                               end )
         @dictionary.add_word( ['type'],
                               'Mode',
@@ -26,8 +28,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [:any] )
 
-                                @stack << { type: :string,
-                                            value: args[0][:type].to_s }
+                                @stack << RplString.new( "\"#{args[0].class.to_s[10..-1]}\"" )
                               end )
 
         # @dictionary.add_word( ['std'],

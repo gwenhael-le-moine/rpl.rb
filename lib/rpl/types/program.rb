@@ -18,5 +18,10 @@ module Types
     def self.can_parse?( value )
       value.length > 4 && value[0..1] == '« ' && value[-2..-1] == ' »' && !value[2..-3].strip.empty?
     end
+
+    def ==( other )
+      other.class == RplProgram and
+        other.value == value
+    end
   end
 end

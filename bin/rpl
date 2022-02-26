@@ -45,7 +45,7 @@ class RplRepl
     stack_size = @interpreter.stack.size
 
     @interpreter.stack.each_with_index do |elt, i|
-      puts "#{stack_size - i}: #{@interpreter.stringify( elt )}"
+      puts "#{stack_size - i}: #{elt}"
     end
   end
 end
@@ -85,4 +85,4 @@ end
 RplRepl.new( interpreter ).run if options[:run_REPL]
 
 # last print resulting stack on exit (formatted so that it can be fed back later to interpreter)
-pp interpreter.stack.map { |elt| interpreter.stringify( elt ) }.join(' ')
+pp interpreter.export_stack
