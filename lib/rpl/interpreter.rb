@@ -35,7 +35,6 @@ class Interpreter
           @stack << elt
         else
           command = @dictionary.lookup( elt.value )
-
           if command.nil?
             # if there isn't a command by that name then it's a name
             # elt[:type] = :name
@@ -44,7 +43,11 @@ class Interpreter
           elsif command.is_a?( Proc )
             command.call
           else
-            run( command.value )
+            if command.instance_of?( RplProgram )
+              run( command.value )
+            else
+              @stack << command
+            end
           end
         end
       else
