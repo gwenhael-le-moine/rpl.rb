@@ -14,7 +14,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [:any] )
 
-                                @stack << RplString.new( "\"#{args[0]}\"" )
+                                @stack << Types.new_object( RplString, "\"#{args[0]}\"" )
                               end )
 
         @dictionary.add_word( ['str→', 'str->'],
@@ -33,7 +33,7 @@ module RplLang
                                 args = stack_extract( [[RplNumeric]] )
                                 args = stack_extract( %i[any] * args[0].value )
 
-                                @stack << RplList.new( args.reverse )
+                                @stack << Types.new_object( RplList, args.reverse )
                               end )
 
         @dictionary.add_word( ['list→', 'list->'],
@@ -53,7 +53,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                @stack << RplString.new( "\"#{args[0].value.to_i.chr}\"" )
+                                @stack << Types.new_object( RplString, "\"#{args[0].value.to_i.chr}\"" )
                               end )
 
         @dictionary.add_word( ['num'],
@@ -62,7 +62,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString]] )
 
-                                @stack << RplNumeric.new( args[0].value.ord )
+                                @stack << Types.new_object( RplNumeric, args[0].value.ord )
                               end )
 
         @dictionary.add_word( ['size'],
@@ -71,7 +71,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString, RplList]] )
 
-                                @stack << RplNumeric.new( args[0].value.length )
+                                @stack << Types.new_object( RplNumeric, args[0].value.length )
                               end )
 
         @dictionary.add_word( ['pos'],
@@ -80,7 +80,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString], [RplString]] )
 
-                                @stack << RplNumeric.new( args[1].value.index( args[0].value ) )
+                                @stack << Types.new_object( RplNumeric, args[1].value.index( args[0].value ) )
                               end )
 
         @dictionary.add_word( ['sub'],
@@ -89,7 +89,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric], [RplString]] )
 
-                                @stack << RplString.new( "\"#{args[2].value[ (args[1].value - 1)..(args[0].value - 1) ]}\"" )
+                                @stack << Types.new_object( RplString, "\"#{args[2].value[ (args[1].value - 1)..(args[0].value - 1) ]}\"" )
                               end )
 
         @dictionary.add_word( ['rev'],
@@ -110,7 +110,7 @@ module RplLang
                                 args = stack_extract( [[RplString], [RplString]] )
 
                                 args[1].value.split( args[0].value ).each do |elt|
-                                  @stack << RplString.new( "\"#{elt}\"" )
+                                  @stack << Types.new_object( RplString, "\"#{elt}\"" )
                                 end
                               end )
 

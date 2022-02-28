@@ -13,7 +13,7 @@ class TestLanguageStore < MiniTest::Test
     assert_empty interpreter.stack
 
     interpreter.run 'quatre'
-    assert_equal [RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
@@ -22,21 +22,21 @@ class TestLanguageStore < MiniTest::Test
     interpreter.run "« 2 'deux' lsto deux dup * » eval 'deux' rcl"
 
     assert_empty interpreter.dictionary.local_vars_layers
-    assert_equal [RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run "« 2 'deux' lsto « 3 'trois' lsto trois drop » eval deux dup * » eval 'deux' rcl 'trois' rcl"
 
     assert_empty interpreter.dictionary.local_vars_layers
-    assert_equal [RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
   def test_rcl
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto \'quatre\' rcl'
-    assert_equal [RplProgram.new( '« 2 dup * »' )],
+    assert_equal [Types.new_object( RplProgram, '« 2 dup * »' )],
                  interpreter.stack
   end
 
@@ -49,8 +49,8 @@ class TestLanguageStore < MiniTest::Test
   def test_vars
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto 1 \'un\' sto vars'
-    assert_equal [RplList.new( [RplName.new( 'quatre' ),
-                                RplName.new( 'un' )] )],
+    assert_equal [Types.new_object( RplList, [Types.new_object( RplName, 'quatre' ),
+                                Types.new_object( RplName, 'un' )] )],
                  interpreter.stack
   end
 
@@ -63,62 +63,62 @@ class TestLanguageStore < MiniTest::Test
   def test_sto_add
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto \'test\' 3 sto+ \'test\' rcl'
-    assert_equal [RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto 3 \'test\' sto+ \'test\' rcl'
-    assert_equal [RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
   def test_sto_subtract
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto \'test\' 3 sto- \'test\' rcl'
-    assert_equal [RplNumeric.new( -2 )],
+    assert_equal [Types.new_object( RplNumeric, -2 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto 3 \'test\' sto- \'test\' rcl'
-    assert_equal [RplNumeric.new( -2 )],
+    assert_equal [Types.new_object( RplNumeric, -2 )],
                  interpreter.stack
   end
 
   def test_sto_multiply
     interpreter = Rpl.new
     interpreter.run '2 \'test\' sto \'test\' 3 sto* \'test\' rcl'
-    assert_equal [RplNumeric.new( 6 )],
+    assert_equal [Types.new_object( RplNumeric, 6 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '2 \'test\' sto 3 \'test\' sto* \'test\' rcl'
-    assert_equal [RplNumeric.new( 6 )],
+    assert_equal [Types.new_object( RplNumeric, 6 )],
                  interpreter.stack
   end
 
   def test_sto_divide
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto \'test\' 2.0 sto÷ \'test\' rcl'
-    assert_equal [RplNumeric.new( 1.5 )],
+    assert_equal [Types.new_object( RplNumeric, 1.5 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto 2.0 \'test\' sto÷ \'test\' rcl'
-    assert_equal [RplNumeric.new( 1.5 )],
+    assert_equal [Types.new_object( RplNumeric, 1.5 )],
                  interpreter.stack
   end
 
   def test_sto_negate
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto \'test\' sneg \'test\' rcl'
-    assert_equal [RplNumeric.new( -3 )],
+    assert_equal [Types.new_object( RplNumeric, -3 )],
                  interpreter.stack
   end
 
   def test_sto_inverse
     interpreter = Rpl.new
     interpreter.run '2 \'test\' sto \'test\' sinv \'test\' rcl'
-    assert_equal [RplNumeric.new( 0.5 )],
+    assert_equal [Types.new_object( RplNumeric, 0.5 )],
                  interpreter.stack
   end
 end

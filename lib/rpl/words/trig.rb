@@ -14,7 +14,7 @@ module RplLang
                               'Trig on reals and complexes',
                               '( … -- 𝛑 ) push 𝛑',
                               proc do
-                                @stack << RplNumeric.new( BigMath.PI( RplNumeric.precision ) )
+                                @stack << Types.new_object( RplNumeric, BigMath.PI( RplNumeric.precision ) )
                               end )
 
         @dictionary.add_word( ['sin'],
@@ -23,13 +23,13 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                @stack << RplNumeric.new( BigMath.sin( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
+                                @stack << Types.new_object( RplNumeric, BigMath.sin( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
                               end )
 
         @dictionary.add_word( ['asin'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute arg-sinus of n',
-                              RplProgram.new( '« dup abs 1 ==
+                              Types.new_object( RplProgram, '« dup abs 1 ==
   « 𝛑 2 / * »
   « dup sq 1 swap - sqrt / atan »
   ifte »' ) )
@@ -40,12 +40,12 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                @stack << RplNumeric.new( BigMath.cos( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
+                                @stack << Types.new_object( RplNumeric, BigMath.cos( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
                               end )
         @dictionary.add_word( ['acos'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute arg-cosinus of n',
-                              RplProgram.new( '« dup 0 ==
+                              Types.new_object( RplProgram, '« dup 0 ==
   « drop 𝛑 2 / »
   «
     dup sq 1 swap - sqrt / atan
@@ -58,7 +58,7 @@ module RplLang
         @dictionary.add_word( ['tan'],
                               'Trig on reals and complexes',
                               '( n -- m ) compute tangent of n',
-                              RplProgram.new( '« dup sin swap cos / »' ) )
+                              Types.new_object( RplProgram, '« dup sin swap cos / »' ) )
 
         @dictionary.add_word( ['atan'],
                               'Trig on reals and complexes',
@@ -66,18 +66,18 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                @stack << RplNumeric.new( BigMath.atan( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
+                                @stack << Types.new_object( RplNumeric, BigMath.atan( BigDecimal( args[0].value, RplNumeric.precision ), RplNumeric.precision ) )
                               end )
 
         @dictionary.add_word( ['d→r', 'd->r'],
                               'Trig on reals and complexes',
                               '( n -- m ) convert degree to radian',
-                              RplProgram.new( '« 180 / 𝛑 * »' ) )
+                              Types.new_object( RplProgram, '« 180 / 𝛑 * »' ) )
 
         @dictionary.add_word( ['r→d', 'r->d'],
                               'Trig on reals and complexes',
                               '( n -- m ) convert radian to degree',
-                              RplProgram.new( '« 𝛑 180 / / »' ) )
+                              Types.new_object( RplProgram, '« 𝛑 180 / / »' ) )
       end
     end
   end

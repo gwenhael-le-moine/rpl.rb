@@ -28,7 +28,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [:any] )
 
-                                @stack << RplString.new( "\"#{args[0].class.to_s[10..-1]}\"" )
+                                @stack << Types.new_object( RplString, "\"#{args[0].class.to_s[10..-1]}\"" )
                               end )
 
         # @dictionary.add_word( ['std'],

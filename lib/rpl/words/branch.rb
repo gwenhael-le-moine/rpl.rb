@@ -11,7 +11,7 @@ module RplLang
         @dictionary.add_word( ['ift'],
                               'Branch',
                               '( t pt -- … ) eval pt or not based on the value of boolean t',
-                              RplProgram.new( '« « nop » ifte »' ) )
+                              Types.new_object( RplProgram, '« « nop » ifte »' ) )
 
         @dictionary.add_word( ['ifte'],
                               'Branch',
@@ -29,7 +29,7 @@ module RplLang
                                 args = stack_extract( [[RplNumeric], :any] )
 
                                 args[0].value.to_i.times do |counter|
-                                  @stack << RplNumeric.new( counter )
+                                  @stack << Types.new_object( RplNumeric, counter )
 
                                   run( args[1].value )
                                 end
@@ -42,7 +42,7 @@ module RplLang
                                 args = stack_extract( [[RplNumeric], [RplNumeric], :any] )
 
                                 ((args[1].value.to_i)..(args[0].value.to_i)).each do |counter|
-                                  @stack << RplNumeric.new( counter )
+                                  @stack << Types.new_object( RplNumeric, counter )
 
                                   run( args[2].value )
                                 end

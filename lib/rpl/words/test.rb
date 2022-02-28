@@ -14,7 +14,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << RplBoolean.new( args[1].value > args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value > args[0].value )
                               end )
 
         @dictionary.add_word( ['≥', '>='],
@@ -23,7 +23,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << RplBoolean.new( args[1].value >= args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value >= args[0].value )
                               end )
 
         @dictionary.add_word( ['<'],
@@ -32,7 +32,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << RplBoolean.new( args[1].value < args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value < args[0].value )
                               end )
 
         @dictionary.add_word( ['≤', '<='],
@@ -41,7 +41,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << RplBoolean.new( args[1].value <= args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value <= args[0].value )
                               end )
 
         @dictionary.add_word( ['≠', '!='],
@@ -50,7 +50,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << RplBoolean.new( args[1].value != args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value != args[0].value )
                               end )
 
         @dictionary.add_word( ['==', 'same'],
@@ -59,7 +59,7 @@ module RplLang
                               proc do
                                 args = stack_extract( %i[any any] )
 
-                                @stack << RplBoolean.new( args[1].value == args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value == args[0].value )
                               end )
 
         @dictionary.add_word( ['and'],
@@ -68,7 +68,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplBoolean], [RplBoolean]] )
 
-                                @stack << RplBoolean.new( args[1].value && args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value && args[0].value )
                               end )
 
         @dictionary.add_word( ['or'],
@@ -77,7 +77,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplBoolean], [RplBoolean]] )
 
-                                @stack << RplBoolean.new( args[1].value || args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value || args[0].value )
                               end )
 
         @dictionary.add_word( ['xor'],
@@ -86,7 +86,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplBoolean], [RplBoolean]] )
 
-                                @stack << RplBoolean.new( args[1].value ^ args[0].value )
+                                @stack << Types.new_object( RplBoolean, args[1].value ^ args[0].value )
                               end )
 
         @dictionary.add_word( ['not'],
@@ -95,21 +95,21 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplBoolean]] )
 
-                                @stack << RplBoolean.new(!args[0].value )
+                                @stack << Types.new_object( RplBoolean,!args[0].value )
                               end )
 
         @dictionary.add_word( ['true'],
                               'Test',
                               '( -- t ) push true onto stack',
                               proc do
-                                @stack << RplBoolean.new( true )
+                                @stack << Types.new_object( RplBoolean, true )
                               end )
 
         @dictionary.add_word( ['false'],
                               'Test',
                               '( -- t ) push false onto stack',
                               proc do
-                                @stack << RplBoolean.new( false )
+                                @stack << Types.new_object( RplBoolean, false )
                               end )
       end
     end

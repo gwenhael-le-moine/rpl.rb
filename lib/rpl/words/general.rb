@@ -21,7 +21,7 @@ module RplLang
 
                                 word = @dictionary.words[ args[0].value ]
 
-                                @stack << RplString.new( "\"#{args[0].value}: #{word.nil? ? 'not a core word' : word[:help]}\"" )
+                                @stack << Types.new_object( RplString, "\"#{args[0].value}: #{word.nil? ? 'not a core word' : word[:help]}\"" )
                               end )
 
         @dictionary.add_word( ['words'],
@@ -46,14 +46,14 @@ module RplLang
                               'General',
                               '( -- n ) Pop the interpreter\'s version number',
                               proc do
-                                @stack += Parser.parse( @version.to_s )
+                                @stack << Types.new_object( RplString, "\"#{@version}\"" )
                               end )
 
         @dictionary.add_word( ['uname'],
                               'General',
                               '( -- s ) Pop the interpreter\'s complete indentification string',
                               proc do
-                                @stack += Parser.parse( "\"Rpl Interpreter version #{@version}\"" )
+                                @stack << Types.new_object( RplString, "\"Rpl Interpreter version #{@version}\"" )
                               end )
 
         @dictionary.add_word( ['history'],

@@ -11,15 +11,15 @@ class TestLanguageProgram < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '« 2 dup * dup » eval'
 
-    assert_equal [RplNumeric.new( 4 ),
-                  RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '4 \'dup\' eval'
 
-    assert_equal [RplNumeric.new( 4 ),
-                  RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
@@ -27,8 +27,8 @@ class TestLanguageProgram < MiniTest::Test
  \'dup\'
 eval'
 
-    assert_equal [RplNumeric.new( 4 ),
-                  RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 end

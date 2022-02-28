@@ -13,7 +13,7 @@ class TestLanguageTimeDate < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'time'
 
-    assert_equal [RplString.new( "\"#{now}\"" )],
+    assert_equal [Types.new_object( RplString, "\"#{now}\"" )],
                  interpreter.stack
   end
 
@@ -22,7 +22,7 @@ class TestLanguageTimeDate < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'date'
 
-    assert_equal [RplString.new( "\"#{now}\"" )],
+    assert_equal [Types.new_object( RplString, "\"#{now}\"" )],
                  interpreter.stack
   end
 

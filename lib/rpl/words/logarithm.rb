@@ -12,7 +12,7 @@ module RplLang
                               'Logs on reals and complexes',
                               '( … -- ℇ ) push ℇ',
                               proc do
-                                @stack << RplNumeric.new( BigMath.E( RplNumeric.precision ) )
+                                @stack << Types.new_object( RplNumeric, BigMath.E( RplNumeric.precision ) )
                               end )
 
         # @dictionary.add_word( ['ln'],

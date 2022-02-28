@@ -42,7 +42,7 @@ module RplLang
                               'Store',
                               '( -- […] ) list variables',
                               proc do
-                                @stack << RplList.new( (@dictionary.vars.keys + @dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys }).map { |name| RplName.new( name ) } )
+                                @stack << Types.new_object( RplList, (@dictionary.vars.keys + @dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys }).map { |name| Types.new_object( RplName, name ) } )
                               end )
 
         @dictionary.add_word( ['clusr'],
@@ -55,7 +55,7 @@ module RplLang
         @dictionary.add_word( ['sto+'],
                               'Store',
                               '( a n -- ) add content to variable\'s value',
-                              RplProgram.new( '« dup type "Name" ==
+                              Types.new_object( RplProgram, '« dup type "Name" ==
   « swap »
   ift
   over rcl + swap sto »' ) )
@@ -63,7 +63,7 @@ module RplLang
         @dictionary.add_word( ['sto-'],
                               'Store',
                               '( a n -- ) subtract content to variable\'s value',
-                              RplProgram.new( '« dup type "Name" ==
+                              Types.new_object( RplProgram, '« dup type "Name" ==
   « swap »
   ift
   over rcl swap - swap sto »' ) )
@@ -71,7 +71,7 @@ module RplLang
         @dictionary.add_word( ['sto×', 'sto*'],
                               'Store',
                               '( a n -- ) multiply content of variable\'s value',
-                              RplProgram.new( '« dup type "Name" ==
+                              Types.new_object( RplProgram, '« dup type "Name" ==
   « swap »
   ift
   over rcl * swap sto »' ) )
@@ -79,7 +79,7 @@ module RplLang
         @dictionary.add_word( ['sto÷', 'sto/'],
                               'Store',
                               '( a n -- ) divide content of variable\'s value',
-                              RplProgram.new( '« dup type "Name" ==
+                              Types.new_object( RplProgram, '« dup type "Name" ==
   « swap »
   ift
   over rcl swap / swap sto »' ) )
@@ -87,12 +87,12 @@ module RplLang
         @dictionary.add_word( ['sneg'],
                               'Store',
                               '( a n -- ) negate content of variable\'s value',
-                              RplProgram.new( '« dup rcl chs swap sto »' ) )
+                              Types.new_object( RplProgram, '« dup rcl chs swap sto »' ) )
 
         @dictionary.add_word( ['sinv'],
                               'Store',
                               '( a n -- ) invert content of variable\'s value',
-                              RplProgram.new( '« dup rcl inv swap sto »' ) )
+                              Types.new_object( RplProgram, '« dup rcl inv swap sto »' ) )
 
         @dictionary.add_word( ['↴', 'lsto'],
                               'Program',

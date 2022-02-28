@@ -20,7 +20,7 @@ module RplLang
         @dictionary.add_word( ['drop'],
                               'Stack',
                               '( a -- ) drop first stack element',
-                              RplProgram.new( '« 1 dropn »' ) )
+                              Types.new_object( RplProgram, '« 1 dropn »' ) )
 
         @dictionary.add_word( ['drop2'],
                               'Stack',
@@ -57,12 +57,12 @@ module RplLang
         @dictionary.add_word( ['dup'],
                               'Stack',
                               '( a -- a a ) duplicate first stack element',
-                              RplProgram.new( '« 1 dupn »' ) )
+                              Types.new_object( RplProgram, '« 1 dupn »' ) )
 
         @dictionary.add_word( ['dup2'],
                               'Stack',
                               '( a b -- a b a b ) duplicate first two stack elements',
-                              RplProgram.new( '« 2 dupn »' ) )
+                              Types.new_object( RplProgram, '« 2 dupn »' ) )
 
         @dictionary.add_word( ['dupn'],
                               'Stack',
@@ -102,7 +102,7 @@ module RplLang
                               'Stack',
                               '( … -- … n ) push stack depth onto the stack',
                               proc do
-                                @stack << RplNumeric.new( stack.size )
+                                @stack << Types.new_object( RplNumeric, stack.size )
                               end )
 
         @dictionary.add_word( ['roll'],
@@ -142,7 +142,7 @@ module RplLang
         @dictionary.add_word( ['over'],
                               'Stack',
                               '( a b -- a b a ) push a copy of the element in stack level 2 onto the stack',
-                              RplProgram.new( '« 2 pick »' ) )
+                              Types.new_object( RplProgram, '« 2 pick »' ) )
       end
     end
   end

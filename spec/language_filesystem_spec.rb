@@ -12,20 +12,20 @@ class TestLanguageFileSystem < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"./spec/test.rpl" fread'
 
-    assert_equal [RplString.new( "\"1 2 +\n\n« dup dup * * »\n'trrr' sto\n\ntrrr\n\"" )],
+    assert_equal [Types.new_object( RplString, "\"1 2 +\n\n« dup dup * * »\n'trrr' sto\n\ntrrr\n\"" )],
                  interpreter.stack
 
     interpreter.run 'eval vars'
-    assert_equal [RplNumeric.new( 27 ),
-                  RplList.new( [ RplName.new( 'trrr' ) ] )],
+    assert_equal [Types.new_object( RplNumeric, 27 ),
+                  Types.new_object( RplList, [ Types.new_object( RplName, 'trrr' ) ] )],
                  interpreter.stack
   end
 
   def test_feval
     interpreter = Rpl.new
     interpreter.run '"spec/test.rpl" feval vars'
-    assert_equal [RplNumeric.new( 27 ),
-                  RplList.new( [ RplName.new( 'trrr' ) ] )],
+    assert_equal [Types.new_object( RplNumeric, 27 ),
+                  Types.new_object( RplList, [ Types.new_object( RplName, 'trrr' ) ] )],
                  interpreter.stack
   end
 

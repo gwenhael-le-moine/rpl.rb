@@ -11,9 +11,9 @@ class TestParser < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2'
     args = interpreter.stack_extract [:any]
-    assert_equal [RplNumeric.new( 1 )],
+    assert_equal [Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
-    assert_equal [RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 2 )],
                  args
 
     interpreter = Rpl.new
@@ -21,8 +21,8 @@ class TestParser < MiniTest::Test
     args = interpreter.stack_extract [[RplNumeric], :any]
     assert_equal [],
                  interpreter.stack
-    assert_equal [RplNumeric.new( 2 ),
-                  RplString.new( '"test"' )],
+    assert_equal [Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplString, '"test"' )],
                  args
   end
 end

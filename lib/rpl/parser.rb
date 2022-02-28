@@ -70,17 +70,17 @@ class Parser
     # 2. parse
     regrouped_input.map do |element|
       if RplBoolean.can_parse?( element )
-        RplBoolean.new( element )
+        Types.new_object( RplBoolean, element )
       elsif RplNumeric.can_parse?( element )
-        RplNumeric.new( element )
+        Types.new_object( RplNumeric, element )
       elsif RplList.can_parse?( element )
-        RplList.new( element )
+        Types.new_object( RplList, element )
       elsif RplString.can_parse?( element )
-        RplString.new( element )
+        Types.new_object( RplString, element )
       elsif RplProgram.can_parse?( element )
-        RplProgram.new( element )
+        Types.new_object( RplProgram, element )
       elsif RplName.can_parse?( element )
-        RplName.new( element )
+        Types.new_object( RplName, element )
       end
     end
   end

@@ -57,12 +57,12 @@ module RplLang
                                              args[0]
                                            else
                                              if args[1].instance_of?( RplString )
-                                               RplString.new( "\"#{args[0].value}#{args[1].value}\"" )
+                                               Types.new_object( RplString, "\"#{args[0].value}#{args[1].value}\"" )
                                              elsif args[1].instance_of?( RplNumeric )
                                                args[0].value = "#{args[0].value}#{args[1]}"
                                                args[0]
                                              else
-                                               RplString.new( "\"#{args[0]}#{args[1]}\"" )
+                                               Types.new_object( RplString, "\"#{args[0]}#{args[1]}\"" )
                                              end
                                            end
 
@@ -307,7 +307,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                @stack << RplNumeric.new( args[0].value.to_s.split('e').first.to_f.abs )
+                                @stack << Types.new_object( RplNumeric, args[0].value.to_s.split('e').first.to_f.abs )
                               end )
 
         @dictionary.add_word( ['xpon'],

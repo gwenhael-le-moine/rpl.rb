@@ -12,8 +12,8 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 swap'
 
-    assert_equal [RplNumeric.new( 2 ),
-                  RplNumeric.new( 1 )],
+    assert_equal [Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
   end
 
@@ -21,7 +21,7 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 drop'
 
-    assert_equal [RplNumeric.new( 1 )],
+    assert_equal [Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
   end
 
@@ -37,7 +37,7 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 dropn'
 
-    assert_equal [RplNumeric.new( 1 )],
+    assert_equal [Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
   end
 
@@ -52,9 +52,9 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 rot'
 
-    assert_equal [RplNumeric.new( 2 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 1 )],
+    assert_equal [Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
   end
 
@@ -62,9 +62,9 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 dup'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 2 )],
                  interpreter.stack
   end
 
@@ -72,10 +72,10 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 dup2'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 )],
                  interpreter.stack
   end
 
@@ -83,13 +83,13 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 dupn'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 4 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
@@ -97,11 +97,11 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 pick'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 4 ),
-                  RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 2 )],
                  interpreter.stack
   end
 
@@ -109,15 +109,15 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run 'depth'
 
-    assert_equal [RplNumeric.new( 0 )],
+    assert_equal [Types.new_object( RplNumeric, 0 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 2 depth'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 2 )],
                  interpreter.stack
   end
 
@@ -125,10 +125,10 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 3 roll'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 4 ),
-                  RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 2 )],
                  interpreter.stack
   end
 
@@ -136,10 +136,10 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 4 3 2 rolld'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
@@ -147,11 +147,11 @@ class TestLanguageStack < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 2 3 4 over'
 
-    assert_equal [RplNumeric.new( 1 ),
-                  RplNumeric.new( 2 ),
-                  RplNumeric.new( 3 ),
-                  RplNumeric.new( 4 ),
-                  RplNumeric.new( 3 )],
+    assert_equal [Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 ),
+                  Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 4 ),
+                  Types.new_object( RplNumeric, 3 )],
                  interpreter.stack
   end
 end

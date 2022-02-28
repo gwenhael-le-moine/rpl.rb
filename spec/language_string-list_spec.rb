@@ -12,7 +12,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '2 →str'
 
-    assert_equal [RplString.new( '"2"' )],
+    assert_equal [Types.new_object( RplString, '"2"' )],
                  interpreter.stack
   end
 
@@ -20,15 +20,15 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"2" str→'
 
-    assert_equal [RplNumeric.new( 2 )],
+    assert_equal [Types.new_object( RplNumeric, 2 )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '"« dup * » \'carré\' sto" str→'
 
-    assert_equal [RplProgram.new( '« dup * »' ),
-                  RplName.new( 'carré' ),
-                  RplName.new( 'sto' )],
+    assert_equal [Types.new_object( RplProgram, '« dup * »' ),
+                  Types.new_object( RplName, 'carré' ),
+                  Types.new_object( RplName, 'sto' )],
                  interpreter.stack
   end
 
@@ -36,7 +36,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '71 chr'
 
-    assert_equal [RplString.new( '"G"' )],
+    assert_equal [Types.new_object( RplString, '"G"' )],
                  interpreter.stack
   end
 
@@ -44,7 +44,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"G" num'
 
-    assert_equal [RplNumeric.new( 71 )],
+    assert_equal [Types.new_object( RplNumeric, 71 )],
                  interpreter.stack
   end
 
@@ -52,7 +52,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"test" size'
 
-    assert_equal [RplNumeric.new( 4 )],
+    assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
@@ -60,7 +60,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"test of POS" "of" pos'
 
-    assert_equal [RplNumeric.new( 5 )],
+    assert_equal [Types.new_object( RplNumeric, 5 )],
                  interpreter.stack
   end
 
@@ -68,7 +68,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"my string to sub" 4 6 sub'
 
-    assert_equal [RplString.new( '"str"' )],
+    assert_equal [Types.new_object( RplString, '"str"' )],
                  interpreter.stack
   end
 
@@ -76,7 +76,7 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"my string to sub" rev'
 
-    assert_equal [RplString.new( '"my string to sub"'.reverse )],
+    assert_equal [Types.new_object( RplString, '"my string to sub"'.reverse )],
                  interpreter.stack
   end
 
@@ -84,18 +84,18 @@ class TestLanguageString < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"my string to sub" " " split'
 
-    assert_equal [RplString.new( '"my"' ),
-                  RplString.new( '"string"' ),
-                  RplString.new( '"to"' ),
-                  RplString.new( '"sub"' )],
+    assert_equal [Types.new_object( RplString, '"my"' ),
+                  Types.new_object( RplString, '"string"' ),
+                  Types.new_object( RplString, '"to"' ),
+                  Types.new_object( RplString, '"sub"' )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '"my,string,to sub" "," split'
 
-    assert_equal [RplString.new( '"my"' ),
-                  RplString.new( '"string"' ),
-                  RplString.new( '"to sub"' )],
+    assert_equal [Types.new_object( RplString, '"my"' ),
+                  Types.new_object( RplString, '"string"' ),
+                  Types.new_object( RplString, '"to sub"' )],
                  interpreter.stack
   end
 end

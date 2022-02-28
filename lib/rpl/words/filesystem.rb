@@ -16,13 +16,13 @@ module RplLang
 
                                 path = File.absolute_path( args[0].value )
 
-                                @stack << RplString.new( "\"#{File.read( path )}\"" )
+                                @stack << Types.new_object( RplString, "\"#{File.read( path )}\"" )
                               end )
 
         @dictionary.add_word( ['feval'],
                               'Filesystem',
                               '( filename -- … ) read and run file',
-                              RplProgram.new( '« fread eval »' ) )
+                              Types.new_object( RplProgram, '« fread eval »' ) )
 
         @dictionary.add_word( ['fwrite'],
                               'Filesystem',
