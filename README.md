@@ -27,4 +27,3 @@ To run the test suite: `find ./spec/ -name \*.rb -exec ruby -Ilib {} \;`
     . repeat
   * use LSTO
     . ->, →
-  * edit

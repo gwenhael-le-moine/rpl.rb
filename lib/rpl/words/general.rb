@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tempfile'
+
 module RplLang
   module Words
     module General
@@ -60,6 +62,30 @@ module RplLang
                               'REPL',
                               '',
                               proc {} )
+
+        @dictionary.add_word( ['edit'],
+                              'General',
+                              '( -- s ) Pop the interpreter\'s complete indentification string',
+                              proc do
+                                args = stack_extract( [:any] )
+
+                                value = args[0].to_s
+                                tempfile = Tempfile.new('rpl')
+
+                                begin
+                                  tempfile.write( value )
+                                  tempfile.rewind
+
+                                  `$EDITOR #{tempfile.path}`
+
+                                  edited_value = tempfile.read
+                                ensure
+                                  tempfile.close
+                                  tempfile.unlink
+                                end
+
+                                @stack << Types.new_object( args[0].class, edited_value )
+                              end )
 
         @dictionary.add_word( ['.s'],
                               'REPL',
