@@ -33,7 +33,7 @@ module RplLang
                                            .group_by { |word| word.last[:category] }
                                            .each do |cat, words|
                                   puts cat
-                                  puts "    #{words.map { |word| word.first }.join(', ')}"
+                                  puts "    #{words.map(&:first).join(', ')}"
                                 end
                               end )
 
