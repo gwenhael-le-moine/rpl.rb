@@ -55,34 +55,22 @@ module RplLang
         @dictionary.add_word( ['sto+'],
                               'Store',
                               '( a n -- ) add content to variable\'s value',
-                              Types.new_object( RplProgram, '« dup type "Name" ==
-  « swap »
-  ift
-  over rcl + swap sto »' ) )
+                              Types.new_object( RplProgram, '« swap over rcl + swap sto »' ) )
 
         @dictionary.add_word( ['sto-'],
                               'Store',
                               '( a n -- ) subtract content to variable\'s value',
-                              Types.new_object( RplProgram, '« dup type "Name" ==
-  « swap »
-  ift
-  over rcl swap - swap sto »' ) )
+                              Types.new_object( RplProgram, '« swap over rcl swap - swap sto »' ) )
 
         @dictionary.add_word( ['sto×', 'sto*'],
                               'Store',
                               '( a n -- ) multiply content of variable\'s value',
-                              Types.new_object( RplProgram, '« dup type "Name" ==
-  « swap »
-  ift
-  over rcl * swap sto »' ) )
+                              Types.new_object( RplProgram, '« swap over rcl * swap sto »' ) )
 
         @dictionary.add_word( ['sto÷', 'sto/'],
                               'Store',
                               '( a n -- ) divide content of variable\'s value',
-                              Types.new_object( RplProgram, '« dup type "Name" ==
-  « swap »
-  ift
-  over rcl swap / swap sto »' ) )
+                              Types.new_object( RplProgram, '« swap over rcl swap / swap sto »' ) )
 
         @dictionary.add_word( ['sneg'],
                               'Store',
