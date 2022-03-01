@@ -50,7 +50,7 @@ class TestLanguageStore < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto 1 \'un\' sto vars'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplName, 'quatre' ),
-                                Types.new_object( RplName, 'un' )] )],
+                                              Types.new_object( RplName, 'un' )] )],
                  interpreter.stack
   end
 
