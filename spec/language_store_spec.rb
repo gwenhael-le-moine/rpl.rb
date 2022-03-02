@@ -50,7 +50,7 @@ class TestLanguageStore < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '« 2 dup * » \'quatre\' sto 1 \'un\' sto vars'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplName, 'quatre' ),
-                                Types.new_object( RplName, 'un' )] )],
+                                              Types.new_object( RplName, 'un' )] )],
                  interpreter.stack
   end
 
@@ -62,22 +62,12 @@ class TestLanguageStore < MiniTest::Test
 
   def test_sto_add
     interpreter = Rpl.new
-    interpreter.run '1 \'test\' sto \'test\' 3 sto+ \'test\' rcl'
-    assert_equal [Types.new_object( RplNumeric, 4 )],
-                 interpreter.stack
-
-    interpreter = Rpl.new
     interpreter.run '1 \'test\' sto 3 \'test\' sto+ \'test\' rcl'
     assert_equal [Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
   end
 
   def test_sto_subtract
-    interpreter = Rpl.new
-    interpreter.run '1 \'test\' sto \'test\' 3 sto- \'test\' rcl'
-    assert_equal [Types.new_object( RplNumeric, -2 )],
-                 interpreter.stack
-
     interpreter = Rpl.new
     interpreter.run '1 \'test\' sto 3 \'test\' sto- \'test\' rcl'
     assert_equal [Types.new_object( RplNumeric, -2 )],
@@ -86,22 +76,12 @@ class TestLanguageStore < MiniTest::Test
 
   def test_sto_multiply
     interpreter = Rpl.new
-    interpreter.run '2 \'test\' sto \'test\' 3 sto* \'test\' rcl'
-    assert_equal [Types.new_object( RplNumeric, 6 )],
-                 interpreter.stack
-
-    interpreter = Rpl.new
     interpreter.run '2 \'test\' sto 3 \'test\' sto* \'test\' rcl'
     assert_equal [Types.new_object( RplNumeric, 6 )],
                  interpreter.stack
   end
 
   def test_sto_divide
-    interpreter = Rpl.new
-    interpreter.run '3 \'test\' sto \'test\' 2.0 sto÷ \'test\' rcl'
-    assert_equal [Types.new_object( RplNumeric, 1.5 )],
-                 interpreter.stack
-
     interpreter = Rpl.new
     interpreter.run '3 \'test\' sto 2.0 \'test\' sto÷ \'test\' rcl'
     assert_equal [Types.new_object( RplNumeric, 1.5 )],
