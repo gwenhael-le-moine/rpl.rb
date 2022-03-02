@@ -37,30 +37,28 @@ module Types
       when Float
         @value = BigDecimal( value, @@precision )
       when String
-        case value
-        when '∞'
-          @value = BigDecimal('+Infinity')
-        when '-∞'
-          @value = BigDecimal('-Infinity')
-        else
-          underscore_position = value.index('_')
-
-          if value[0] == '0' && ( %w[b o x].include?( value[1] ) || !underscore_position.nil? )
-            if value[1] == 'x'
-              @base = 16
-            elsif value[1] == 'b'
-              @base = 2
-            elsif value[1] == 'o'
-              @base = 8
-              value = value[2..-1]
-            elsif !underscore_position.nil?
-              @base = value[1..(underscore_position - 1)].to_i
-              value = value[(underscore_position + 1)..-1]
-            end
+        begin
+          @value = BigDecimal( value )
+        rescue ArgumentError
+          case value
+          when /^0x[0-9a-f]+$/
+            @base = 16
+            @value = /^0x(?<value>[0-9a-f]+)$/.match( value )['value'].to_i( @base )
+          when /^0o[0-7]+$/
+            @base = 8
+            @value = /^0o(?<value>[0-7]+)$/.match( value )['value'].to_i( @base )
+          when /^0b[0-1]+$/
+            @base = 2
+            @value = /^0b(?<value>[0-1]+)$/.match( value )['value'].to_i( @base )
+          when '∞'
+            @value = BigDecimal('+Infinity')
+          when '-∞'
+            @value = BigDecimal('-Infinity')
+          else
+            matches = /(?<base>[0-9]+)b(?<value>[0-9a-z]+)/.match( value )
+            @base = matches['base'].to_i
+            @value = matches['value'].to_i( @base )
           end
-
-          value = value.to_i( @base ) unless @base == 10
-          @value = BigDecimal( value, @@precision )
         end
       end
     end
@@ -102,7 +100,7 @@ module Types
                                       value.match?(/^0b[0-1]+$/) or
                                       value.match?(/^0o[0-7]+$/) or
                                       value.match?(/^0x[0-9a-f]+$/) or
-                                      ( value.match?(/^0[0-9]+_[0-9a-z]+$/) and
+                                      ( value.match?(/^[0-9]+b[0-9a-z]+$/) and
                                         value.split('_').first.to_i <= 36 ) ) )
     end
 

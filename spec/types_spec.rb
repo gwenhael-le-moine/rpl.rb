@@ -103,12 +103,12 @@ class TestTypes < MiniTest::Test
     assert_equal true, RplNumeric.can_parse?( '0b101' )
     assert_equal true, RplNumeric.can_parse?( '0xfed' )
     assert_equal true, RplNumeric.can_parse?( '0o57' )
-    assert_equal true, RplNumeric.can_parse?( '013_ba7' )
+    assert_equal true, RplNumeric.can_parse?( '13bba7' )
     assert_equal false, RplNumeric.can_parse?( '0b' )
     assert_equal false, RplNumeric.can_parse?( '0x' )
     assert_equal false, RplNumeric.can_parse?( '0o' )
-    assert_equal false, RplNumeric.can_parse?( '013_' )
-    assert_equal false, RplNumeric.can_parse?( '037_ba7' )
+    assert_equal false, RplNumeric.can_parse?( '13b' )
+    assert_equal false, RplNumeric.can_parse?( '37bba7' )
     assert_equal false, RplNumeric.can_parse?( 'fed' )
     assert_equal false, RplNumeric.can_parse?( 'ba7' )
     assert_equal false, RplNumeric.can_parse?( '0aba7' )
@@ -129,7 +129,7 @@ class TestTypes < MiniTest::Test
     assert_equal RplNumeric, Types.new_object( RplNumeric, '0b101' ).class
     assert_equal RplNumeric, Types.new_object( RplNumeric, '0xfed' ).class
     assert_equal RplNumeric, Types.new_object( RplNumeric, '0o57' ).class
-    assert_equal RplNumeric, Types.new_object( RplNumeric, '013_ba7' ).class
+    assert_equal RplNumeric, Types.new_object( RplNumeric, '13bba7' ).class
 
     assert_equal BigDecimal(1), Types.new_object( RplNumeric, 1 ).value
     assert_equal BigDecimal(1.2, 12), Types.new_object( RplNumeric, 1.2 ).value
@@ -145,13 +145,13 @@ class TestTypes < MiniTest::Test
     assert_equal BigDecimal(5), Types.new_object( RplNumeric, '0b101' ).value
     assert_equal BigDecimal(4077), Types.new_object( RplNumeric, '0xfed' ).value
     assert_equal BigDecimal(47), Types.new_object( RplNumeric, '0o57' ).value
-    assert_equal BigDecimal(1996), Types.new_object( RplNumeric, '013_ba7' ).value
+    assert_equal BigDecimal(1996), Types.new_object( RplNumeric, '13bba7' ).value
 
     assert_equal 10, Types.new_object( RplNumeric, '-.456' ).base
     assert_equal 2, Types.new_object( RplNumeric, '0b101' ).base
     assert_equal 16, Types.new_object( RplNumeric, '0xfed' ).base
     assert_equal 8, Types.new_object( RplNumeric, '0o57' ).base
-    assert_equal 13, Types.new_object( RplNumeric, '013_ba7' ).base
+    assert_equal 13, Types.new_object( RplNumeric, '13bba7' ).base
   end
 
   def test_list

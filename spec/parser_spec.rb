@@ -17,16 +17,25 @@ class TestParser < MiniTest::Test
     result = Parser.parse( '0b101' )
     assert_equal 1, result.size
     assert_equal RplNumeric, result.first.class
+    assert_equal 2, result.first.base
     assert_equal BigDecimal( 5 ), result.first.value
 
     result = Parser.parse( '0o57' )
     assert_equal 1, result.size
     assert_equal RplNumeric, result.first.class
+    assert_equal 8, result.first.base
     assert_equal BigDecimal( 47 ), result.first.value
 
-    result = Parser.parse( '03_10' )
+    result = Parser.parse( '0xfa' )
     assert_equal 1, result.size
     assert_equal RplNumeric, result.first.class
+    assert_equal 16, result.first.base
+    assert_equal BigDecimal( 250 ), result.first.value
+
+    result = Parser.parse( '3b10' )
+    assert_equal 1, result.size
+    assert_equal RplNumeric, result.first.class
+    assert_equal 3, result.first.base
     assert_equal BigDecimal( 3 ), result.first.value
   end
 
