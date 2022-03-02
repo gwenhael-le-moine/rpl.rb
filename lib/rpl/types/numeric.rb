@@ -38,26 +38,27 @@ module Types
         @value = BigDecimal( value, @@precision )
       when String
         begin
-          @value = BigDecimal( value )
+          @value = BigDecimal( value, @@precision )
         rescue ArgumentError
           case value
           when /^0x[0-9a-f]+$/
             @base = 16
-            @value = /^0x(?<value>[0-9a-f]+)$/.match( value )['value'].to_i( @base )
+            @value = BigDecimal( /^0x(?<value>[0-9a-f]+)$/.match( value )['value'].to_i( @base ), @@precision )
           when /^0o[0-7]+$/
             @base = 8
-            @value = /^0o(?<value>[0-7]+)$/.match( value )['value'].to_i( @base )
+            @value = BigDecimal( /^0o(?<value>[0-7]+)$/.match( value )['value'].to_i( @base ), @@precision )
           when /^0b[0-1]+$/
             @base = 2
-            @value = /^0b(?<value>[0-1]+)$/.match( value )['value'].to_i( @base )
+            @value = BigDecimal( /^0b(?<value>[0-1]+)$/.match( value )['value'].to_i( @base ), @@precision )
           when '∞'
             @value = BigDecimal('+Infinity')
           when '-∞'
             @value = BigDecimal('-Infinity')
           else
             matches = /(?<base>[0-9]+)b(?<value>[0-9a-z]+)/.match( value )
+
             @base = matches['base'].to_i
-            @value = matches['value'].to_i( @base )
+            @value = BigDecimal( matches['value'].to_i( @base ), @@precision )
           end
         end
       end
@@ -74,21 +75,20 @@ module Types
                when 16
                  '0x'
                else
-                 "0#{@base}_"
+                 "#{@base}b"
                end
 
-      if @value.infinite?
-        suffix = @value.infinite?.positive? ? '∞' : '-∞'
-      elsif @value.nan?
-        suffix = '<NaN>'
-      else
-        suffix = if @value.to_i == @value
-                   @value.to_i
-                 else
-                   @value.to_s('F')
-                 end
-        suffix = @value.to_s( @base ) unless @base == 10
-      end
+      suffix = if @value.infinite?
+                 @value.infinite?.positive? ? '∞' : '-∞'
+               elsif @value.nan?
+                 '<NaN>'
+               elsif @base != 10
+                 @value.to_i.to_s( @base )
+               elsif @value.integer?
+                 @value.to_i
+               else
+                 @value.to_s( 'F' )
+               end
 
       "#{prefix}#{suffix}"
     end

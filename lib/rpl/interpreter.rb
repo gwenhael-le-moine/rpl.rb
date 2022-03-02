@@ -18,7 +18,7 @@ class Interpreter
   attr_accessor :precision
 
   def initialize( stack = [], dictionary = Rpl::Lang::Dictionary.new )
-    @version = 0.7
+    @version = 0.71
 
     @dictionary = dictionary
     @stack = stack

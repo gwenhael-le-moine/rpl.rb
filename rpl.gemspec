@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'rpl'
-  s.version     = '0.7.0'
+  s.version     = '0.7.1'
   s.summary     = 'Functional Stack Language'
   s.description = "A language inspired by HP's RPL and https://github.com/louisrubet/rpn/"
   s.authors     = ['Gwenhael Le Moine']
