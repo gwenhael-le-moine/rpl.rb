@@ -14,13 +14,13 @@ module RplLang
                               'Time and date',
                               '( -- t ) push current time',
                               proc do
-                                @stack << Types.new_object( RplString, "\"#{Time.now}\"" )
+                                @stack << Types.new_object( RplString, "\"#{DateTime.now.iso8601.to_s.split('T').last[0..7]}\"" )
                               end )
         @dictionary.add_word( ['date'],
                               'Time and date',
                               '( -- d ) push current date',
                               proc do
-                                @stack << Types.new_object( RplString, "\"#{Date.today}\"" )
+                                @stack << Types.new_object( RplString, "\"#{Date.today.iso8601}\"" )
                               end )
         @dictionary.add_word( ['ticks'],
                               'Time and date',
