@@ -84,7 +84,7 @@ module Types
                  '<NaN>'
                elsif @base != 10
                  @value.to_i.to_s( @base )
-               elsif @value.integer?
+               elsif @value.frac.zero?
                  @value.to_i
                else
                  @value.to_s( 'F' )
