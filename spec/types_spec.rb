@@ -152,6 +152,20 @@ class TestTypes < MiniTest::Test
     assert_equal 16, Types.new_object( RplNumeric, '0xfed' ).base
     assert_equal 8, Types.new_object( RplNumeric, '0o57' ).base
     assert_equal 13, Types.new_object( RplNumeric, '13bba7' ).base
+
+    assert_equal '1', Types.new_object( RplNumeric, '1' ).to_s
+    assert_equal '1.1', Types.new_object( RplNumeric, '1.1' ).to_s
+    assert_equal '0.1', Types.new_object( RplNumeric, '.1' ).to_s
+    assert_equal '∞', Types.new_object( RplNumeric, '∞' ).to_s
+    assert_equal '-∞', Types.new_object( RplNumeric, '-∞' ).to_s
+    assert_equal '0', Types.new_object( RplNumeric, '0' ).to_s
+    assert_equal '-3', Types.new_object( RplNumeric, '-3' ).to_s
+    assert_equal '-3.456', Types.new_object( RplNumeric, '-3.456' ).to_s
+    assert_equal '-0.456', Types.new_object( RplNumeric, '-.456' ).to_s
+    assert_equal '0b101', Types.new_object( RplNumeric, '0b101' ).to_s
+    assert_equal '0xfed', Types.new_object( RplNumeric, '0xfed' ).to_s
+    assert_equal '0o57', Types.new_object( RplNumeric, '0o57' ).to_s
+    assert_equal '13bba7', Types.new_object( RplNumeric, '13bba7' ).to_s
   end
 
   def test_list
