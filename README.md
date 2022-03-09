@@ -2,9 +2,9 @@
 
 https://github.com/louisrubet/rpn/ inspired language in ruby
 
-To run REPL locally: `ruby -Ilib bin/rpl`
+To run REPL locally: `rake run`
 
-To run the test suite: `find ./spec/ -name \*.rb -exec ruby -Ilib {} \;`
+To run the test suite: `rake test`
 
 # TODO-list
   * pseudo filesystem: subdir for variables
