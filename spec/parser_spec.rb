@@ -311,11 +311,11 @@ dup * »
   end
 
   def test_with_comments
-    result = Parser.parse( "« 2 #deux
-# on duplique le deux
+    result = Parser.parse( "« 2 @deux
+@ on duplique le deux
 dup * »
 
-# on va STOcker ce programme dans la variable 'carré'
+@ on va STOcker ce programme dans la variable 'carré'
  'carré' sto" )
     assert_equal 3, result.size
     assert_equal RplProgram, result.first.class

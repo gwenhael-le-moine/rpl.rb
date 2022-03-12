@@ -7,7 +7,7 @@ class Parser
     unless input.index("\n").nil?
       input = input.split("\n")
                    .map do |line|
-        comment_begin_index = line.index('#')
+        comment_begin_index = line.index('@')
 
         case comment_begin_index
         when nil
