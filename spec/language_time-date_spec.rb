@@ -9,7 +9,7 @@ class TestLanguageTimeDate < MiniTest::Test
   include Types
 
   def test_time
-    now = Time.now.to_s
+    now = Time.now.to_s.split[1]
     interpreter = Rpl.new
     interpreter.run 'time'
 
