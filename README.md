@@ -8,7 +8,7 @@ To run the test suite: `rake test`
 
 # TODO-list
   * pseudo filesystem: subdir for variables
-  * UI toolkit (based on https://github.com/AndyObtiva/glimmer-dsl-libui ?)
+  * SDL-based graphic environment/API
 
 # Not implemented
   * use IFT, IFTE
