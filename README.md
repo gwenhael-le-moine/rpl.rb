@@ -7,7 +7,8 @@ To run REPL locally: `rake run`
 To run the test suite: `rake test`
 
 # TODO-list
-  * pseudo filesystem: subdir for variables
+  * pseudo filesystem: subdir/namespace for variables
+    . 'a dir' crdir 'a dir' cd vars
   * SDL-based graphic environment/API
 
 # Not implemented
