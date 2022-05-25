@@ -12,6 +12,7 @@ class Interpreter
   include Types
 
   attr_reader :stack,
+              :display,
               :dictionary,
               :version
 
@@ -22,6 +23,7 @@ class Interpreter
 
     @dictionary = dictionary
     @stack = stack
+    @display = Array.new( 131, Array.new( 80 ) )
   end
 
   def run( input )
