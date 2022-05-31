@@ -7,6 +7,24 @@ require 'bigdecimal/util'
 require 'rpl/dictionary'
 require 'rpl/types'
 
+class BitArray
+  def initialize
+    @mask = 0
+  end
+
+  def []=(position, value)
+    if value.zero?
+      @mask ^= (1 << position)
+    else
+      @mask |= (1 << position)
+    end
+  end
+
+  def [](position)
+    @mask[position]
+  end
+end
+
 class Interpreter
   include BigMath
   include Types
@@ -23,7 +41,12 @@ class Interpreter
 
     @dictionary = dictionary
     @stack = stack
-    @display = Array.new( 131, Array.new( 80 ) )
+
+    initialize_display
+  end
+
+  def initialize_display
+    @display = BitArray.new
   end
 
   def run( input )
@@ -37,10 +60,8 @@ class Interpreter
           @stack << elt
         else
           command = @dictionary.lookup( elt.value )
-          if command.nil?
-            # if there isn't a command by that name then it's a name
-            # elt[:type] = :name
 
+          if command.nil?
             @stack << elt
           elsif command.is_a?( Proc )
             command.call

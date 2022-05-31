@@ -14,6 +14,7 @@ class Rpl < Interpreter
   end
 
   prepend RplLang::Words::Branch
+  prepend RplLang::Words::Display
   prepend RplLang::Words::FileSystem
   prepend RplLang::Words::General
   prepend RplLang::Words::Logarithm

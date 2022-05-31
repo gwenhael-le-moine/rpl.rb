@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rpl/words/branch'
+require 'rpl/words/display'
 require 'rpl/words/general'
 require 'rpl/words/mode'
 require 'rpl/words/operations'
