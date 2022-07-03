@@ -84,5 +84,5 @@ end
 # third launch REPL if (explicitely or implicitely) asked
 RplRepl.new( interpreter ).run if options[:run_REPL]
 
-# last print resulting stack on exit (formatted so that it can be fed back later to interpreter)
-pp interpreter.export_stack
+# last print defined vars and resulting stack on exit (formatted so that it can be fed back later to interpreter)
+pp "#{interpreter.export_vars} #{interpreter.export_stack}"
