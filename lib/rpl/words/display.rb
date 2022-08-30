@@ -12,14 +12,14 @@ module RplLang
                               'Display',
                               '( -- ) erase display',
                               proc do
-                                initialize_display
+                                initialize_frame_buffer
                               end )
 
         @dictionary.add_word( ['display→', 'display->'],
                               'Display',
                               '( -- pict ) put current display state on stack',
                               proc do
-                                @stack << @display # FIXME: RplPict type
+                                @stack << @frame_buffer # FIXME: RplPict type
                               end )
       end
     end

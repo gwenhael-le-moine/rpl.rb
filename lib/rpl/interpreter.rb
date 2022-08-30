@@ -30,7 +30,7 @@ class Interpreter
   include Types
 
   attr_reader :stack,
-              :display,
+              :frame_buffer,
               :dictionary,
               :version
 
@@ -42,11 +42,11 @@ class Interpreter
     @dictionary = dictionary
     @stack = stack
 
-    initialize_display
+    initialize_frame_buffer
   end
 
-  def initialize_display
-    @display = BitArray.new
+  def initialize_frame_buffer
+    @frame_buffer = BitArray.new
   end
 
   def run( input )
