@@ -28,7 +28,7 @@ module RplLang
                                            new_list = if args[1].instance_of?( RplList )
                                                         RplList.new( args[0].to_s ).value.concat( args[1].value )
                                                       else
-                                                        RplList.new( args[0].to_s ).value.concat( [ args[1] ] )
+                                                        RplList.new( args[0].to_s ).value.concat( [args[1]] )
                                                       end
 
                                            RplList.new( "{ #{new_list.join(' ')} }" )

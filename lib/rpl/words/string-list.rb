@@ -98,11 +98,11 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString, RplList]] )
 
-                                if args[0].is_a?( RplString )
-                                  @stack << args[0].class.new( "\"#{args[0].value.reverse}\"" )
-                                else
-                                  @stack << args[0].class.new( "{ #{args[0].value.reverse.join(' ')} }" )
-                                end
+                                @stack << if args[0].is_a?( RplString )
+                                            Types.new_object( RplString, "\"#{args[0].value.reverse}\"" )
+                                          else
+                                            Types.new_object( args[0].class, "{ #{args[0].value.reverse.join(' ')} }" )
+                                          end
                               end )
 
         @dictionary.add_word( ['split'],
