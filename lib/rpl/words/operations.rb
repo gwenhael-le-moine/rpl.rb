@@ -305,21 +305,21 @@ module RplLang
         # Operations on complexes
         # @dictionary.add_word( ['re'],
         #                       'Operations on complexes',
-        #                       'complex real part',
+        #                       '( c -- n ) complex real part',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( 'im',
         #                       'Operations on complexes',
-        #                       'complex imaginary part',
+        #                       '( c -- n ) complex imaginary part',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['conj'],
         #                       'Operations on complexes',
-        #                       'complex conjugate',
+        #                       '( c -- c ) complex conjugate',
         #                       proc do
 
         #                       end )
@@ -333,14 +333,14 @@ module RplLang
 
         # @dictionary.add_word( ['c→r', 'c->r'],
         #                       'Operations on complexes',
-        #                       'transform a complex in 2 reals',
+        #                       '( c -- n n ) transform a complex in 2 reals',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['r→c', 'r->c'],
         #                       'Operations on complexes',
-        #                       'transform 2 reals in a complex',
+        #                       '( n n -- c ) transform 2 reals in a complex',
         #                       proc do
 
         #                       end )
