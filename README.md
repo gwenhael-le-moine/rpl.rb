@@ -7,7 +7,6 @@ To run REPL locally: `rake run`
 To run the test suite: `rake test`
 
 # BUGs
-  * var1 var2 +|-|*|\ ===> result in on stack (normal) AND stored in var1 (_bug_)
 
 # TODO-list
   * pseudo filesystem: subdir/namespace for variables

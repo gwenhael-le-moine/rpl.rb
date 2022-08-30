@@ -25,56 +25,50 @@ module RplLang
                                 args.reverse!
 
                                 result = if args[0].instance_of?( RplList )
-                                           if args[1].instance_of?( RplList )
-                                             args[0].value.concat( args[1].value )
-                                           else
-                                             args[0].value << args[1]
-                                           end
-                                           args[0]
+                                           new_list = if args[1].instance_of?( RplList )
+                                                        RplList.new( args[0].to_s ).value.concat( args[1].value )
+                                                      else
+                                                        RplList.new( args[0].to_s ).value.concat( [ args[1] ] )
+                                                      end
+
+                                           RplList.new( "{ #{new_list.join(' ')} }" )
 
                                          elsif args[1].instance_of?( RplList )
-                                           if args[0].instance_of?( RplList )
-                                             args[0].value.concat( args[1].value )
-                                             args[0]
-                                           else
-                                             args[1].value.unshift( args[0] )
-                                             args[1]
-                                           end
+                                           new_list = if args[0].instance_of?( RplList )
+                                                        RplList.new( args[0].to_s ).value.concat( args[1].value )
+                                                      else
+                                                        RplList.new( "{ #{args[0]} }" ).value.concat( args[1].value )
+                                                      end
+
+                                           RplList.new( "{ #{new_list.join(' ')} }" )
 
                                          elsif args[0].instance_of?( RplString )
-                                           args[0].value = if args[1].instance_of?( RplString ) ||
+                                           RplString.new( if args[1].instance_of?( RplString ) ||
                                                               args[1].instance_of?( RplName )
-                                                             "#{args[0].value}#{args[1].value}"
-                                                           else
-                                                             "#{args[0].value}#{args[1]}"
-                                                           end
-                                           args[0]
+                                                            "\"#{args[0].value}#{args[1].value}\""
+                                                          else
+                                                            "\"#{args[0].value}#{args[1]}\""
+                                                          end )
 
                                          elsif args[0].instance_of?( RplName )
 
                                            if args[1].instance_of?( RplName )
-                                             args[0].value = "#{args[0].value}#{args[1].value}"
-                                             args[0]
+                                             RplName.new( "'#{args[0].value}#{args[1].value}'" )
+                                           elsif args[1].instance_of?( RplString )
+                                             Types.new_object( RplString, "\"#{args[0].value}#{args[1].value}\"" )
+                                           elsif args[1].instance_of?( RplNumeric )
+                                             RplName.new( "'#{args[0].value}#{args[1]}'" )
                                            else
-                                             if args[1].instance_of?( RplString )
-                                               Types.new_object( RplString, "\"#{args[0].value}#{args[1].value}\"" )
-                                             elsif args[1].instance_of?( RplNumeric )
-                                               args[0].value = "#{args[0].value}#{args[1]}"
-                                               args[0]
-                                             else
-                                               Types.new_object( RplString, "\"#{args[0]}#{args[1]}\"" )
-                                             end
+                                             Types.new_object( RplString, "\"#{args[0]}#{args[1]}\"" )
                                            end
 
                                          elsif args[0].instance_of?( RplNumeric )
                                            if args[1].instance_of?( RplNumeric )
-                                             args[0].value += args[1].value
-                                             args[0]
-
-                                           elsif args[1].instance_of?( RplString ) ||
-                                                 args[1].instance_of?( RplName )
-                                             args[1].value = "#{args[0]}#{args[1].value}"
-                                             args[1]
+                                             RplNumeric.new( args[0].value + args[1].value, args[0].base )
+                                           elsif args[1].instance_of?( RplString )
+                                             RplString.new( "\"#{args[0]}#{args[1].value}\"" )
+                                           elsif args[1].instance_of?( RplName )
+                                             RplName.new( "'#{args[0]}#{args[1].value}'" )
                                            end
                                          end
 
@@ -87,9 +81,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = args[1].value - args[0].value
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[1].value - args[0].value, args[1].base )
                               end )
 
         @dictionary.add_word( ['chs'],
@@ -105,9 +97,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = args[1].value * args[0].value
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[1].value * args[0].value, args[1].base )
                               end )
 
         @dictionary.add_word( ['÷', '/'],
@@ -116,9 +106,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = args[1].value / args[0].value
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[1].value / args[0].value, args[1].base )
                               end )
 
         @dictionary.add_word( ['inv'],
@@ -134,9 +122,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = args[1].value**args[0].value
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[1].value**args[0].value, args[1].base )
                               end )
 
         @dictionary.add_word( ['√', 'sqrt'],
@@ -145,9 +131,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = BigMath.sqrt( args[0].value, RplNumeric.precision )
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( BigMath.sqrt( args[0].value, RplNumeric.precision ), args[0].base )
                               end )
 
         @dictionary.add_word( ['²', 'sq'],
@@ -163,9 +147,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = args[0].value.abs
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( args[0].value.abs, args[0].base )
                               end )
 
         @dictionary.add_word( ['dec'],
@@ -195,9 +177,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].base = args[0].value
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[1].value, args[0].value )
                               end )
 
         @dictionary.add_word( ['sign'],
@@ -205,15 +185,14 @@ module RplLang
                               '( a -- b ) sign of element',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
-                                args[0].value = if args[0].value.positive?
-                                                  1
-                                                elsif args[0].value.negative?
-                                                  -1
-                                                else
-                                                  0
-                                                end
 
-                                @stack << args[0]
+                                @stack << RplNumeric.new( if args[0].value.positive?
+                                                            1
+                                                          elsif args[0].value.negative?
+                                                            -1
+                                                          else
+                                                            0
+                                                          end )
                               end )
 
         # Operations on reals
@@ -223,9 +202,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = args[0].value * ( args[1].value / 100.0 )
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[0].value * ( args[1].value / 100.0 ), args[1].base )
                               end )
 
         @dictionary.add_word( ['%CH'],
@@ -234,9 +211,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = 100.0 * ( args[0].value / args[1].value )
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( 100.0 * ( args[0].value / args[1].value ), args[1].base )
                               end )
 
         @dictionary.add_word( ['mod'],
@@ -245,9 +220,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                args[1].value = args[1].value % args[0].value
-
-                                @stack << args[1]
+                                @stack << RplNumeric.new( args[1].value % args[0].value, args[1].base )
                               end )
 
         @dictionary.add_word( ['!', 'fact'],
@@ -256,9 +229,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = Math.gamma( args[0].value )
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( Math.gamma( args[0].value ), args[0].base )
                               end )
 
         @dictionary.add_word( ['floor'],
@@ -267,9 +238,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = args[0].value.floor
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( args[0].value.floor, args[0].base )
                               end )
 
         @dictionary.add_word( ['ceil'],
@@ -278,9 +247,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = args[0].value.ceil
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( args[0].value.ceil, args[0].base )
                               end )
 
         @dictionary.add_word( ['min'],
@@ -316,9 +283,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = args[0].value.exponent
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( args[0].value.exponent, args[0].base )
                               end )
 
         @dictionary.add_word( ['ip'],
@@ -334,9 +299,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
 
-                                args[0].value = args[0].value.frac
-
-                                @stack << args[0]
+                                @stack << RplNumeric.new( args[0].value.frac, args[0].base )
                               end )
 
         # Operations on complexes

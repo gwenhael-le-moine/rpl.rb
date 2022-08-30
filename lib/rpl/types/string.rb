@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rpl/parser'
+
 module Types
   class RplString
     attr_accessor :value

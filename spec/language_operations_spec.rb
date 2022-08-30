@@ -27,7 +27,7 @@ class TesttLanguageOperations < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '1 dup dup →list +'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
-                                Types.new_object( RplNumeric, 1 )] )],
+                                              Types.new_object( RplNumeric, 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
@@ -48,7 +48,7 @@ class TesttLanguageOperations < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '"a" 1 dup →list +'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplString, '"a"' ),
-                                Types.new_object( RplNumeric, 1 )] )],
+                                              Types.new_object( RplNumeric, 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
@@ -69,25 +69,144 @@ class TesttLanguageOperations < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run '\'a\' 1 dup →list +'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplName, 'a' ),
-                                Types.new_object( RplNumeric, 1 )] )],
+                                              Types.new_object( RplNumeric, 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 a "test" 3 →list dup rev +'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
-                                Types.new_object( RplName, 'a' ),
-                                Types.new_object( RplString, '"test"' ),
-                                Types.new_object( RplString, '"test"' ),
-                                Types.new_object( RplName, 'a' ),
-                                Types.new_object( RplNumeric, 1 )] )],
+                                              Types.new_object( RplName, 'a' ),
+                                              Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplName, 'a' ),
+                                              Types.new_object( RplNumeric, 1 )] )],
                  interpreter.stack
 
     interpreter = Rpl.new
     interpreter.run '1 a "test" 3 →list 9 +'
     assert_equal [Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
-                                Types.new_object( RplName, 'a' ),
-                                Types.new_object( RplString, '"test"' ),
-                                Types.new_object( RplNumeric, 9 )] )],
+                                              Types.new_object( RplName, 'a' ),
+                                              Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplNumeric, 9 )] )],
+                 interpreter.stack
+
+    #################
+    # now with vars #
+    #################
+
+    interpreter = Rpl.new
+    interpreter.run '1 \'a\' sto 2 \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplNumeric, 3 ),
+                  Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplNumeric, 2 )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '1 \'a\' sto "a" \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplString, '"1a"' ),
+                  Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplString, '"a"' )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '1 \'a\' sto \'z\' \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplName, "'1z'" ),
+                  Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplName, "'z'" )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '1 \'a\' sto a dup →list \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
+                                              Types.new_object( RplNumeric, 1 )] ),
+                  Types.new_object( RplNumeric, 1 ),
+                  Types.new_object( RplList, [Types.new_object( RplNumeric, 1 )] )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '"a" \'a\' sto "b" \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplString, '"ab"' ),
+                  Types.new_object( RplString, '"a"' ),
+                  Types.new_object( RplString, '"b"' )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '"a" \'a\' sto \'z\' \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplString, '"az"' ),
+                  Types.new_object( RplString, '"a"' ),
+                  Types.new_object( RplName, "'z'" )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '"a" \'a\' sto 1 \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplString, '"a1"' ),
+                  Types.new_object( RplString, '"a"' ),
+                  Types.new_object( RplNumeric, 1 )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '"a" \'a\' sto 1 dup →list \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplList, [Types.new_object( RplString, '"a"' ),
+                                              Types.new_object( RplNumeric, 1 )] ),
+                  Types.new_object( RplString, '"a"' ),
+                  Types.new_object( RplList, [Types.new_object( RplNumeric, 1 )] )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '\'z\' \'a\' sto 1 \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplName, 'z1' ),
+                  Types.new_object( RplName, 'z' ),
+                  Types.new_object( RplNumeric, 1 )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '\'z\' \'a\' sto "b" \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplString, '"zb"' ),
+                  Types.new_object( RplName, "'z'" ),
+                  Types.new_object( RplString, '"b"' )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '\'z\' \'a\' sto \'y\' \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplName, "'zy'" ),
+                  Types.new_object( RplName, "'z'" ),
+                  Types.new_object( RplName, "'y'" )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '\'z\' \'a\' sto 1 dup →list \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplList, [Types.new_object( RplName, "'z'" ),
+                                              Types.new_object( RplNumeric, 1 )] ),
+                  Types.new_object( RplName, "'z'" ),
+                  Types.new_object( RplList, [Types.new_object( RplNumeric, 1 )] )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '1 z "test" 3 →list \'a\' sto a rev \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
+                                              Types.new_object( RplName, 'z' ),
+                                              Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplName, 'z' ),
+                                              Types.new_object( RplNumeric, 1 )] ),
+                  Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
+                                              Types.new_object( RplName, 'z' ),
+                                              Types.new_object( RplString, '"test"' )] ),
+                  Types.new_object( RplList, [Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplName, 'z' ),
+                                              Types.new_object( RplNumeric, 1 )] )],
+                 interpreter.stack
+
+    interpreter = Rpl.new
+    interpreter.run '1 a "test" 3 →list \'a\' sto 9 \'b\' sto a b + a b'
+    assert_equal [Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
+                                              Types.new_object( RplName, 'a' ),
+                                              Types.new_object( RplString, '"test"' ),
+                                              Types.new_object( RplNumeric, 9 )] ),
+                  Types.new_object( RplList, [Types.new_object( RplNumeric, 1 ),
+                                              Types.new_object( RplName, 'a' ),
+                                              Types.new_object( RplString, '"test"' )] ),
+                  Types.new_object( RplNumeric, 9 )],
                  interpreter.stack
   end
 

@@ -98,9 +98,11 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString, RplList]] )
 
-                                args[0].value.reverse!
-
-                                @stack << args[0]
+                                if args[0].is_a?( RplString )
+                                  @stack << args[0].class.new( "\"#{args[0].value.reverse}\"" )
+                                else
+                                  @stack << args[0].class.new( "{ #{args[0].value.reverse.join(' ')} }" )
+                                end
                               end )
 
         @dictionary.add_word( ['split'],

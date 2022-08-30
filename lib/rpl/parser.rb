@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+class RplTypeError < StandardError
+  attr_reader :reason
+
+  def initialize( reason = "-undefined-" )
+    @reason = reason
+  end
+end
+
 class Parser
   include Types
 
@@ -68,7 +76,7 @@ class Parser
     end
 
     # 2. parse
-    regrouped_input.map do |element|
+    parsed_input = regrouped_input.map do |element|
       if RplBoolean.can_parse?( element )
         Types.new_object( RplBoolean, element )
       elsif RplNumeric.can_parse?( element )
@@ -83,5 +91,7 @@ class Parser
         Types.new_object( RplName, element )
       end
     end
+
+    parsed_input
   end
 end
