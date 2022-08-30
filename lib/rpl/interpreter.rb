@@ -101,6 +101,12 @@ class Interpreter
     args
   end
 
+  def export_vars
+    @dictionary.vars
+               .map { |name, value| "#{value.to_s} '#{name}' sto" }
+               .join(' ')
+  end
+
   def export_stack
     @stack.map(&:to_s).join(' ')
   end
