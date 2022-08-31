@@ -2,7 +2,7 @@
 
 module RplLang
   module Words
-    module Operations
+    module OperationsRealsAndComplexes
       include Types
 
       def populate_dictionary
@@ -46,7 +46,7 @@ module RplLang
 
                                          elsif args[0].instance_of?( RplString )
                                            RplString.new( if args[1].instance_of?( RplString ) ||
-                                                              args[1].instance_of?( RplName )
+                                                             args[1].instance_of?( RplName )
                                                             "\"#{args[0].value}#{args[1].value}\""
                                                           else
                                                             "\"#{args[0].value}#{args[1]}\""
@@ -196,172 +196,6 @@ module RplLang
                                                             0
                                                           end )
                               end )
-
-        category = 'Operations on reals'
-        # Operations on reals
-        @dictionary.add_word( ['%'],
-                              category,
-                              '( a b -- c ) b% of a',
-                              proc do
-                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
-
-                                @stack << RplNumeric.new( args[0].value * ( args[1].value / 100.0 ), args[1].base )
-                              end )
-
-        @dictionary.add_word( ['%CH'],
-                              category,
-                              '( a b -- c ) b is c% of a',
-                              proc do
-                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
-
-                                @stack << RplNumeric.new( 100.0 * ( args[0].value / args[1].value ), args[1].base )
-                              end )
-
-        @dictionary.add_word( ['mod'],
-                              category,
-                              '( a b -- c ) modulo',
-                              proc do
-                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
-
-                                @stack << RplNumeric.new( args[1].value % args[0].value, args[1].base )
-                              end )
-
-        @dictionary.add_word( ['!', 'fact'],
-                              category,
-                              '( a -- b ) factorial',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-
-                                @stack << RplNumeric.new( Math.gamma( args[0].value ), args[0].base )
-                              end )
-
-        @dictionary.add_word( ['floor'],
-                              category,
-                              '( a -- b ) highest integer under a',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-
-                                @stack << RplNumeric.new( args[0].value.floor, args[0].base )
-                              end )
-
-        @dictionary.add_word( ['ceil'],
-                              category,
-                              '( a -- b ) highest integer over a',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-
-                                @stack << RplNumeric.new( args[0].value.ceil, args[0].base )
-                              end )
-
-        @dictionary.add_word( ['min'],
-                              category,
-                              '( a b -- a/b ) leave lowest of a or b',
-                              proc do
-                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
-
-                                @stack << ( args[0].value < args[1].value ? args[0] : args[1] )
-                              end )
-
-        @dictionary.add_word( ['max'],
-                              category,
-                              '( a b -- a/b ) leave highest of a or b',
-                              proc do
-                                args = stack_extract( [[RplNumeric], [RplNumeric]] )
-
-                                @stack << ( args[0].value > args[1].value ? args[0] : args[1] )
-                              end )
-
-        @dictionary.add_word( ['mant'],
-                              category,
-                              'mantissa of a real number',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-
-                                @stack << Types.new_object( RplNumeric, args[0].value.to_s.split('e').first.to_f.abs )
-                              end )
-
-        @dictionary.add_word( ['xpon'],
-                              category,
-                              'exponant of a real number',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-
-                                @stack << RplNumeric.new( args[0].value.exponent, args[0].base )
-                              end )
-
-        @dictionary.add_word( ['ip'],
-                              category,
-                              '( n -- i ) integer part',
-                              proc do
-                                run( 'dup fp -' )
-                              end )
-
-        @dictionary.add_word( ['fp'],
-                              category,
-                              '( n -- f ) fractional part',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-
-                                @stack << RplNumeric.new( args[0].value.frac, args[0].base )
-                              end )
-
-        category = 'Operations on complexes'
-        # Operations on complexes
-        # @dictionary.add_word( ['re'],
-        #                       category,
-        #                       '( c -- n ) complex real part',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( 'im',
-        #                       category,
-        #                       '( c -- n ) complex imaginary part',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( ['conj'],
-        #                       category,
-        #                       '( c -- c ) complex conjugate',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( 'arg',
-        #                       category,
-        #                       'complex argument in radians',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( ['c→r', 'c->r'],
-        #                       category,
-        #                       '( c -- n n ) transform a complex in 2 reals',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( ['r→c', 'r->c'],
-        #                       category,
-        #                       '( n n -- c ) transform 2 reals in a complex',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( ['p→r', 'p->r'],
-        #                       category,
-        #                       'cartesian to polar',
-        #                       proc do
-
-        #                       end )
-
-        # @dictionary.add_word( ['r→p', 'r->p'],
-        #                       category,
-        #                       'polar to cartesian',
-        #                       proc do
-
-        #                       end )
       end
     end
   end
