@@ -27,9 +27,7 @@ module RplLang
         @dictionary.add_word( ['drop2'],
                               category,
                               '( a b -- ) drop first two stack elements',
-                              proc do
-                                run( '2 dropn' )
-                              end )
+                              Types.new_object( RplProgram, '« 2 dropn »' ) )
 
         @dictionary.add_word( ['dropn'],
                               category,
