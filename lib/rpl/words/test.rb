@@ -8,8 +8,10 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Test'
+
         @dictionary.add_word( ['>'],
-                              'Test',
+                              category,
                               '( a b -- t ) is a greater than b?',
                               proc do
                                 args = stack_extract( %i[any any] )
@@ -18,7 +20,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['≥', '>='],
-                              'Test',
+                              category,
                               '( a b -- t ) is a greater than or equal to b?',
                               proc do
                                 args = stack_extract( %i[any any] )
@@ -27,7 +29,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['<'],
-                              'Test',
+                              category,
                               '( a b -- t ) is a less than b?',
                               proc do
                                 args = stack_extract( %i[any any] )
@@ -36,7 +38,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['≤', '<='],
-                              'Test',
+                              category,
                               '( a b -- t ) is a less than or equal to b?',
                               proc do
                                 args = stack_extract( %i[any any] )
@@ -45,7 +47,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['≠', '!='],
-                              'Test',
+                              category,
                               '( a b -- t ) is a not equal to b',
                               proc do
                                 args = stack_extract( %i[any any] )
@@ -54,7 +56,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['==', 'same'],
-                              'Test',
+                              category,
                               '( a b -- t ) is a equal to b',
                               proc do
                                 args = stack_extract( %i[any any] )
@@ -63,7 +65,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['and'],
-                              'Test',
+                              category,
                               '( a b -- t ) boolean and',
                               proc do
                                 args = stack_extract( [[RplBoolean], [RplBoolean]] )
@@ -72,7 +74,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['or'],
-                              'Test',
+                              category,
                               '( a b -- t ) boolean or',
                               proc do
                                 args = stack_extract( [[RplBoolean], [RplBoolean]] )
@@ -81,7 +83,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['xor'],
-                              'Test',
+                              category,
                               '( a b -- t ) boolean xor',
                               proc do
                                 args = stack_extract( [[RplBoolean], [RplBoolean]] )
@@ -90,23 +92,23 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['not'],
-                              'Test',
+                              category,
                               '( a -- t ) invert boolean value',
                               proc do
                                 args = stack_extract( [[RplBoolean]] )
 
-                                @stack << Types.new_object( RplBoolean,!args[0].value )
+                                @stack << Types.new_object( RplBoolean, !args[0].value )
                               end )
 
         @dictionary.add_word( ['true'],
-                              'Test',
+                              category,
                               '( -- t ) push true onto stack',
                               proc do
                                 @stack << Types.new_object( RplBoolean, true )
                               end )
 
         @dictionary.add_word( ['false'],
-                              'Test',
+                              category,
                               '( -- t ) push false onto stack',
                               proc do
                                 @stack << Types.new_object( RplBoolean, false )

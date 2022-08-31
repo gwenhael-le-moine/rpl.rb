@@ -23,7 +23,7 @@ module Types
 
     def self.can_parse?( value )
       value.instance_of?( Array ) or
-        value[0..1] == '{ ' && value[-2..-1] == ' }'
+        value[0..1] == '{ ' && value[-2..] == ' }'
     end
 
     def ==( other )

@@ -8,8 +8,10 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Filesystem'
+
         @dictionary.add_word( ['fread'],
-                              'Filesystem',
+                              category,
                               '( filename -- content ) read file and put content on stack as string',
                               proc do
                                 args = stack_extract( [[RplString]] )
@@ -20,12 +22,12 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['feval'],
-                              'Filesystem',
+                              category,
                               '( filename -- … ) read and run file',
                               Types.new_object( RplProgram, '« fread eval »' ) )
 
         @dictionary.add_word( ['fwrite'],
-                              'Filesystem',
+                              category,
                               '( content filename -- ) write content into filename',
                               proc do
                                 args = stack_extract( [[RplString], :any] )

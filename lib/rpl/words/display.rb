@@ -8,15 +8,17 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Display'
+
         @dictionary.add_word( ['erase'],
-                              'Display',
+                              category,
                               '( -- ) erase display',
                               proc do
                                 initialize_frame_buffer
                               end )
 
         @dictionary.add_word( ['display→', 'display->'],
-                              'Display',
+                              category,
                               '( -- pict ) put current display state on stack',
                               proc do
                                 @stack << @frame_buffer # FIXME: RplPict type

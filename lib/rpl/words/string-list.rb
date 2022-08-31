@@ -8,8 +8,10 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'String'
+
         @dictionary.add_word( ['→str', '->str'],
-                              'String',
+                              category,
                               '( a -- s ) convert element to string',
                               proc do
                                 args = stack_extract( [:any] )
@@ -18,7 +20,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['str→', 'str->'],
-                              'String',
+                              category,
                               '( s -- a ) convert string to element',
                               proc do
                                 args = stack_extract( [[RplString]] )
@@ -26,29 +28,8 @@ module RplLang
                                 @stack += Parser.parse( args[0].value )
                               end )
 
-        @dictionary.add_word( ['→list', '->list'],
-                              'Lists',
-                              '( … x -- […] ) pack x stacks levels into a list',
-                              proc do
-                                args = stack_extract( [[RplNumeric]] )
-                                args = stack_extract( %i[any] * args[0].value )
-
-                                @stack << Types.new_object( RplList, args.reverse )
-                              end )
-
-        @dictionary.add_word( ['list→', 'list->'],
-                              'Lists',
-                              '( […] -- … ) unpack list on stack',
-                              proc do
-                                args = stack_extract( [[RplList]] )
-
-                                args[0].value.each do |elt|
-                                  @stack << elt
-                                end
-                              end )
-
         @dictionary.add_word( ['chr'],
-                              'String',
+                              category,
                               '( n -- c ) convert ASCII character code in stack level 1 into a string',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -57,7 +38,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['num'],
-                              'String',
+                              category,
                               '( s -- n ) return ASCII code of the first character of the string in stack level 1 as a real number',
                               proc do
                                 args = stack_extract( [[RplString]] )
@@ -66,7 +47,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['size'],
-                              'String',
+                              category,
                               '( s -- n ) return the length of the string or list',
                               proc do
                                 args = stack_extract( [[RplString, RplList]] )
@@ -75,7 +56,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['pos'],
-                              'String',
+                              category,
                               '( s s -- n ) search for the string in level 1 within the string in level 2',
                               proc do
                                 args = stack_extract( [[RplString], [RplString]] )
@@ -84,7 +65,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['sub'],
-                              'String',
+                              category,
                               '( s n n -- s ) return a substring of the string in level 3',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric], [RplString]] )
@@ -92,21 +73,8 @@ module RplLang
                                 @stack << Types.new_object( RplString, "\"#{args[2].value[ (args[1].value - 1)..(args[0].value - 1) ]}\"" )
                               end )
 
-        @dictionary.add_word( ['rev'],
-                              'String',
-                              '( s -- s ) reverse string or list',
-                              proc do
-                                args = stack_extract( [[RplString, RplList]] )
-
-                                @stack << if args[0].is_a?( RplString )
-                                            Types.new_object( RplString, "\"#{args[0].value.reverse}\"" )
-                                          else
-                                            Types.new_object( args[0].class, "{ #{args[0].value.reverse.join(' ')} }" )
-                                          end
-                              end )
-
         @dictionary.add_word( ['split'],
-                              'String',
+                              category,
                               '( s c -- … ) split string s on character c',
                               proc do
                                 args = stack_extract( [[RplString], [RplString]] )
@@ -116,8 +84,31 @@ module RplLang
                                 end
                               end )
 
+        category = 'Lists'
+
+        @dictionary.add_word( ['→list', '->list'],
+                              category,
+                              '( … x -- […] ) pack x stacks levels into a list',
+                              proc do
+                                args = stack_extract( [[RplNumeric]] )
+                                args = stack_extract( %i[any] * args[0].value )
+
+                                @stack << Types.new_object( RplList, args.reverse )
+                              end )
+
+        @dictionary.add_word( ['list→', 'list->'],
+                              category,
+                              '( […] -- … ) unpack list on stack',
+                              proc do
+                                args = stack_extract( [[RplList]] )
+
+                                args[0].value.each do |elt|
+                                  @stack << elt
+                                end
+                              end )
+
         @dictionary.add_word( ['dolist'],
-                              'Lists',
+                              category,
                               '( […] prg -- … ) run prg on each element of a list',
                               proc do
                                 args = stack_extract( [[RplProgram], [RplList]] )
@@ -128,6 +119,21 @@ module RplLang
                                 end
 
                                 run( "#{args[1].value.length} →list" )
+                              end )
+
+        category = 'Strings and Lists'
+
+        @dictionary.add_word( ['rev'],
+                              category,
+                              '( s -- s ) reverse string or list',
+                              proc do
+                                args = stack_extract( [[RplString, RplList]] )
+
+                                @stack << if args[0].is_a?( RplString )
+                                            Types.new_object( RplString, "\"#{args[0].value.reverse}\"" )
+                                          else
+                                            Types.new_object( args[0].class, "{ #{args[0].value.reverse.join(' ')} }" )
+                                          end
                               end )
       end
     end

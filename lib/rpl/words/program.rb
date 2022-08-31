@@ -8,8 +8,10 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Program'
+
         @dictionary.add_word( ['eval'],
-                              'Program',
+                              category,
                               '( a -- … ) interpret',
                               proc do
                                 args = stack_extract( [:any] )
@@ -19,6 +21,16 @@ module RplLang
                                 else
                                   run( args[0].value.to_s )
                                 end
+                              end )
+
+        @dictionary.add_word( ['↴', 'lsto'],
+                              category,
+                              '( content name -- ) store to local variable',
+                              proc do
+                                args = stack_extract( [[RplName], :any] )
+
+                                @dictionary.add_local_var( args[0].value,
+                                                           args[1] )
                               end )
       end
     end

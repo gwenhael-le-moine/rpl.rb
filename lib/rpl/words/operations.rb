@@ -8,9 +8,11 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Usual operations on reals and complexes'
+
         # Usual operations on reals and complexes
         @dictionary.add_word( ['+'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a b -- c ) addition',
                               proc do
                                 addable = [RplNumeric, RplString, RplName, RplList]
@@ -76,7 +78,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['-'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a b -- c ) subtraction',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -85,14 +87,14 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['chs'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- b ) negate',
                               proc do
                                 run( '-1 *' )
                               end )
 
         @dictionary.add_word( ['×', '*'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a b -- c ) multiplication',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -101,7 +103,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['÷', '/'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a b -- c ) division',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -110,14 +112,14 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['inv'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- b ) invert numeric',
                               proc do
                                 run( '1.0 swap /' )
                               end )
 
         @dictionary.add_word( ['^'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a b -- c ) a to the power of b',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -126,7 +128,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['√', 'sqrt'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- b ) square root',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -135,14 +137,14 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['²', 'sq'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- b ) square',
                               proc do
                                 run( 'dup ×')
                               end )
 
         @dictionary.add_word( ['abs'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- b ) absolute value',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -151,28 +153,28 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['dec'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- a ) set numeric\'s base to 10',
                               proc do
                                 run( '10 base' )
                               end )
 
         @dictionary.add_word( ['hex'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- a ) set numeric\'s base to 16',
                               proc do
                                 run( '16 base' )
                               end )
 
         @dictionary.add_word( ['bin'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- a ) set numeric\'s base to 2',
                               proc do
                                 run( '2 base' )
                               end )
 
         @dictionary.add_word( ['base'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a b -- a ) set numeric\'s base to b',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -181,7 +183,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['sign'],
-                              'Usual operations on reals and complexes',
+                              category,
                               '( a -- b ) sign of element',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -195,9 +197,10 @@ module RplLang
                                                           end )
                               end )
 
+        category = 'Operations on reals'
         # Operations on reals
         @dictionary.add_word( ['%'],
-                              'Operations on reals',
+                              category,
                               '( a b -- c ) b% of a',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -206,7 +209,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['%CH'],
-                              'Operations on reals',
+                              category,
                               '( a b -- c ) b is c% of a',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -215,7 +218,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['mod'],
-                              'Operations on reals',
+                              category,
                               '( a b -- c ) modulo',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -224,7 +227,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['!', 'fact'],
-                              'Operations on reals',
+                              category,
                               '( a -- b ) factorial',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -233,7 +236,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['floor'],
-                              'Operations on reals',
+                              category,
                               '( a -- b ) highest integer under a',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -242,7 +245,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['ceil'],
-                              'Operations on reals',
+                              category,
                               '( a -- b ) highest integer over a',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -251,7 +254,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['min'],
-                              'Operations on reals',
+                              category,
                               '( a b -- a/b ) leave lowest of a or b',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -260,7 +263,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['max'],
-                              'Operations on reals',
+                              category,
                               '( a b -- a/b ) leave highest of a or b',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
@@ -269,7 +272,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['mant'],
-                              'Operations on reals',
+                              category,
                               'mantissa of a real number',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -278,7 +281,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['xpon'],
-                              'Operations on reals',
+                              category,
                               'exponant of a real number',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -287,14 +290,14 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['ip'],
-                              'Operations on reals',
+                              category,
                               '( n -- i ) integer part',
                               proc do
                                 run( 'dup fp -' )
                               end )
 
         @dictionary.add_word( ['fp'],
-                              'Operations on reals',
+                              category,
                               '( n -- f ) fractional part',
                               proc do
                                 args = stack_extract( [[RplNumeric]] )
@@ -302,58 +305,59 @@ module RplLang
                                 @stack << RplNumeric.new( args[0].value.frac, args[0].base )
                               end )
 
+        category = 'Operations on complexes'
         # Operations on complexes
         # @dictionary.add_word( ['re'],
-        #                       'Operations on complexes',
+        #                       category,
         #                       '( c -- n ) complex real part',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( 'im',
-        #                       'Operations on complexes',
+        #                       category,
         #                       '( c -- n ) complex imaginary part',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['conj'],
-        #                       'Operations on complexes',
+        #                       category,
         #                       '( c -- c ) complex conjugate',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( 'arg',
-        #                       'Operations on complexes',
+        #                       category,
         #                       'complex argument in radians',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['c→r', 'c->r'],
-        #                       'Operations on complexes',
+        #                       category,
         #                       '( c -- n n ) transform a complex in 2 reals',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['r→c', 'r->c'],
-        #                       'Operations on complexes',
+        #                       category,
         #                       '( n n -- c ) transform 2 reals in a complex',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['p→r', 'p->r'],
-        #                       'Operations on complexes',
+        #                       category,
         #                       'cartesian to polar',
         #                       proc do
 
         #                       end )
 
         # @dictionary.add_word( ['r→p', 'r->p'],
-        #                       'Operations on complexes',
+        #                       category,
         #                       'polar to cartesian',
         #                       proc do
 

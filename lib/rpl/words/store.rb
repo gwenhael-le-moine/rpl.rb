@@ -8,8 +8,10 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Store'
+
         @dictionary.add_word( ['▶', 'sto'],
-                              'Store',
+                              category,
                               '( content name -- ) store to variable',
                               proc do
                                 args = stack_extract( [[RplName], :any] )
@@ -19,7 +21,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['rcl'],
-                              'Store',
+                              category,
                               '( name -- … ) push content of variable name onto stack',
                               proc do
                                 args = stack_extract( [[RplName]] )
@@ -30,7 +32,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['purge'],
-                              'Store',
+                              category,
                               '( name -- ) delete variable',
                               proc do
                                 args = stack_extract( [[RplName]] )
@@ -39,58 +41,49 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['vars'],
-                              'Store',
+                              category,
                               '( -- […] ) list variables',
                               proc do
-                                @stack << Types.new_object( RplList, (@dictionary.vars.keys + @dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys }).map { |name| Types.new_object( RplName, name ) } )
+                                @stack << Types.new_object( RplList, (@dictionary.vars.keys + @dictionary.local_vars_layers.reduce([]) { |memo, layer| memo + layer.keys })
+                                                                       .map { |name| Types.new_object( RplName, name ) } )
                               end )
 
         @dictionary.add_word( ['clusr'],
-                              'Store',
+                              category,
                               '( -- ) delete all variables',
                               proc do
                                 @dictionary.remove_all_vars
                               end )
 
         @dictionary.add_word( ['sto+'],
-                              'Store',
+                              category,
                               '( a n -- ) add content to variable\'s value',
                               Types.new_object( RplProgram, '« swap over rcl + swap sto »' ) )
 
         @dictionary.add_word( ['sto-'],
-                              'Store',
+                              category,
                               '( a n -- ) subtract content to variable\'s value',
                               Types.new_object( RplProgram, '« swap over rcl swap - swap sto »' ) )
 
         @dictionary.add_word( ['sto×', 'sto*'],
-                              'Store',
+                              category,
                               '( a n -- ) multiply content of variable\'s value',
                               Types.new_object( RplProgram, '« swap over rcl * swap sto »' ) )
 
         @dictionary.add_word( ['sto÷', 'sto/'],
-                              'Store',
+                              category,
                               '( a n -- ) divide content of variable\'s value',
                               Types.new_object( RplProgram, '« swap over rcl swap / swap sto »' ) )
 
         @dictionary.add_word( ['sneg'],
-                              'Store',
+                              category,
                               '( a n -- ) negate content of variable\'s value',
                               Types.new_object( RplProgram, '« dup rcl chs swap sto »' ) )
 
         @dictionary.add_word( ['sinv'],
-                              'Store',
+                              category,
                               '( a n -- ) invert content of variable\'s value',
                               Types.new_object( RplProgram, '« dup rcl inv swap sto »' ) )
-
-        @dictionary.add_word( ['↴', 'lsto'],
-                              'Program',
-                              '( content name -- ) store to local variable',
-                              proc do
-                                args = stack_extract( [[RplName], :any] )
-
-                                @dictionary.add_local_var( args[0].value,
-                                                           args[1] )
-                              end )
       end
     end
   end

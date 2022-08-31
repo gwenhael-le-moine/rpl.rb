@@ -3,7 +3,8 @@
 class RplTypeError < StandardError
   attr_reader :reason
 
-  def initialize( reason = "-undefined-" )
+  def initialize( reason = '-undefined-' )
+    super
     @reason = reason
   end
 end

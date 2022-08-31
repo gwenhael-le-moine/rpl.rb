@@ -8,13 +8,15 @@ module RplLang
       def populate_dictionary
         super
 
+        category = 'Branch'
+
         @dictionary.add_word( ['ift'],
-                              'Branch',
+                              category,
                               '( t pt -- … ) eval pt or not based on the value of boolean t',
                               Types.new_object( RplProgram, '« « nop » ifte »' ) )
 
         @dictionary.add_word( ['ifte'],
-                              'Branch',
+                              category,
                               '( t pt pf -- … ) eval pt or pf based on the value of boolean t',
                               proc do
                                 args = stack_extract( [:any, :any, [RplBoolean]] )
@@ -23,7 +25,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['times'],
-                              'Branch',
+                              category,
                               '( p n -- … ) eval p n times while pushing counter on stack before',
                               proc do
                                 args = stack_extract( [[RplNumeric], :any] )
@@ -36,7 +38,7 @@ module RplLang
                               end )
 
         @dictionary.add_word( ['loop'],
-                              'Branch',
+                              category,
                               '( p n1 n2 -- … ) eval p looping from n1 to n2 while pushing counter on stack before',
                               proc do
                                 args = stack_extract( [[RplNumeric], [RplNumeric], :any] )

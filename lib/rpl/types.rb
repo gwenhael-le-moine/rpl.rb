@@ -9,6 +9,7 @@ require 'rpl/types/numeric'
 
 module Types
   module_function
+
   def new_object( type_class, value )
     if type_class.can_parse?( value )
       type_class.new( value )

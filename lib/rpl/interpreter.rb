@@ -65,12 +65,10 @@ class Interpreter
             @stack << elt
           elsif command.is_a?( Proc )
             command.call
+          elsif command.instance_of?( RplProgram )
+            run( command.value )
           else
-            if command.instance_of?( RplProgram )
-              run( command.value )
-            else
-              @stack << command
-            end
+            @stack << command
           end
         end
       else
@@ -103,7 +101,7 @@ class Interpreter
 
   def export_vars
     @dictionary.vars
-               .map { |name, value| "#{value.to_s} '#{name}' sto" }
+               .map { |name, value| "#{value} '#{name}' sto" }
                .join(' ')
   end
 

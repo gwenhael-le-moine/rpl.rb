@@ -21,6 +21,7 @@ class Rpl < Interpreter
   prepend RplLang::Words::Mode
   prepend RplLang::Words::Operations
   prepend RplLang::Words::Program
+  prepend RplLang::Words::REPL
   prepend RplLang::Words::Stack
   prepend RplLang::Words::Store
   prepend RplLang::Words::StringAndList
