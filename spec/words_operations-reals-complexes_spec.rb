@@ -5,8 +5,10 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TesttLanguageOperations < MiniTest::Test
+class TesttLanguageOperationsRealsAndComplexes < MiniTest::Test
   include Types
+
+  # TODO: test complexes
 
   def test_add
     interpreter = Rpl.new
