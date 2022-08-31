@@ -10,7 +10,9 @@ module Types
       raise RplTypeError unless self.class.can_parse?( value )
 
       # we systematicalyl trim enclosing ()
-      @value = Complex( value[1..-2] )
+      value = value[1..-2] if value.is_a?( String ) && value[0] == '(' && value[-1] == ')'
+
+      @value = Complex( value )
     end
 
     def to_s
@@ -18,17 +20,16 @@ module Types
     end
 
     def self.can_parse?( value )
-      possibility = value[0] == '(' && value[-1] == ')'
-
-      return possibility unless possibility
+      # we systematicalyl trim enclosing ()
+      value = value[1..-2] if value.is_a?( String ) && value[0] == '(' && value[-1] == ')'
 
       begin
-        Complex( value[1..-2] )
+        Complex( value )
       rescue ArgumentError
-        possibility = false
+        return false
       end
 
-      possibility
+      true
     end
 
     def ==( other )

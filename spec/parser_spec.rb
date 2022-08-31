@@ -39,6 +39,13 @@ class TestParser < MiniTest::Test
     assert_equal BigDecimal( 3 ), result.first.value
   end
 
+  def test_complex
+    result = Parser.parse( '(1+2i)' )
+    assert_equal 1, result.size
+    assert_equal RplComplex, result.first.class
+    assert_equal Complex( 1, 2 ), result.first.value
+  end
+
   def test_word
     result = Parser.parse( 'dup' )
     assert_equal 1, result.size
