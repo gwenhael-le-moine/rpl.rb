@@ -37,7 +37,7 @@ class Interpreter
   attr_accessor :precision
 
   def initialize( stack: [], dictionary: Dictionary.new )
-    @version = 0.91
+    @version = 0.101
 
     @dictionary = dictionary
     @stack = stack
