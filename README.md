@@ -2,6 +2,15 @@
 
 Reverse-Polish-Lisp inspired language in ruby
 
+# Install
+`gem install rpl`
+
+# Usage
+  * `rpl --help`
+  * run RPL: `rpl`
+  * by default rpl persists its state in ~/.local/state/rpl.rb/machine which is created if needed
+
+# Development
 To run REPL locally: `rake run`
 
 To run the test suite: `rake test`
