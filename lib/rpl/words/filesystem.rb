@@ -16,7 +16,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString]] )
 
-                                path = File.absolute_path( args[0].value )
+                                path = File.expand_path( args[0].value )
 
                                 @stack << Types.new_object( RplString, "\"#{File.read( path )}\"" )
                               end )
@@ -32,7 +32,7 @@ module RplLang
                               proc do
                                 args = stack_extract( [[RplString], :any] )
 
-                                File.write( File.absolute_path( args[0].value ),
+                                File.write( File.expand_path( args[0].value ),
                                             args[1].value )
                               end )
       end

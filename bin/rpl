@@ -73,7 +73,7 @@ interpreter = Rpl.new
 
 # first run provided files if any
 options[:files].each do |filename|
-  interpreter.run "\"#{filename}\" feval"
+  interpreter.run "\"#{File.expand_path( filename )}\" feval"
 end
 
 # second run provided code if any
