@@ -12,10 +12,6 @@ To build gem: `rake gem`
  -
 
 # TODO-list
-  * REPL:
-    * autosave/autoload stack and vars from ~/.rplenv on start/exit
-      . autoload is just « '~/.rplenv' feval »
-      . autosave on exit overwrites
   * Language:
     * pseudo filesystem: subdir/namespace for variables
       . 'a dir' crdir 'a dir' cd vars

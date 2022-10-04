@@ -8,9 +8,7 @@ require 'readline'
 require 'rpl'
 
 class RplRepl
-  def initialize( interpreter )
-    interpreter ||= Rpl.new
-
+  def initialize( interpreter: Rpl.new )
     @interpreter = interpreter
   end
 
@@ -51,11 +49,25 @@ class RplRepl
 end
 
 options = { run_REPL: ARGV.empty?,
+            persistence_filename: File.expand_path( '~/.local/state/rpl.rb/machine' ),
+            live_persistence: true,
             files: [],
             programs: [] }
 
 OptionParser.new do |opts|
-  opts.on('-c', '--code "program"', ' ') do |program|
+  opts.on('-s', "--state filename", "persist state in filename (default: #{options[:persistence_filename]}) (will be created if needed)") do |filename|
+    options[:persistence_filename] = File.expand_path( filename )
+  end
+
+  opts.on('-q', '--no-state', 'Do not load persisted state') do
+    options[:persistence_filename] = nil
+  end
+
+  opts.on('-d', '--no-persist', 'Do not persist state') do
+    options[:live_persistence] = false
+  end
+
+  opts.on('-c', '--code "program"', 'run provided "program"') do |program|
     options[:programs] << program
   end
 
@@ -69,7 +81,8 @@ OptionParser.new do |opts|
 end.parse!
 
 # Instantiate interpreter
-interpreter = Rpl.new
+interpreter = Rpl.new( persistence_filename: options[:persistence_filename],
+                       live_persistence: options[:live_persistence] )
 
 # first run provided files if any
 options[:files].each do |filename|
@@ -82,7 +95,8 @@ options[:programs].each do |program|
 end
 
 # third launch REPL if (explicitely or implicitely) asked
-RplRepl.new( interpreter ).run if options[:run_REPL]
-
-# last print defined vars and resulting stack on exit (formatted so that it can be fed back later to interpreter)
-pp "#{interpreter.export_vars} #{interpreter.export_stack}"
+if options[:run_REPL]
+  RplRepl.new( interpreter: interpreter ).run
+else
+  interpreter.persist_state
+end

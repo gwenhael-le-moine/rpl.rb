@@ -36,7 +36,7 @@ class Interpreter
 
   attr_accessor :precision
 
-  def initialize( stack = [], dictionary = Rpl::Lang::Dictionary.new )
+  def initialize( stack: [], dictionary: Dictionary.new )
     @version = 0.91
 
     @dictionary = dictionary
@@ -100,12 +100,19 @@ class Interpreter
   end
 
   def export_vars
-    @dictionary.vars
-               .map { |name, value| "#{value} '#{name}' sto" }
-               .join(' ')
+    vars_as_string = "@ variables:\n"
+    vars_as_string += @dictionary.vars
+                                 .map { |name, value| "#{value}\n'#{name}' sto\n" }
+                                 .join("\n")
+
+    vars_as_string
   end
 
   def export_stack
-    @stack.map(&:to_s).join(' ')
+    stack_as_string = "@ stack:\n"
+    stack_as_string += @stack.map(&:to_s)
+                             .join("\n")
+
+    stack_as_string
   end
 end

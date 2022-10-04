@@ -7,10 +7,45 @@ require 'rpl/words'
 class Rpl < Interpreter
   include Types
 
-  def initialize( stack = [], dictionary = Dictionary.new )
-    super
+  attr_accessor :live_persistence
+
+  def initialize( stack: [],
+                  dictionary: Dictionary.new,
+                  persistence_filename: nil,
+                  live_persistence: true )
+    super( stack: stack, dictionary: dictionary )
+
+    @persistence_filename = persistence_filename
+    @live_persistence = live_persistence
 
     populate_dictionary if @dictionary.words.empty?
+
+    load_persisted_state
+  end
+
+  def load_persisted_state
+    return if @persistence_filename.nil?
+
+    FileUtils.mkdir_p( File.dirname( @persistence_filename ) )
+    FileUtils.touch( @persistence_filename )
+
+    run "\"#{@persistence_filename}\" feval"
+  end
+
+  def persist_state
+    return if @persistence_filename.nil?
+
+    File.open( @persistence_filename, 'w' ) do |persistence_file|
+      persistence_file.write "#{export_vars}\n#{export_stack}"
+    end
+  end
+
+  def run( input )
+    stack = super
+
+    persist_state if @live_persistence
+
+    stack
   end
 
   prepend RplLang::Words::Branch
