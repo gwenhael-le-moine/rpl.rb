@@ -54,7 +54,7 @@ options = { run_REPL: ARGV.empty?,
             files: [],
             programs: [] }
 
-Version = '0.10.1'
+Version = Rpl::VERSION
 
 OptionParser.new do |opts|
   opts.on('-s', "--state filename", "persist state in filename (default: #{options[:persistence_filename]}) (will be created if needed)") do |filename|

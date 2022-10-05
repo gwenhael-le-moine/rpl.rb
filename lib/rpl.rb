@@ -5,6 +5,8 @@ require 'rpl/types'
 require 'rpl/words'
 
 class Rpl < Interpreter
+  VERSION = '0.10.2'
+
   include Types
 
   attr_accessor :live_persistence

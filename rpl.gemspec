@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative './lib/rpl'
+
 Gem::Specification.new do |s|
   s.name        = 'rpl'
-  s.version     = '0.10.1'
+  s.version     = Rpl::VERSION
   s.summary     = 'Functional Stack Language'
   s.description = "A language inspired by HP's RPL and https://github.com/louisrubet/rpn/"
   s.authors     = ['Gwenhael Le Moine']

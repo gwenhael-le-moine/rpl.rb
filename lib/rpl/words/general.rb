@@ -35,15 +35,13 @@ module RplLang
                               category,
                               '( -- n ) Pop the interpreter\'s version number',
                               proc do
-                                @stack << Types.new_object( RplString, "\"#{@version}\"" )
+                                @stack << Types.new_object( RplString, "\"#{Rpl::VERSION}\"" )
                               end )
 
         @dictionary.add_word( ['uname'],
                               category,
                               '( -- s ) Pop the interpreter\'s complete indentification string',
-                              proc do
-                                @stack << Types.new_object( RplString, "\"Rpl Interpreter version #{@version}\"" )
-                              end )
+                              Types.new_object( RplProgram, '« "Rpl Interpreter version " version + »' ) )
       end
     end
   end
