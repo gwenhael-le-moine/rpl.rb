@@ -22,17 +22,22 @@ class RplRepl
 
     loop do
       input = Readline.readline( ' ', true )
-      break if input.nil? || input == 'quit'
 
-      pp Readline::HISTORY if input == 'history'
+      break if input.nil? || input.strip == 'quit'
 
-      # Remove blank lines from history
-      Readline::HISTORY.pop if input.empty?
-
-      begin
-        @interpreter.run( input )
-      rescue ArgumentError => e
-        pp e
+      if input.strip == 'history'
+        Readline::HISTORY.each do |line|
+          pp line
+        end
+      elsif input.empty?
+        # Remove blank lines from history
+        Readline::HISTORY.pop
+      else
+        begin
+          @interpreter.run( input )
+        rescue ArgumentError => e
+          pp e
+        end
       end
 
       print_stack
