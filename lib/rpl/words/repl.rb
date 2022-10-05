@@ -32,6 +32,11 @@ module RplLang
 
         @dictionary.add_word( ['edit'],
                               category,
+                              '( x -- y ) put first stack object in prompt for modification',
+                              proc {} )
+
+        @dictionary.add_word( ['extedit'],
+                              category,
                               '( x -- y ) open object in $EDITOR',
                               proc do
                                 args = stack_extract( [:any] )

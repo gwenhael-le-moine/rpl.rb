@@ -20,12 +20,25 @@ class RplRepl
     end
     Readline.completion_append_character = ' '
 
+    prefill = ''
     loop do
+      Readline.pre_input_hook = lambda do
+        return if prefill.empty?
+
+        Readline.refresh_line
+        Readline.insert_text( prefill.to_s )
+        Readline.redisplay
+      end
+
       input = Readline.readline( ' ', true )
 
       break if input.nil? || input.strip == 'quit'
 
-      if input.strip == 'history'
+      prefill = ''
+
+      if input.strip == 'edit'
+        prefill = @interpreter.stack.pop.to_s
+      elsif input.strip == 'history'
         Readline::HISTORY.each do |line|
           pp line
         end
@@ -62,7 +75,7 @@ options = { run_REPL: ARGV.empty?,
 Version = Rpl::VERSION
 
 OptionParser.new do |opts|
-  opts.on('-s', "--state filename", "persist state in filename (default: #{options[:persistence_filename]}) (will be created if needed)") do |filename|
+  opts.on('-s', '--state filename', "persist state in filename (default: #{options[:persistence_filename]}) (will be created if needed)") do |filename|
     options[:persistence_filename] = File.expand_path( filename )
   end
 
