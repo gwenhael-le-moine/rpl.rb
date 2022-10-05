@@ -14,7 +14,7 @@ module RplLang
 
         @dictionary.add_word( ['words'],
                               category,
-                              'DEBUG',
+                              '() print the categorized list of all words',
                               proc do
                                 @dictionary.words
                                            .to_a
@@ -27,12 +27,12 @@ module RplLang
 
         @dictionary.add_word( ['history'],
                               category,
-                              '',
+                              '() print the REPL\'s history',
                               proc {} )
 
         @dictionary.add_word( ['edit'],
                               category,
-                              '( -- s ) Pop the interpreter\'s complete indentification string',
+                              '( x -- y ) open object in $EDITOR',
                               proc do
                                 args = stack_extract( [:any] )
 
@@ -54,24 +54,25 @@ module RplLang
                                 @stack << Types.new_object( args[0].class, edited_value )
                               end )
 
+        category = 'DEBUG'
         @dictionary.add_word( ['.s'],
                               category,
-                              'DEBUG',
+                              '() print internal state of stack',
                               proc { pp @stack } )
 
         @dictionary.add_word( ['.d'],
                               category,
-                              'DEBUG',
+                              '() print internal state of dictionary',
                               proc { pp @dictionary } )
 
         @dictionary.add_word( ['.v'],
                               category,
-                              'DEBUG',
+                              '() print internal state of variables',
                               proc { pp @dictionary.vars } )
 
         @dictionary.add_word( ['.lv'],
                               category,
-                              'DEBUG',
+                              '() print internal state of local variables layers',
                               proc { pp @dictionary.local_vars_layers } )
       end
     end
