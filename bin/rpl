@@ -9,6 +9,12 @@ require 'rpl'
 
 class RplRepl
   def initialize( interpreter: Rpl.new )
+    begin
+      @stty_save = `stty -g`.chomp
+    rescue Error
+      puts "Couldn't get terminal characteristics"
+    end
+
     @interpreter = interpreter
   end
 
@@ -55,6 +61,10 @@ class RplRepl
       end
 
       print_stack
+    rescue Interrupt
+      puts '^C'
+      `stty #{@stty_save}` if @stty_save
+      exit 0
     end
   end
 
