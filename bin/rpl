@@ -46,12 +46,10 @@ class RplRepl
       if input.strip == 'edit'
         prefill = @interpreter.stack.pop.to_s
       elsif input.strip == 'history'
-        Readline::HISTORY.each do |line|
-          pp line
-        end
+        @interpreter.run( "{ #{Reline::HISTORY.map { |line| "\"#{line}\"" }.join(' ')} }" )
       elsif input.empty?
         # Remove blank lines from history
-        Readline::HISTORY.pop
+        Reline::HISTORY.pop
       else
         begin
           @interpreter.run( input )
