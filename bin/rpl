@@ -3,7 +3,7 @@
 
 require 'English'
 require 'optparse'
-require 'readline'
+require 'reline'
 
 require 'rpl'
 
@@ -15,22 +15,23 @@ class RplRepl
   def run
     print_stack unless @interpreter.stack.empty?
 
-    Readline.completion_proc = proc do |s|
+    Reline.completion_proc = proc do |s|
       ( @interpreter.dictionary.words.keys + @interpreter.dictionary.vars.keys ).grep(/^#{Regexp.escape(s)}/)
     end
-    Readline.completion_append_character = ' '
+    Reline.completion_append_character = ' '
 
     prefill = ''
     loop do
-      Readline.pre_input_hook = lambda do
-        return if prefill.empty?
+      unless prefill.empty?
+        Reline.pre_input_hook = lambda do
+          Reline.insert_text( prefill.to_s )
+          Reline.redisplay
 
-        Readline.refresh_line
-        Readline.insert_text( prefill.to_s )
-        Readline.redisplay
+          Reline.pre_input_hook = nil
+        end
       end
 
-      input = Readline.readline( ' ', true )
+      input = Reline.readline( ' ', true )
 
       break if input.nil? || input.strip == 'quit'
 
