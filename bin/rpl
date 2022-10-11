@@ -46,7 +46,8 @@ class RplRepl
       if input.strip == 'edit'
         prefill = @interpreter.stack.pop.to_s
       elsif input.strip == 'history'
-        @interpreter.run( "{ #{Reline::HISTORY.map { |line| "\"#{line}\"" }.join(' ')} }" )
+        history = Reline::HISTORY.map { |line| "\"#{line}\"" }.join(' ')
+        @interpreter.run( "{ #{history} }" )
       elsif input.empty?
         # Remove blank lines from history
         Reline::HISTORY.pop
