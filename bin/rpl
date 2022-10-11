@@ -11,8 +11,9 @@ class RplRepl
   def initialize( interpreter: Rpl.new )
     begin
       @stty_save = `stty -g`.chomp
-    rescue Error
+    rescue Error => e
       puts "Couldn't get terminal characteristics"
+      pp e
     end
 
     @interpreter = interpreter
