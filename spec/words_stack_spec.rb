@@ -10,7 +10,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_swap
     interpreter = Rpl.new
-    interpreter.run '1 2 swap'
+    interpreter.run! '1 2 swap'
 
     assert_equal [Types.new_object( RplNumeric, 2 ),
                   Types.new_object( RplNumeric, 1 )],
@@ -19,7 +19,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_drop
     interpreter = Rpl.new
-    interpreter.run '1 2 drop'
+    interpreter.run! '1 2 drop'
 
     assert_equal [Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
@@ -27,7 +27,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_drop2
     interpreter = Rpl.new
-    interpreter.run '1 2 drop2'
+    interpreter.run! '1 2 drop2'
 
     assert_equal [],
                  interpreter.stack
@@ -35,7 +35,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_dropn
     interpreter = Rpl.new
-    interpreter.run '1 2 3 4 3 dropn'
+    interpreter.run! '1 2 3 4 3 dropn'
 
     assert_equal [Types.new_object( RplNumeric, 1 )],
                  interpreter.stack
@@ -43,14 +43,14 @@ class TestLanguageStack < MiniTest::Test
 
   def test_del
     interpreter = Rpl.new
-    interpreter.run '1 2 del'
+    interpreter.run! '1 2 del'
 
     assert_empty interpreter.stack
   end
 
   def test_rot
     interpreter = Rpl.new
-    interpreter.run '1 2 3 rot'
+    interpreter.run! '1 2 3 rot'
 
     assert_equal [Types.new_object( RplNumeric, 2 ),
                   Types.new_object( RplNumeric, 3 ),
@@ -60,7 +60,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_dup
     interpreter = Rpl.new
-    interpreter.run '1 2 dup'
+    interpreter.run! '1 2 dup'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),
@@ -70,7 +70,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_dup2
     interpreter = Rpl.new
-    interpreter.run '1 2 dup2'
+    interpreter.run! '1 2 dup2'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),
@@ -81,7 +81,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_dupn
     interpreter = Rpl.new
-    interpreter.run '1 2 3 4 3 dupn'
+    interpreter.run! '1 2 3 4 3 dupn'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),
@@ -95,7 +95,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_pick
     interpreter = Rpl.new
-    interpreter.run '1 2 3 4 3 pick'
+    interpreter.run! '1 2 3 4 3 pick'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),
@@ -107,13 +107,13 @@ class TestLanguageStack < MiniTest::Test
 
   def test_depth
     interpreter = Rpl.new
-    interpreter.run 'depth'
+    interpreter.run! 'depth'
 
     assert_equal [Types.new_object( RplNumeric, 0 )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 2 depth'
+    interpreter.run! '1 2 depth'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),
@@ -123,7 +123,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_roll
     interpreter = Rpl.new
-    interpreter.run '1 2 3 4 3 roll'
+    interpreter.run! '1 2 3 4 3 roll'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 3 ),
@@ -134,7 +134,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_rolld
     interpreter = Rpl.new
-    interpreter.run '1 2 4 3 2 rolld'
+    interpreter.run! '1 2 4 3 2 rolld'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),
@@ -145,7 +145,7 @@ class TestLanguageStack < MiniTest::Test
 
   def test_over
     interpreter = Rpl.new
-    interpreter.run '1 2 3 4 over'
+    interpreter.run! '1 2 3 4 over'
 
     assert_equal [Types.new_object( RplNumeric, 1 ),
                   Types.new_object( RplNumeric, 2 ),

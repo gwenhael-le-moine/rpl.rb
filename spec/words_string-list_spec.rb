@@ -10,12 +10,12 @@ class TestLanguageStringAndList < MiniTest::Test
 
   def test_rev
     interpreter = Rpl.new
-    interpreter.run '"my string to sub" rev'
+    interpreter.run! '"my string to sub" rev'
     assert_equal [Types.new_object( RplString, '"my string to sub"'.reverse )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '{ 1 2 3 } rev'
+    interpreter.run! '{ 1 2 3 } rev'
     assert_equal [Types.new_object( RplList, '{ 3 2 1 }' )],
                  interpreter.stack
   end

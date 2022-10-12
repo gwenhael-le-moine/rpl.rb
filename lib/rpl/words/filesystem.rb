@@ -10,31 +10,31 @@ module RplLang
 
         category = 'Filesystem'
 
-        @dictionary.add_word( ['fread'],
-                              category,
-                              '( filename -- content ) read file and put content on stack as string',
-                              proc do
-                                args = stack_extract( [[RplString]] )
+        @dictionary.add_word!( ['fread'],
+                               category,
+                               '( filename -- content ) read file and put content on stack as string',
+                               proc do
+                                 args = stack_extract( [[RplString]] )
 
-                                path = File.expand_path( args[0].value )
+                                 path = File.expand_path( args[0].value )
 
-                                @stack << Types.new_object( RplString, "\"#{File.read( path )}\"" )
-                              end )
+                                 @stack << Types.new_object( RplString, "\"#{File.read( path )}\"" )
+                               end )
 
-        @dictionary.add_word( ['feval'],
-                              category,
-                              '( filename -- … ) read and run file',
-                              Types.new_object( RplProgram, '« fread eval »' ) )
+        @dictionary.add_word!( ['feval'],
+                               category,
+                               '( filename -- … ) read and run file',
+                               Types.new_object( RplProgram, '« fread eval »' ) )
 
-        @dictionary.add_word( ['fwrite'],
-                              category,
-                              '( content filename -- ) write content into filename',
-                              proc do
-                                args = stack_extract( [[RplString], :any] )
+        @dictionary.add_word!( ['fwrite'],
+                               category,
+                               '( content filename -- ) write content into filename',
+                               proc do
+                                 args = stack_extract( [[RplString], :any] )
 
-                                File.write( File.expand_path( args[0].value ),
-                                            args[1].value )
-                              end )
+                                 File.write( File.expand_path( args[0].value ),
+                                             args[1].value )
+                               end )
       end
     end
   end

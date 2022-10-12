@@ -10,28 +10,28 @@ module RplLang
 
         category = 'Program'
 
-        @dictionary.add_word( ['eval'],
-                              category,
-                              '( a -- … ) interpret',
-                              proc do
-                                args = stack_extract( [:any] )
+        @dictionary.add_word!( ['eval'],
+                               category,
+                               '( a -- … ) interpret',
+                               proc do
+                                 args = stack_extract( [:any] )
 
-                                if [RplList, RplNumeric, RplBoolean].include?( args[0].class )
-                                  @stack << args[0] # these types evaluate to themselves
-                                else
-                                  run( args[0].value.to_s )
-                                end
-                              end )
+                                 if [RplList, RplNumeric, RplBoolean].include?( args[0].class )
+                                   @stack << args[0] # these types evaluate to themselves
+                                 else
+                                   run!( args[0].value.to_s )
+                                 end
+                               end )
 
-        @dictionary.add_word( ['↴', 'lsto'],
-                              category,
-                              '( content name -- ) store to local variable',
-                              proc do
-                                args = stack_extract( [[RplName], :any] )
+        @dictionary.add_word!( ['↴', 'lsto'],
+                               category,
+                               '( content name -- ) store to local variable',
+                               proc do
+                                 args = stack_extract( [[RplName], :any] )
 
-                                @dictionary.add_local_var( args[0].value,
-                                                           args[1] )
-                              end )
+                                 @dictionary.add_local_var!( args[0].value,
+                                                             args[1] )
+                               end )
       end
     end
   end

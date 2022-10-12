@@ -10,12 +10,12 @@ class TestLanguageFileSystem < MiniTest::Test
 
   def test_fread
     interpreter = Rpl.new
-    interpreter.run '"./spec/test.rpl" fread'
+    interpreter.run! '"./spec/test.rpl" fread'
 
     assert_equal [Types.new_object( RplString, "\"1 2 +\n\n« dup dup * * »\n'trrr' sto\n\ntrrr\n\"" )],
                  interpreter.stack
 
-    interpreter.run 'eval vars'
+    interpreter.run! 'eval vars'
     assert_equal [Types.new_object( RplNumeric, 27 ),
                   Types.new_object( RplList, [ Types.new_object( RplName, 'trrr' ) ] )],
                  interpreter.stack
@@ -23,7 +23,7 @@ class TestLanguageFileSystem < MiniTest::Test
 
   def test_feval
     interpreter = Rpl.new
-    interpreter.run '"spec/test.rpl" feval vars'
+    interpreter.run! '"spec/test.rpl" feval vars'
     assert_equal [Types.new_object( RplNumeric, 27 ),
                   Types.new_object( RplList, [ Types.new_object( RplName, 'trrr' ) ] )],
                  interpreter.stack
@@ -31,7 +31,7 @@ class TestLanguageFileSystem < MiniTest::Test
 
   def test_fwrite
     interpreter = Rpl.new
-    interpreter.run '"Ceci est un test de fwrite" "spec/test_fwrite.txt" fwrite'
+    interpreter.run! '"Ceci est un test de fwrite" "spec/test_fwrite.txt" fwrite'
     assert_equal [],
                  interpreter.stack
 

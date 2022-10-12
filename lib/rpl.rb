@@ -31,7 +31,7 @@ class Rpl < Interpreter
     FileUtils.mkdir_p( File.dirname( @persistence_filename ) )
     FileUtils.touch( @persistence_filename )
 
-    run "\"#{@persistence_filename}\" feval"
+    run!( "\"#{@persistence_filename}\" feval" )
   end
 
   def persist_state
@@ -42,7 +42,7 @@ class Rpl < Interpreter
     end
   end
 
-  def run( input )
+  def run!( input )
     stack = super
 
     persist_state if @live_persistence

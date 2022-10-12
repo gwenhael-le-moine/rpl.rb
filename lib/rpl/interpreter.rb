@@ -47,8 +47,8 @@ class Interpreter
     @frame_buffer = BitArray.new
   end
 
-  def run( input )
-    @dictionary.add_local_vars_layer
+  def run!( input )
+    @dictionary.add_local_vars_layer!
 
     Parser.parse( input.to_s ).each do |elt|
       if elt.instance_of?( RplName )
@@ -64,7 +64,7 @@ class Interpreter
           elsif command.is_a?( Proc )
             command.call
           elsif command.instance_of?( RplProgram )
-            run( command.value )
+            run!( command.value )
           else
             @stack << command
           end
@@ -74,7 +74,7 @@ class Interpreter
       end
     end
 
-    @dictionary.remove_local_vars_layer
+    @dictionary.remove_local_vars_layer!
 
     # superfluous but feels nice
     @stack

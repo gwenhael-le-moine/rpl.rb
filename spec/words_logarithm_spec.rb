@@ -11,7 +11,7 @@ class TesttLanguageLogarithm < MiniTest::Test
 
   def test_e
     interpreter = Rpl.new
-    interpreter.run 'e'
+    interpreter.run! 'e'
     assert_equal [Types.new_object( RplNumeric, BigMath.E( RplNumeric.precision ) )],
                  interpreter.stack
   end

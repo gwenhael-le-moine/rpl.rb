@@ -10,19 +10,19 @@ class TestLanguageTest < MiniTest::Test
 
   def test_greater_than
     interpreter = Rpl.new
-    interpreter.run '0 0.1 >'
+    interpreter.run! '0 0.1 >'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '0.1 0 >'
+    interpreter.run! '0.1 0 >'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 1 >'
+    interpreter.run! '1 1 >'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
@@ -30,19 +30,19 @@ class TestLanguageTest < MiniTest::Test
 
   def test_greater_than_or_equal
     interpreter = Rpl.new
-    interpreter.run '0 0.1 >='
+    interpreter.run! '0 0.1 >='
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '0.1 0 ≥'
+    interpreter.run! '0.1 0 ≥'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 1 ≥'
+    interpreter.run! '1 1 ≥'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -50,19 +50,19 @@ class TestLanguageTest < MiniTest::Test
 
   def test_less_than
     interpreter = Rpl.new
-    interpreter.run '0 0.1 <'
+    interpreter.run! '0 0.1 <'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '0.1 0 <'
+    interpreter.run! '0.1 0 <'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 1 <'
+    interpreter.run! '1 1 <'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
@@ -70,19 +70,19 @@ class TestLanguageTest < MiniTest::Test
 
   def test_less_than_or_equal
     interpreter = Rpl.new
-    interpreter.run '0 0.1 <='
+    interpreter.run! '0 0.1 <='
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '0.1 0 ≤'
+    interpreter.run! '0.1 0 ≤'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 1 ≤'
+    interpreter.run! '1 1 ≤'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -90,13 +90,13 @@ class TestLanguageTest < MiniTest::Test
 
   def test_different
     interpreter = Rpl.new
-    interpreter.run '1 1 !='
+    interpreter.run! '1 1 !='
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 2 ≠'
+    interpreter.run! '1 2 ≠'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -104,25 +104,25 @@ class TestLanguageTest < MiniTest::Test
 
   def test_and
     interpreter = Rpl.new
-    interpreter.run 'true true and'
+    interpreter.run! 'true true and'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false false and'
+    interpreter.run! 'false false and'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'true false and'
+    interpreter.run! 'true false and'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false true and'
+    interpreter.run! 'false true and'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
@@ -130,25 +130,25 @@ class TestLanguageTest < MiniTest::Test
 
   def test_or
     interpreter = Rpl.new
-    interpreter.run 'true true or'
+    interpreter.run! 'true true or'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false false or'
+    interpreter.run! 'false false or'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'true false or'
+    interpreter.run! 'true false or'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false true or'
+    interpreter.run! 'false true or'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -156,25 +156,25 @@ class TestLanguageTest < MiniTest::Test
 
   def test_xor
     interpreter = Rpl.new
-    interpreter.run 'true true xor'
+    interpreter.run! 'true true xor'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false false xor'
+    interpreter.run! 'false false xor'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'true false xor'
+    interpreter.run! 'true false xor'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false true xor'
+    interpreter.run! 'false true xor'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -182,13 +182,13 @@ class TestLanguageTest < MiniTest::Test
 
   def test_not
     interpreter = Rpl.new
-    interpreter.run 'true not'
+    interpreter.run! 'true not'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false not'
+    interpreter.run! 'false not'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -196,13 +196,13 @@ class TestLanguageTest < MiniTest::Test
 
   def test_same
     interpreter = Rpl.new
-    interpreter.run '1 1 same'
+    interpreter.run! '1 1 same'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '1 2 =='
+    interpreter.run! '1 2 =='
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
@@ -210,7 +210,7 @@ class TestLanguageTest < MiniTest::Test
 
   def test_true
     interpreter = Rpl.new
-    interpreter.run 'true'
+    interpreter.run! 'true'
 
     assert_equal [Types.new_object( RplBoolean, true )],
                  interpreter.stack
@@ -218,7 +218,7 @@ class TestLanguageTest < MiniTest::Test
 
   def test_false
     interpreter = Rpl.new
-    interpreter.run 'false'
+    interpreter.run! 'false'
 
     assert_equal [Types.new_object( RplBoolean, false )],
                  interpreter.stack
