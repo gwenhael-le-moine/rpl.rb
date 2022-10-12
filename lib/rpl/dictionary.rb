@@ -68,7 +68,7 @@ class Dictionary
     word ||= @vars[ name ]
 
     # or is it a core word
-    word ||= @words[ name ].nil? ? nil : @words[ name ][:implementation]
+    word ||= @words[ name.downcase ].nil? ? nil : @words[ name.downcase ][:implementation]
 
     word
   end
