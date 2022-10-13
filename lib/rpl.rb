@@ -22,10 +22,10 @@ class Rpl < Interpreter
 
     populate_dictionary if @dictionary.words.empty?
 
-    load_persisted_state
+    load_persisted_state!
   end
 
-  def load_persisted_state
+  def load_persisted_state!
     return if @persistence_filename.nil?
 
     FileUtils.mkdir_p( File.dirname( @persistence_filename ) )
