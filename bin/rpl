@@ -19,7 +19,7 @@ class RplRepl
     @interpreter = interpreter
   end
 
-  def run
+  def run!
     print_stack unless @interpreter.stack.empty?
 
     Reline.completion_proc = proc do |s|
@@ -48,13 +48,13 @@ class RplRepl
         prefill = @interpreter.stack.pop.to_s
       elsif input.strip == 'history'
         history = Reline::HISTORY.map { |line| "\"#{line}\"" }.join(' ')
-        @interpreter.run( "{ #{history} }" )
+        @interpreter.run!( "{ #{history} }" )
       elsif input.empty?
         # Remove blank lines from history
         Reline::HISTORY.pop
       else
         begin
-          @interpreter.run( input )
+          @interpreter.run!( input )
         rescue ArgumentError => e
           pp e
         end
@@ -125,17 +125,15 @@ interpreter = Rpl.new( persistence_filename: options[:persistence_filename],
 
 # first run provided files if any
 options[:files].each do |filename|
-  interpreter.run "\"#{File.expand_path( filename )}\" feval"
+  interpreter.run!( "\"#{File.expand_path( filename )}\" feval" )
 end
 
 # second run provided code if any
 options[:programs].each do |program|
-  interpreter.run program
+  interpreter.run!( program )
 end
 
 # third launch REPL if (explicitely or implicitely) asked
-if options[:run_REPL]
-  RplRepl.new( interpreter: interpreter ).run
-else
-  interpreter.persist_state
-end
+RplRepl.new( interpreter: interpreter ).run! if options[:run_REPL]
+
+interpreter.persist_state

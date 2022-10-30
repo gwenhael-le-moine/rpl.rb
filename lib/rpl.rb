@@ -5,7 +5,7 @@ require 'rpl/types'
 require 'rpl/words'
 
 class Rpl < Interpreter
-  VERSION = '0.12.0'
+  VERSION = '0.13.0'
 
   include Types
 
@@ -22,16 +22,16 @@ class Rpl < Interpreter
 
     populate_dictionary if @dictionary.words.empty?
 
-    load_persisted_state
+    load_persisted_state!
   end
 
-  def load_persisted_state
+  def load_persisted_state!
     return if @persistence_filename.nil?
 
     FileUtils.mkdir_p( File.dirname( @persistence_filename ) )
     FileUtils.touch( @persistence_filename )
 
-    run "\"#{@persistence_filename}\" feval"
+    run!( "\"#{@persistence_filename}\" feval" )
   end
 
   def persist_state
@@ -42,7 +42,7 @@ class Rpl < Interpreter
     end
   end
 
-  def run( input )
+  def run!( input )
     stack = super
 
     persist_state if @live_persistence

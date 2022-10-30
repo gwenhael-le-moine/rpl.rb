@@ -12,26 +12,26 @@ module RplLang
 
         category = 'Time and date'
 
-        @dictionary.add_word( ['time'],
-                              category,
-                              '( -- t ) push current time',
-                              proc do
-                                @stack << Types.new_object( RplString, "\"#{DateTime.now.iso8601.to_s.split('T').last[0..7]}\"" )
-                              end )
-        @dictionary.add_word( ['date'],
-                              category,
-                              '( -- d ) push current date',
-                              proc do
-                                @stack << Types.new_object( RplString, "\"#{Date.today.iso8601}\"" )
-                              end )
-        @dictionary.add_word( ['ticks'],
-                              category,
-                              '( -- t ) push datetime as ticks',
-                              proc do
-                                ticks_since_epoch = Time.utc( 1, 1, 1 ).to_i * 10_000_000
-                                now = Time.now
-                                @stack << Types.new_object( RplNumeric, now.to_i * 10_000_000 + now.nsec / 100 - ticks_since_epoch )
-                              end )
+        @dictionary.add_word!( ['time'],
+                               category,
+                               '( -- t ) push current time',
+                               proc do
+                                 @stack << Types.new_object( RplString, "\"#{DateTime.now.iso8601.to_s.split('T').last[0..7]}\"" )
+                               end )
+        @dictionary.add_word!( ['date'],
+                               category,
+                               '( -- d ) push current date',
+                               proc do
+                                 @stack << Types.new_object( RplString, "\"#{Date.today.iso8601}\"" )
+                               end )
+        @dictionary.add_word!( ['ticks'],
+                               category,
+                               '( -- t ) push datetime as ticks',
+                               proc do
+                                 ticks_since_epoch = Time.utc( 1, 1, 1 ).to_i * 10_000_000
+                                 now = Time.now
+                                 @stack << Types.new_object( RplNumeric, now.to_i * 10_000_000 + now.nsec / 100 - ticks_since_epoch )
+                               end )
       end
     end
   end

@@ -11,7 +11,7 @@ class TestLanguageTimeDate < MiniTest::Test
   def test_time
     now = Time.now.to_s.split[1]
     interpreter = Rpl.new
-    interpreter.run 'time'
+    interpreter.run! 'time'
 
     assert_equal [Types.new_object( RplString, "\"#{now}\"" )],
                  interpreter.stack
@@ -20,7 +20,7 @@ class TestLanguageTimeDate < MiniTest::Test
   def test_date
     now = Date.today.to_s
     interpreter = Rpl.new
-    interpreter.run 'date'
+    interpreter.run! 'date'
 
     assert_equal [Types.new_object( RplString, "\"#{now}\"" )],
                  interpreter.stack
@@ -28,7 +28,7 @@ class TestLanguageTimeDate < MiniTest::Test
 
   def test_ticks
     interpreter = Rpl.new
-    interpreter.run 'ticks'
+    interpreter.run! 'ticks'
 
     # TODO: better test, but how?
     assert_equal RplNumeric,

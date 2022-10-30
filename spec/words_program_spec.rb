@@ -9,21 +9,21 @@ class TestLanguageProgram < MiniTest::Test
 
   def test_eval
     interpreter = Rpl.new
-    interpreter.run '« 2 dup * dup » eval'
+    interpreter.run! '« 2 dup * dup » eval'
 
     assert_equal [Types.new_object( RplNumeric, 4 ),
                   Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '4 \'dup\' eval'
+    interpreter.run! '4 \'dup\' eval'
 
     assert_equal [Types.new_object( RplNumeric, 4 ),
                   Types.new_object( RplNumeric, 4 )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run '4
+    interpreter.run! '4
  \'dup\'
 eval'
 

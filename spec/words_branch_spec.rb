@@ -10,7 +10,7 @@ class TestLanguageBranch < MiniTest::Test
 
   def test_loop
     interpreter = Rpl.new
-    interpreter.run '« "hello no." swap + » 11 16 loop'
+    interpreter.run! '« "hello no." swap + » 11 16 loop'
 
     assert_equal [Types.new_object( RplString, '"hello no.11"' ),
                   Types.new_object( RplString, '"hello no.12"' ),
@@ -23,7 +23,7 @@ class TestLanguageBranch < MiniTest::Test
 
   def test_times
     interpreter = Rpl.new
-    interpreter.run '« "hello no." swap + » 5 times'
+    interpreter.run! '« "hello no." swap + » 5 times'
 
     assert_equal [Types.new_object( RplString, '"hello no.0"' ),
                   Types.new_object( RplString, '"hello no.1"' ),
@@ -35,13 +35,13 @@ class TestLanguageBranch < MiniTest::Test
 
   def test_ifte
     interpreter = Rpl.new
-    interpreter.run 'true « 2 3 + » « 2 3 - » ifte'
+    interpreter.run! 'true « 2 3 + » « 2 3 - » ifte'
 
     assert_equal [Types.new_object( RplNumeric, 5 )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false « 2 3 + » « 2 3 - » ifte'
+    interpreter.run! 'false « 2 3 + » « 2 3 - » ifte'
 
     assert_equal [Types.new_object( RplNumeric, -1 )],
                  interpreter.stack
@@ -49,13 +49,13 @@ class TestLanguageBranch < MiniTest::Test
 
   def test_ift
     interpreter = Rpl.new
-    interpreter.run 'true « 2 3 + » ift'
+    interpreter.run! 'true « 2 3 + » ift'
 
     assert_equal [Types.new_object( RplNumeric, 5 )],
                  interpreter.stack
 
     interpreter = Rpl.new
-    interpreter.run 'false « 2 3 + » ift'
+    interpreter.run! 'false « 2 3 + » ift'
 
     assert_equal [],
                  interpreter.stack

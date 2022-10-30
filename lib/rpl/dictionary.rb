@@ -11,7 +11,7 @@ class Dictionary
     @local_vars_layers = []
   end
 
-  def add_word( names, category, help, implementation )
+  def add_word!( names, category, help, implementation )
     names.each do |name|
       @words[ name ] = { category: category,
                          help: help,
@@ -19,43 +19,43 @@ class Dictionary
     end
   end
 
-  def add_var( name, implementation )
+  def add_var!( name, implementation )
     @vars[ name ] = implementation
   end
 
-  def remove_vars( names )
+  def remove_vars!( names )
     names.each do |name|
       @vars.delete( name )
     end
   end
 
-  def remove_var( name )
-    remove_vars( [name] )
+  def remove_var!( name )
+    remove_vars!( [name] )
   end
 
-  def remove_all_vars
+  def remove_all_vars!
     @vars = {}
   end
 
-  def add_local_vars_layer
+  def add_local_vars_layer!
     @local_vars_layers << {}
   end
 
-  def add_local_var( name, implementation )
+  def add_local_var!( name, implementation )
     @local_vars_layers.last[ name ] = implementation
   end
 
-  def remove_local_vars( names )
+  def remove_local_vars!( names )
     names.each do |name|
       @local_vars_layers.last.delete( name )
     end
   end
 
-  def remove_local_var( name )
+  def remove_local_var!( name )
     remove_local_vars( [name] )
   end
 
-  def remove_local_vars_layer
+  def remove_local_vars_layer!
     @local_vars_layers.pop
   end
 
@@ -68,7 +68,7 @@ class Dictionary
     word ||= @vars[ name ]
 
     # or is it a core word
-    word ||= @words[ name ].nil? ? nil : @words[ name ][:implementation]
+    word ||= @words[ name.downcase ].nil? ? nil : @words[ name.downcase ][:implementation]
 
     word
   end

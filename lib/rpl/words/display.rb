@@ -10,19 +10,19 @@ module RplLang
 
         category = 'Display'
 
-        @dictionary.add_word( ['erase'],
-                              category,
-                              '( -- ) erase display',
-                              proc do
-                                initialize_frame_buffer
-                              end )
+        @dictionary.add_word!( ['erase'],
+                               category,
+                               '( -- ) erase display',
+                               proc do
+                                 initialize_frame_buffer
+                               end )
 
-        @dictionary.add_word( ['display→', 'display->'],
-                              category,
-                              '( -- pict ) put current display state on stack',
-                              proc do
-                                @stack << @frame_buffer # FIXME: RplPict type
-                              end )
+        @dictionary.add_word!( ['display→', 'display->'],
+                               category,
+                               '( -- pict ) put current display state on stack',
+                               proc do
+                                 @stack << @frame_buffer # FIXME: RplPict type
+                               end )
       end
     end
   end
