@@ -77,8 +77,16 @@ class RplRepl
   end
 end
 
+def persistence_filename
+  persistence_dir = ENV['XDG_DATA_HOME']
+  persistence_dir ||= '~/.local/share'
+  persistence_dir += '/rpl.rb'
+
+  File.expand_path( "#{persistence_dir}/env.rpl" )
+end
+
 options = { run_REPL: ARGV.empty?,
-            persistence_filename: File.expand_path( '~/.local/state/rpl.rb/machine' ),
+            persistence_filename: persistence_filename,
             live_persistence: true,
             files: [],
             programs: [] }
