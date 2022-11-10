@@ -8,7 +8,7 @@ Reverse-Polish-Lisp inspired language in ruby
 # Usage
   * `rpl --help`
   * run RPL: `rpl`
-  * by default rpl persists its state in ~/.local/state/rpl.rb/machine which is created if needed
+  * by default rpl persists its state in $XDG_DATA_HOME/rpl.rb/env.rpl which is created if needed (if $XDG_DATA_HOME isn't set ~/.local/share/ is used)
 
 # Development
 To run REPL locally: `rake run`
