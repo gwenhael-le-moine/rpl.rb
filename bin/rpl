@@ -137,3 +137,5 @@ end
 RplRepl.new( interpreter: interpreter ).run! if options[:run_REPL]
 
 interpreter.persist_state
+
+puts interpreter.export_stack
