@@ -86,10 +86,12 @@ def persistence_filename
 end
 
 options = { run_REPL: ARGV.empty?,
-            persistence_filename: persistence_filename,
+            persistence: true,
             live_persistence: true,
+            persistence_filename: persistence_filename,
             files: [],
-            programs: [] }
+            programs: [],
+            verbosity: :critical }
 
 Version = Rpl::VERSION
 
@@ -98,12 +100,19 @@ OptionParser.new do |opts|
     options[:persistence_filename] = File.expand_path( filename )
   end
 
-  opts.on('-q', '--no-state', 'Do not load persisted state') do
+  opts.on('-q', '--no-state', 'Do not load nor save persisted state') do
+    warn "Not loading #{options[:persistence_filename]}." if options[:verbosity] == :debug
+
     options[:persistence_filename] = nil
+    options[:live_persistence] = false
+    options[:persistence] = false
   end
 
   opts.on('-d', '--no-persist', 'Do not persist state') do
+    warn 'Not persisting this session.' if options[:verbosity] == :debug
+
     options[:live_persistence] = false
+    options[:persistence] = false
   end
 
   opts.on('-c', '--code "program"', 'run provided "program"') do |program|
@@ -115,6 +124,8 @@ OptionParser.new do |opts|
   end
 
   opts.on('-i', '--interactive', 'launch interactive REPL') do
+    warn 'Will load REPL.' if options[:verbosity] == :debug
+
     options[:run_REPL] = true
   end
 end.parse!
@@ -136,6 +147,6 @@ end
 # third launch REPL if (explicitely or implicitely) asked
 RplRepl.new( interpreter: interpreter ).run! if options[:run_REPL]
 
-interpreter.persist_state
+interpreter.persist_state if options[:persistence]
 
 puts interpreter.export_stack
