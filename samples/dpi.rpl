@@ -1,0 +1,6 @@
+@ ( resx resy diaginches -- dpi )
+
+@ Naive version
+@ 'diag' lsto 'y' lsto 'x' lsto y x / 'ratio' lsto diag sq 1 ratio sq + / sqrt 'xd' lsto x xd /
+
+sq rot rot over / sq 1 + rot swap / sqrt /
