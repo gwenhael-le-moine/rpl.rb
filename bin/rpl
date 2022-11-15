@@ -85,7 +85,7 @@ def persistence_filename
   File.expand_path( "#{persistence_dir}/env.rpl" )
 end
 
-options = { run_REPL: ARGV.empty?,
+options = { run_REPL: false,
             persistence: true,
             live_persistence: true,
             persistence_filename: persistence_filename,
@@ -128,7 +128,17 @@ OptionParser.new do |opts|
 
     options[:run_REPL] = true
   end
+
+  opts.on('-V', '--verbose "level"', 'set verbosity level') do |level|
+    options[:verbosity] = level.to_sym
+
+    warn "Setting verbosity to #{level.to_sym}" if options[:verbosity] == :debug
+  end
 end.parse!
+
+options[:run_REPL] = options[:files].empty? && options[:programs].empty?
+
+warn "Loading state #{options[:persistence_filename]}." if options[:verbosity] == :debug && !options[:persistence_filename].nil?
 
 # Instantiate interpreter
 interpreter = Rpl.new( persistence_filename: options[:persistence_filename],
