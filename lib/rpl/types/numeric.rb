@@ -32,9 +32,7 @@ module Types
         @base = value.base
       when BigDecimal
         @value = value
-      when Integer
-        @value = BigDecimal( value, @@precision )
-      when Float
+      when Integer, Float
         @value = BigDecimal( value, @@precision )
       when String
         begin
@@ -94,19 +92,19 @@ module Types
     end
 
     def self.can_parse?( value )
-      [RplNumeric, BigDecimal, Integer, Float].include?( value.class ) or
-        ( value.is_a?( String ) and ( value.match?(/^-?[0-9]*\.?[0-9]+$/) or
-                                      value.match?(/^-?∞$/) or
-                                      value.match?(/^0b[0-1]+$/) or
-                                      value.match?(/^0o[0-7]+$/) or
-                                      value.match?(/^0x[0-9a-f]+$/) or
-                                      ( value.match?(/^[0-9]+b[0-9a-z]+$/) and
+      [RplNumeric, BigDecimal, Integer, Float].include?( value.class ) ||
+        ( value.is_a?( String ) && ( value.match?(/^-?[0-9]*\.?[0-9]+$/) ||
+                                      value.match?(/^-?∞$/) ||
+                                      value.match?(/^0b[0-1]+$/) ||
+                                      value.match?(/^0o[0-7]+$/) ||
+                                      value.match?(/^0x[0-9a-f]+$/) ||
+                                      ( value.match?(/^[0-9]+b[0-9a-z]+$/) &&
                                         value.split('_').first.to_i <= 36 ) ) )
     end
 
     def ==( other )
-      other.class == RplNumeric and
-        other.base == base and
+      other.class == RplNumeric &&
+        other.base == base &&
         other.value == value
     end
   end

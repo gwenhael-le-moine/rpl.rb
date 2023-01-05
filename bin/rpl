@@ -78,7 +78,7 @@ class RplRepl
 end
 
 def persistence_filename
-  persistence_dir = ENV['XDG_DATA_HOME']
+  persistence_dir = ENV.fetch('XDG_DATA_HOME', nil)
   persistence_dir ||= '~/.local/share'
   persistence_dir += '/rpl.rb'
 
@@ -88,7 +88,7 @@ end
 options = { run_REPL: false,
             persistence: true,
             live_persistence: true,
-            persistence_filename: persistence_filename,
+            persistence_filename:,
             files: [],
             programs: [],
             verbosity: :critical }
@@ -155,7 +155,7 @@ options[:programs].each do |program|
 end
 
 # third launch REPL if (explicitely or implicitely) asked
-RplRepl.new( interpreter: interpreter ).run! if options[:run_REPL]
+RplRepl.new( interpreter: ).run! if options[:run_REPL]
 
 interpreter.persist_state if options[:persistence]
 

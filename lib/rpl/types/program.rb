@@ -7,7 +7,7 @@ module Types
     def initialize( value )
       raise RplTypeError unless self.class.can_parse?( value )
 
-      # we systematicalyl trim enclosing « »
+      # we systematically trim enclosing « »
       @value = value[2..-3] # TODO: parse each element ?
     end
 
@@ -16,11 +16,14 @@ module Types
     end
 
     def self.can_parse?( value )
-      value.length > 4 && value[0..1] == '« ' && value[-2..-1] == ' »' && !value[2..-3].strip.empty?
+      value.length > 4 &&
+        value[0..1] == '« ' &&
+        value[-2..] == ' »' &&
+        !value[2..-3].strip.empty?
     end
 
     def ==( other )
-      other.class == RplProgram and
+      other.class == RplProgram &&
         other.value == value
     end
   end

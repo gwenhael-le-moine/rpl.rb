@@ -1,4 +1,3 @@
-# coding: utf-8
 # frozen_string_literal: true
 
 require 'minitest/autorun'
@@ -17,7 +16,7 @@ class TestLanguageFileSystem < MiniTest::Test
 
     interpreter.run! 'eval vars'
     assert_equal [Types.new_object( RplNumeric, 27 ),
-                  Types.new_object( RplList, [ Types.new_object( RplName, 'trrr' ) ] )],
+                  Types.new_object( RplList, [Types.new_object( RplName, 'trrr' )] )],
                  interpreter.stack
   end
 
@@ -25,7 +24,7 @@ class TestLanguageFileSystem < MiniTest::Test
     interpreter = Rpl.new
     interpreter.run! '"spec/test.rpl" feval vars'
     assert_equal [Types.new_object( RplNumeric, 27 ),
-                  Types.new_object( RplList, [ Types.new_object( RplName, 'trrr' ) ] )],
+                  Types.new_object( RplList, [Types.new_object( RplName, 'trrr' )] )],
                  interpreter.stack
   end
 

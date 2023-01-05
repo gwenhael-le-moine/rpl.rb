@@ -20,20 +20,14 @@ module Types
     end
 
     def self.can_parse?( value )
-      # we systematicalyl trim enclosing ()
-      value = value[1..-2] if value.is_a?( String ) && value[0] == '(' && value[-1] == ')'
+      # we systematically trim enclosing ()
+      value = value[1..-2] if value.is_a?( String ) && (value[0] == '(') && (value[-1] == ')')
 
-      begin
-        Complex( value )
-      rescue ArgumentError
-        return false
-      end
-
-      true
+      !Complex( value, exception: false ).nil?
     end
 
     def ==( other )
-      other.class == RplComplex and
+      other.class == RplComplex &&
         other.value == value
     end
   end

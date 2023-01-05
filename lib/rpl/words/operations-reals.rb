@@ -25,7 +25,7 @@ module RplLang
                                proc do
                                  args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                 @stack << RplNumeric.new( 100.0 * ( args[0].value / args[1].value ), args[1].base )
+                                 @stack << RplNumeric.new( ( args[0].value / args[1].value ) * 100.0, args[1].base )
                                end )
 
         @dictionary.add_word!( ['mod'],

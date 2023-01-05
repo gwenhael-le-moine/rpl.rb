@@ -15,7 +15,7 @@ class Rpl < Interpreter
                   dictionary: Dictionary.new,
                   persistence_filename: nil,
                   live_persistence: true )
-    super( stack: stack, dictionary: dictionary )
+    super( stack:, dictionary: )
 
     @persistence_filename = persistence_filename
     @live_persistence = live_persistence
@@ -37,9 +37,7 @@ class Rpl < Interpreter
   def persist_state
     return if @persistence_filename.nil?
 
-    File.open( @persistence_filename, 'w' ) do |persistence_file|
-      persistence_file.write "#{export_vars}\n#{export_stack}"
-    end
+    File.write(@persistence_filename, "#{export_vars}\n#{export_stack}")
   end
 
   def run!( input )

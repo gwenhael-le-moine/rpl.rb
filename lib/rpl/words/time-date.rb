@@ -30,7 +30,7 @@ module RplLang
                                proc do
                                  ticks_since_epoch = Time.utc( 1, 1, 1 ).to_i * 10_000_000
                                  now = Time.now
-                                 @stack << Types.new_object( RplNumeric, now.to_i * 10_000_000 + now.nsec / 100 - ticks_since_epoch )
+                                 @stack << Types.new_object( RplNumeric, (now.to_i * 10_000_000) + (now.nsec / 100) - ticks_since_epoch )
                                end )
       end
     end

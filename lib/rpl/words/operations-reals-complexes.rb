@@ -30,7 +30,7 @@ module RplLang
                                             new_list = if args[1].instance_of?( RplList )
                                                          RplList.new( args[0].to_s ).value.concat( args[1].value )
                                                        else
-                                                         RplList.new( args[0].to_s ).value.concat( [args[1]] )
+                                                         RplList.new( args[0].to_s ).value.push(args[1])
                                                        end
 
                                             RplList.new( "{ #{new_list.join(' ')} }" )
@@ -47,9 +47,9 @@ module RplLang
                                           elsif args[0].instance_of?( RplString )
                                             RplString.new( if args[1].instance_of?( RplString ) ||
                                                               args[1].instance_of?( RplName )
-                                                           "\"#{args[0].value}#{args[1].value}\""
-                                                         else
-                                                           "\"#{args[0].value}#{args[1]}\""
+                                                             "\"#{args[0].value}#{args[1].value}\""
+                                                           else
+                                                             "\"#{args[0].value}#{args[1]}\""
                                                            end )
 
                                           elsif args[0].instance_of?( RplName )
@@ -189,11 +189,11 @@ module RplLang
                                  args = stack_extract( [[RplNumeric]] )
 
                                  @stack << RplNumeric.new( if args[0].value.positive?
-                                                           1
-                                                         elsif args[0].value.negative?
-                                                           -1
-                                                         else
-                                                           0
+                                                             1
+                                                           elsif args[0].value.negative?
+                                                             -1
+                                                           else
+                                                             0
                                                            end )
                                end )
       end

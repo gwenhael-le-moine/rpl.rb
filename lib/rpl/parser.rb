@@ -30,7 +30,7 @@ class Parser
                    .join(' ')
     end
 
-    splitted_input = input.split(' ')
+    splitted_input = input.split
 
     # 2-passes:
     # 1. regroup strings, lists, complexes, names and programs
@@ -90,7 +90,7 @@ class Parser
     end
 
     # 2. parse
-    parsed_input = regrouped_input.map do |element|
+    regrouped_input.map do |element|
       if RplBoolean.can_parse?( element )
         Types.new_object( RplBoolean, element )
       elsif RplNumeric.can_parse?( element )
@@ -107,7 +107,5 @@ class Parser
         Types.new_object( RplName, element )
       end
     end
-
-    parsed_input
   end
 end

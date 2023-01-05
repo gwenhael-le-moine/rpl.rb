@@ -12,7 +12,7 @@ module Types
       @value = if value.instance_of?( Array )
                  value
                else
-                 # we systematicalyl trim enclosing { }
+                 # we systematically trim enclosing { }
                  Parser.parse( value[2..-3] )
                end
     end
@@ -22,12 +22,13 @@ module Types
     end
 
     def self.can_parse?( value )
-      value.instance_of?( Array ) or
-        value[0..1] == '{ ' && value[-2..] == ' }'
+      value.instance_of?( Array ) ||
+        ( value[0..1] == '{ ' &&
+          value[-2..] == ' }' )
     end
 
     def ==( other )
-      other.class == RplList and
+      other.class == RplList &&
         other.value == value
     end
   end

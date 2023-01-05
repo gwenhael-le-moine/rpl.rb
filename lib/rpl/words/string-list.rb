@@ -17,10 +17,10 @@ module RplLang
                                  args = stack_extract( [[RplString, RplList]] )
 
                                  @stack << if args[0].is_a?( RplString )
-                                 Types.new_object( RplString, "\"#{args[0].value.reverse}\"" )
-                               else
-                                 Types.new_object( args[0].class, "{ #{args[0].value.reverse.join(' ')} }" )
-                               end
+                                             Types.new_object( RplString, "\"#{args[0].value.reverse}\"" )
+                                           else
+                                             Types.new_object( args[0].class, "{ #{args[0].value.reverse.join(' ')} }" )
+                                           end
                                end )
       end
     end

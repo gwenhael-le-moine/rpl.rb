@@ -13,9 +13,9 @@ class Dictionary
 
   def add_word!( names, category, help, implementation )
     names.each do |name|
-      @words[ name ] = { category: category,
-                         help: help,
-                         implementation: implementation }
+      @words[ name ] = { category:,
+                         help:,
+                         implementation: }
     end
   end
 

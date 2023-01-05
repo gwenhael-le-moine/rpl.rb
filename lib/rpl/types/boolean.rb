@@ -25,7 +25,7 @@ module Types
     end
 
     def ==( other )
-      other.class == RplBoolean and
+      other.class == RplBoolean &&
         other.value == value
     end
   end

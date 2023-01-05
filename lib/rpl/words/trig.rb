@@ -12,7 +12,7 @@ module RplLang
 
         category = 'Trig on reals and complexes'
 
-        @dictionary.add_word!( ['𝛑', 'pi'],
+        @dictionary.add_word!( %w[𝛑 pi],
                                category,
                                '( … -- 𝛑 ) push 𝛑',
                                proc do

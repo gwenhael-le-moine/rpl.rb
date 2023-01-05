@@ -22,14 +22,14 @@ module Types
     end
 
     def self.can_parse?( value )
-      ( value.length > 2 and value[0] == "'" and value[-1] == "'" ) or
-        ( value != "''" and !value.match?(/^[0-9']+$/) and
+      ( value.length > 2 && value[0] == "'" && value[-1] == "'" ) ||
+        ( value != "''" && !value.match?(/^[0-9']+$/) &&
           # it's not any other type
           [RplBoolean, RplList, RplProgram, RplString, RplNumeric].reduce( true ) { |memo, type_class| memo && !type_class.can_parse?( value ) } )
     end
 
     def ==( other )
-      other.class == RplName and
+      other.class == RplName &&
         other.value == value
     end
   end

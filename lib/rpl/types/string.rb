@@ -22,7 +22,7 @@ module Types
     end
 
     def ==( other )
-      other.class == RplString and
+      other.class == RplString &&
         other.value == value
     end
   end

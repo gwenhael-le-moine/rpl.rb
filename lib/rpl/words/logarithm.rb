@@ -10,7 +10,7 @@ module RplLang
 
         category = 'Logs on reals and complexes'
 
-        @dictionary.add_word!( ['ℇ', 'e'],
+        @dictionary.add_word!( %w[ℇ e],
                                category,
                                '( … -- ℇ ) push ℇ',
                                proc do
