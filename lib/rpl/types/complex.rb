@@ -21,7 +21,7 @@ module Types
 
     def self.can_parse?( value )
       # we systematically trim enclosing ()
-      value = value[1..-2] if value.is_a?( String ) && (value[0] == '(') && (value[-1] == ')')
+      value = value[1..-2] if value.is_a?( String ) && value[0] == '(' && value[-1] == ')'
 
       !Complex( value, exception: false ).nil?
     end
