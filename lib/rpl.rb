@@ -41,7 +41,7 @@ class Rpl < Interpreter
   end
 
   def run!( input )
-    stack = super
+    stack = super( input )
 
     persist_state if @live_persistence
 
@@ -64,6 +64,7 @@ class Rpl < Interpreter
   prepend RplLang::Words::Store
   prepend RplLang::Words::String
   prepend RplLang::Words::StringAndList
+  prepend RplLang::Words::System
   prepend RplLang::Words::Test
   prepend RplLang::Words::TimeAndDate
   prepend RplLang::Words::Trig
