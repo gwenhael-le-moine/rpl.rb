@@ -5,7 +5,7 @@ require 'rpl/types'
 require 'rpl/words'
 
 class Rpl < Interpreter
-  VERSION = '0.16.0'
+  VERSION = '0.16.1'
 
   include Types
 
@@ -64,7 +64,6 @@ class Rpl < Interpreter
   prepend RplLang::Words::Store
   prepend RplLang::Words::String
   prepend RplLang::Words::StringAndList
-  prepend RplLang::Words::System
   prepend RplLang::Words::Test
   prepend RplLang::Words::TimeAndDate
   prepend RplLang::Words::Trig

@@ -23,6 +23,15 @@ module RplLang
                                  end
                                end )
 
+        @dictionary.add_word!( ['sheval'],
+                               category,
+                               '( string -- output ) run string in OS shell and put output on stack',
+                               proc do
+                                 args = stack_extract( [[RplString]] )
+
+                                 @stack << Types.new_object( RplString, "\"#{`#{args[0].value}`}\"" )
+                               end )
+
         @dictionary.add_word!( ['↴', 'lsto'],
                                category,
                                '( content name -- ) store to local variable',
