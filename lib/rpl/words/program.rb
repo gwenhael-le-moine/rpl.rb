@@ -25,11 +25,11 @@ module RplLang
 
         @dictionary.add_word!( ['sheval'],
                                category,
-                               '( string -- output ) run string in OS shell and put output on stack',
+                               '( string -- list ) run string in OS shell and put output on stack',
                                proc do
                                  args = stack_extract( [[RplString]] )
 
-                                 @stack << Types.new_object( RplString, "\"#{`#{args[0].value}`}\"" )
+                                 @stack << Types.new_object( RplList, `#{args[0].value}`.split("\n").map { |line| "\"#{line}\"" } )
                                end )
 
         @dictionary.add_word!( ['↴', 'lsto'],
