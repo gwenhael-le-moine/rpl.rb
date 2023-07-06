@@ -84,8 +84,8 @@ module RplLang
                                category,
                                '() print internal state of framebuffer',
                                proc do
-                                 pp @show_lcd
-                                 pp @frame_buffer
+                                 pp @show_display
+                                 pp @framebuffer
                                end )
       end
     end

@@ -8,23 +8,94 @@ module RplLang
       def populate_dictionary
         super
 
-        category = 'Graphics'
+        category = 'GrOb (Graphic Objects)'
 
-        @dictionary.add_word!( ['lcdon'],
+        @dictionary.add_word!( ['→grob', '->grob'],
                                category,
-                               '( -- ) display lcd',
+                               '( w h d -- g ) make a GrOb from 3 numerics: width, height, data',
                                proc do
-                                 # Sets on a boolean that the REPL will survey and show the Gosu window when true
-                                 @show_lcd = true
+                                 args = stack_extract( [[RplNumeric], [RplNumeric], [RplNumeric]] )
+
+                                 @stack << RplGrOb.new( "GROB:#{args[2].value.to_i}:#{args[1].value.to_i}:#{args[0].value.to_i.to_s( 16 )}" )
+                               end )
+        @dictionary.add_word!( ['grob→', 'grob->'],
+                               category,
+                               '( g -- w h d ) split a GrOb into its 3 basic numerics',
+                               proc do
+                                 args = stack_extract( [[RplGrOb]] )
+
+                                 @stack << RplNumeric.new( args[0].width )
+                                 @stack << RplNumeric.new( args[0].height )
+                                 @stack << RplNumeric.new( args[0].bits, 16 )
+                               end )
+        @dictionary.add_word!( ['grob2asciiart'],
+                               category,
+                               '( g -- s ) render a GrOb as a string',
+                               proc do
+                                 args = stack_extract( [[RplGrOb]] )
+
+                                 @stack << RplString.new( "\"#{args[0].bits.to_s(2).scan(/.{1,#{args[0].width}}/).join("\n")}\"" )
                                end )
 
-        @dictionary.add_word!( ['lcdoff'],
+        category = 'Display management and manipulation'
+
+        @dictionary.add_word!( ['displayon'],
                                category,
-                               '( -- ) hide lcd',
+                               '( -- ) display display',
                                proc do
-                                 # Sets on a boolean that the REPL will survey and hide the Gosu window when false
-                                 @show_lcd = false
+                                 @show_display = true
                                end )
+        @dictionary.add_word!( ['displayoff'],
+                               category,
+                               '( -- ) hide display',
+                               proc do
+                                 @show_display = false
+                               end )
+
+        @dictionary.add_word!( ['displaywidth→', 'displaywidth->'],
+                               category,
+                               '( -- i ) put framebuffer\'s width on stack',
+                               proc do
+                                 @stack << RplNumeric.new( @display_width.to_i )
+                               end )
+        @dictionary.add_word!( ['displayheight→', 'displayheight->'],
+                               category,
+                               '( -- i ) put framebuffer\'s height on stack',
+                               proc do
+                                 @stack << RplNumeric.new( @display_height.to_i )
+                               end )
+
+        @dictionary.add_word!( ['→displaywidth', '->displaywidth'],
+                               category,
+                               '( i -- ) set framebuffer\'s width',
+                               proc do
+                                 args = stack_extract( [[RplNumeric]] )
+
+                                 @display_width = args[0].value.to_i
+                               end )
+        @dictionary.add_word!( ['→displayheight', '->displayheight'],
+                               category,
+                               '( i -- ) set framebuffer\'s height',
+                               proc do
+                                 args = stack_extract( [[RplNumeric]] )
+
+                                 @display_height = args[0].value.to_i
+                               end )
+
+        @dictionary.add_word!( ['display→', 'display->'],
+                               category,
+                               '( -- g ) export framebuffer to GrOb',
+                               proc do
+                                 @stack << RplGrOb.new( "GROB:#{@display_width}:#{@display_height}:#{@framebuffer.to_i.to_s( 16 )}" )
+                               end )
+        # @dictionary.add_word!( ['→display', '->display'],
+        #                        category,
+        #                        '( g -- ) import GrOb into framebuffer',
+        #                        proc do
+        #                          args = stack_extract( [[RplNumeric]] )
+
+        #                          @framebuffer = args[0].value.to_i
+        #                        end )
 
         @dictionary.add_word!( ['pixon'],
                                category,
@@ -32,11 +103,10 @@ module RplLang
                                proc do
                                  args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                 puts "DEBUG: turn on pixel(x: #{args[1].value}, y: #{args[0].value})"
                                  x = args[1].value.to_i
                                  y = args[0].value.to_i
 
-                                 @frame_buffer[ ( y * @lcd_height ) + x ] = 1
+                                 @framebuffer[ ( y * @display_height ) + x ] = 1
                                end )
         @dictionary.add_word!( ['pixoff'],
                                category,
@@ -44,7 +114,10 @@ module RplLang
                                proc do
                                  args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                 puts "DEBUG: turn off pixel(x: #{args[1].value}, y: #{args[0].value})"
+                                 x = args[1].value.to_i
+                                 y = args[0].value.to_i
+
+                                 @framebuffer[ ( y * @display_height ) + x ] = 0
                                end )
       end
     end

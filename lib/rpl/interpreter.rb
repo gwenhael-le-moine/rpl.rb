@@ -23,6 +23,14 @@ class BitArray
   def [](position)
     @mask[position]
   end
+
+  def to_i
+    @mask.to_i
+  end
+
+  def from_i( value )
+    @mask = value.to_i
+  end
 end
 
 class Interpreter
@@ -30,30 +38,29 @@ class Interpreter
   include Types
 
   attr_reader :stack,
-              :frame_buffer,
+              :framebuffer,
               :dictionary,
-              :version,
-              :lcd_width,
-              :lcd_height
+              :version
 
-  attr_accessor :show_lcd,
+  attr_accessor :show_display,
+                :display_width,
+                :display_height,
                 :precision
 
   def initialize( stack: [], dictionary: Dictionary.new )
     @dictionary = dictionary
     @stack = stack
 
-    initialize_frame_buffer
+    initialize_framebuffer
   end
 
-  def initialize_frame_buffer
-    @frame_buffer = BitArray.new
+  def initialize_framebuffer
+    @framebuffer = BitArray.new
 
-    # TODO: make this configurable from rpl?
-    @lcd_width = 131
-    @lcd_height = 64
+    @display_width = 131
+    @display_height = 64
 
-    @show_lcd = false
+    @show_display = false
   end
 
   def run!( input )

@@ -103,6 +103,8 @@ class Parser
         Types.new_object( RplString, element )
       elsif RplProgram.can_parse?( element )
         Types.new_object( RplProgram, element )
+      elsif RplGrOb.can_parse?( element )
+        Types.new_object( RplGrOb, element )
       elsif RplName.can_parse?( element )
         Types.new_object( RplName, element )
       end

@@ -7,6 +7,7 @@ require 'rpl/types/string'
 require 'rpl/types/program'
 require 'rpl/types/numeric'
 require 'rpl/types/complex'
+require 'rpl/types/grob'
 
 module Types
   module_function

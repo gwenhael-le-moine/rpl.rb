@@ -60,7 +60,7 @@ class RplRepl
         end
       end
 
-      refresh_lcd if @interpreter.show_lcd
+      print_display if @interpreter.show_display
 
       print_stack
     rescue Interrupt
@@ -70,13 +70,14 @@ class RplRepl
     end
   end
 
-  def refresh_lcd
-    @interpreter.lcd_width.times do |x|
-      @interpreter.lcd_height.times do |y|
-        putc @interpreter.frame_buffer[ ( y * @interpreter.lcd_height ) + x ].zero? ? '_' : '.'
-      end
-      puts "\n"
-    end
+  def print_display
+    puts @interpreter.framebuffer
+                     .to_i
+                     .to_s(2)
+                     .scan(/.{1,#{@interpreter.display_width}}/)
+                     .join("\n")
+                     .gsub( '0', '_' )
+                     .gsub( '1', '.' )
   end
 
   def print_stack
