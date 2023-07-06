@@ -52,6 +52,7 @@ class Rpl < Interpreter
   prepend RplLang::Words::Display
   prepend RplLang::Words::FileSystem
   prepend RplLang::Words::General
+  prepend RplLang::Words::Graphics
   prepend RplLang::Words::List
   prepend RplLang::Words::Logarithm
   prepend RplLang::Words::Mode

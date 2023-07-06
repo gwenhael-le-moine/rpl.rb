@@ -79,6 +79,14 @@ module RplLang
                                category,
                                '() print internal state of local variables layers',
                                proc { pp @dictionary.local_vars_layers } )
+
+        @dictionary.add_word!( ['.fb'],
+                               category,
+                               '() print internal state of framebuffer',
+                               proc do
+                                 pp @show_lcd
+                                 pp @frame_buffer
+                               end )
       end
     end
   end

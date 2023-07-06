@@ -32,9 +32,12 @@ class Interpreter
   attr_reader :stack,
               :frame_buffer,
               :dictionary,
-              :version
+              :version,
+              :lcd_width,
+              :lcd_height
 
-  attr_accessor :precision
+  attr_accessor :show_lcd,
+                :precision
 
   def initialize( stack: [], dictionary: Dictionary.new )
     @dictionary = dictionary
@@ -45,6 +48,12 @@ class Interpreter
 
   def initialize_frame_buffer
     @frame_buffer = BitArray.new
+
+    # TODO: make this configurable from rpl?
+    @lcd_width = 131
+    @lcd_height = 64
+
+    @show_lcd = false
   end
 
   def run!( input )

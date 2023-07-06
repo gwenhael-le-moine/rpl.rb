@@ -60,11 +60,22 @@ class RplRepl
         end
       end
 
+      refresh_lcd if @interpreter.show_lcd
+
       print_stack
     rescue Interrupt
       puts '^C'
       `stty #{@stty_save}` if @stty_save
       exit 0
+    end
+  end
+
+  def refresh_lcd
+    @interpreter.lcd_width.times do |x|
+      @interpreter.lcd_height.times do |y|
+        putc @interpreter.frame_buffer[ ( y * @interpreter.lcd_height ) + x ].zero? ? '_' : '.'
+      end
+      puts "\n"
     end
   end
 
