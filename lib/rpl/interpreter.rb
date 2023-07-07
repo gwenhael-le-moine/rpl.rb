@@ -7,60 +7,24 @@ require 'bigdecimal/util'
 require 'rpl/dictionary'
 require 'rpl/types'
 
-class BitArray
-  def initialize
-    @mask = 0
-  end
-
-  def []=(position, value)
-    if value.zero?
-      @mask ^= (1 << position)
-    else
-      @mask |= (1 << position)
-    end
-  end
-
-  def [](position)
-    @mask[position]
-  end
-
-  def to_i
-    @mask.to_i
-  end
-
-  def from_i( value )
-    @mask = value.to_i
-  end
-end
-
 class Interpreter
   include BigMath
   include Types
 
   attr_reader :stack,
-              :framebuffer,
+              :display_grob,
               :dictionary,
               :version
 
-  attr_accessor :show_display,
-                :display_width,
-                :display_height,
-                :precision
+  attr_accessor :show_display
 
   def initialize( stack: [], dictionary: Dictionary.new )
     @dictionary = dictionary
     @stack = stack
 
-    initialize_framebuffer
-  end
-
-  def initialize_framebuffer
-    @framebuffer = BitArray.new
-
-    @display_width = 131
-    @display_height = 64
-
     @show_display = false
+
+    @display_grob = RplGrOb.new( 'GROB:131:64:0' )
   end
 
   def run!( input )

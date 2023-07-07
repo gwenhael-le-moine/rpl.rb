@@ -52,17 +52,17 @@ module RplLang
                                  @show_display = false
                                end )
 
-        @dictionary.add_word!( ['displaywidth→', 'displaywidth->'],
+        @dictionary.add_word!( ['displaywidth'],
                                category,
                                '( -- i ) put framebuffer\'s width on stack',
                                proc do
-                                 @stack << RplNumeric.new( @display_width.to_i )
+                                 @stack << RplNumeric.new( @display_grob.width )
                                end )
-        @dictionary.add_word!( ['displayheight→', 'displayheight->'],
+        @dictionary.add_word!( ['displayheight'],
                                category,
                                '( -- i ) put framebuffer\'s height on stack',
                                proc do
-                                 @stack << RplNumeric.new( @display_height.to_i )
+                                 @stack << RplNumeric.new( @display_grob.height )
                                end )
 
         @dictionary.add_word!( ['→displaywidth', '->displaywidth'],
@@ -71,7 +71,7 @@ module RplLang
                                proc do
                                  args = stack_extract( [[RplNumeric]] )
 
-                                 @display_width = args[0].value.to_i
+                                 @display_grob.width = args[0].value.to_i
                                end )
         @dictionary.add_word!( ['→displayheight', '->displayheight'],
                                category,
@@ -79,23 +79,23 @@ module RplLang
                                proc do
                                  args = stack_extract( [[RplNumeric]] )
 
-                                 @display_height = args[0].value.to_i
+                                 @display_grob.height = args[0].value.to_i
                                end )
 
         @dictionary.add_word!( ['display→', 'display->'],
                                category,
                                '( -- g ) export framebuffer to GrOb',
                                proc do
-                                 @stack << RplGrOb.new( "GROB:#{@display_width}:#{@display_height}:#{@framebuffer.to_i.to_s( 16 )}" )
+                                 @stack << RplGrOb.new( @display_grob )
                                end )
-        # @dictionary.add_word!( ['→display', '->display'],
-        #                        category,
-        #                        '( g -- ) import GrOb into framebuffer',
-        #                        proc do
-        #                          args = stack_extract( [[RplNumeric]] )
+        @dictionary.add_word!( ['→display', '->display'],
+                               category,
+                               '( g -- ) import GrOb into framebuffer',
+                               proc do
+                                 args = stack_extract( [[RplGrOb]] )
 
-        #                          @framebuffer = args[0].value.to_i
-        #                        end )
+                                 @display_grob = RplGrOb.new( args[0] )
+                               end )
 
         @dictionary.add_word!( ['pixon'],
                                category,
@@ -106,7 +106,7 @@ module RplLang
                                  x = args[1].value.to_i
                                  y = args[0].value.to_i
 
-                                 @framebuffer[ ( y * @display_height ) + x ] = 1
+                                 @display_grob.set_pixel(x, y, 1)
                                end )
         @dictionary.add_word!( ['pixoff'],
                                category,
@@ -117,7 +117,7 @@ module RplLang
                                  x = args[1].value.to_i
                                  y = args[0].value.to_i
 
-                                 @framebuffer[ ( y * @display_height ) + x ] = 0
+                                 @display_grob.set_pixel(x, y, 0)
                                end )
       end
     end

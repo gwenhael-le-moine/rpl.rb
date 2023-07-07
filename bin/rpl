@@ -71,13 +71,7 @@ class RplRepl
   end
 
   def print_display
-    puts @interpreter.framebuffer
-                     .to_i
-                     .to_s(2)
-                     .scan(/.{1,#{@interpreter.display_width}}/)
-                     .join("\n")
-                     .gsub( '0', '_' )
-                     .gsub( '1', '.' )
+    puts @interpreter.display_grob.to_text
   end
 
   def print_stack
