@@ -117,7 +117,7 @@ module RplLang
                                  x = args[1].value.to_i
                                  y = args[0].value.to_i
 
-                                 @lcd_grob.set_pixel(x, y, 0) # FIXME: toggle pixel instead of turning it off
+                                 @lcd_grob.set_pixel(x, y, 0)
                                end )
         @dictionary.add_word!( ['pix?'],
                                category,

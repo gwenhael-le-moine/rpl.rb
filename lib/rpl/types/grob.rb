@@ -11,7 +11,7 @@ class BitArray
 
   def []=(position, value)
     if value.zero?
-      @mask ^= (1 << position)
+      @mask &= ~(1 << position)
     else
       @mask |= (1 << position)
     end
