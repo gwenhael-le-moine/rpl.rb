@@ -60,7 +60,7 @@ class RplRepl
         end
       end
 
-      print_display if @interpreter.show_display
+      print_lcd if @interpreter.show_lcd
 
       print_stack
     rescue Interrupt
@@ -70,8 +70,8 @@ class RplRepl
     end
   end
 
-  def print_display
-    puts @interpreter.display_grob.to_text
+  def print_lcd
+    puts @interpreter.lcd_grob.to_braille
   end
 
   def print_stack

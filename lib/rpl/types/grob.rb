@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'drawille'
+
 require 'rpl/parser'
 
 class BitArray
@@ -82,8 +84,28 @@ module Types
            .gsub( '1', '.' )
     end
 
+    def to_braille
+      canvas = Drawille::Canvas.new
+
+      @height.times do |y|
+        @width.times do |x|
+          canvas[x, y] = @bits[ ( y * @height ) + x ] == 1
+        end
+      end
+
+      canvas.frame
+    end
+
+    def get_pixel( pos_x, pos_y )
+      @bits[ ( pos_y * @height ) + pos_x ]
+    end
+
     def set_pixel( pos_x, pos_y, value )
-      @bits[ ( pos_y * @height ) + pos_x ] = value
+      @bits[ ( pos_y * @height ) + pos_x ] = value.to_i.zero? ? 0 : 1
+    end
+
+    def clear
+      @bits.from_i( 0 )
     end
   end
 end

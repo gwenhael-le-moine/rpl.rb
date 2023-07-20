@@ -46,6 +46,8 @@ Gem::Specification.new do |s|
                         'lib/rpl/words/time-date.rb',
                         'lib/rpl/words/trig.rb']
 
+  s.add_dependency 'drawille'
+
   s.executables << 'rpl'
 
   s.required_ruby_version = '> 2.7'

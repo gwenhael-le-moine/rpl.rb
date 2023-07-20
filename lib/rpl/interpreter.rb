@@ -12,19 +12,19 @@ class Interpreter
   include Types
 
   attr_reader :stack,
-              :display_grob,
+              :lcd_grob,
               :dictionary,
               :version
 
-  attr_accessor :show_display
+  attr_accessor :show_lcd
 
   def initialize( stack: [], dictionary: Dictionary.new )
     @dictionary = dictionary
     @stack = stack
 
-    @show_display = false
+    @show_lcd = false
 
-    @display_grob = RplGrOb.new( 'GROB:131:64:0' )
+    @lcd_grob = RplGrOb.new( 'GROB:131:64:0' )
   end
 
   def run!( input )
