@@ -37,7 +37,7 @@ class Rpl < Interpreter
   def persist_state
     return if @persistence_filename.nil?
 
-    File.write(@persistence_filename, "#{export_vars}\n#{export_stack}")
+    File.write(@persistence_filename, "#{export_lcd}\n#{export_vars}\n#{export_stack}")
   end
 
   def run!( input )

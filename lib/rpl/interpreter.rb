@@ -77,6 +77,13 @@ class Interpreter
     args
   end
 
+  def export_lcd
+    lcd_as_string = "@ LCD:\n"
+    lcd_as_string += "#{@lcd_grob} →lcd\n"
+
+    lcd_as_string
+  end
+
   def export_vars
     vars_as_string = "@ variables:\n"
     vars_as_string += @dictionary.vars
