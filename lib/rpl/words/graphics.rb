@@ -28,13 +28,16 @@ module RplLang
                                  @stack << RplNumeric.new( args[0].height )
                                  @stack << RplNumeric.new( args[0].bits, 16 )
                                end )
-        @dictionary.add_word!( ['grob2asciiart'],
+        @dictionary.add_word!( ['blank'],
                                category,
-                               '( g -- s ) render a GrOb as a string',
+                               '( w h -- g ) create an empty GrOb',
                                proc do
-                                 args = stack_extract( [[RplGrOb]] )
+                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
 
-                                 @stack << RplString.new( "\"#{args[0].bits.to_s(2).scan(/.{1,#{args[0].width}}/).join("\n")}\"" )
+                                 w = args[1].value.to_i
+                                 h = args[0].value.to_i
+
+                                 @stack << RplGrOb.new( "GROB:#{w}:#{h}:0" )
                                end )
 
         category = 'Lcd management and manipulation'
@@ -97,6 +100,7 @@ module RplLang
                                  @lcd_grob = RplGrOb.new( args[0] )
                                end )
 
+        # Pixel manipulation
         @dictionary.add_word!( ['pixon'],
                                category,
                                '( x y -- ) turn on pixel at x y coordinates',
@@ -129,18 +133,6 @@ module RplLang
                                  y = args[0].value.to_i
 
                                  @stack << RplBoolean.new( @lcd_grob.get_pixel(x, y) == 1 )
-                               end )
-
-        @dictionary.add_word!( ['blank'],
-                               category,
-                               '( w h -- g ) create an empty GrOb',
-                               proc do
-                                 args = stack_extract( [[RplNumeric], [RplNumeric]] )
-
-                                 w = args[1].value.to_i
-                                 h = args[0].value.to_i
-
-                                 @stack << RplGrOb.new( "GROB:#{w}:#{h}:0" )
                                end )
       end
     end
