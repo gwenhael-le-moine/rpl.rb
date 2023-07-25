@@ -5,7 +5,7 @@ require 'rpl/types'
 require 'rpl/words'
 
 class Rpl < Interpreter
-  VERSION = '0.17.0'
+  VERSION = '0.17.1'
 
   include Types
 
