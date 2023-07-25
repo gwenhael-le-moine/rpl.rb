@@ -89,7 +89,7 @@ module Types
 
       @height.times do |y|
         @width.times do |x|
-          canvas[x, y] = @bits[ ( y * @height ) + x ] == 1
+          canvas[x, y] = @bits[ ( y * @width ) + x ] == 1
         end
       end
 
@@ -97,11 +97,11 @@ module Types
     end
 
     def get_pixel( pos_x, pos_y )
-      @bits[ ( pos_y * @height ) + pos_x ]
+      @bits[ ( pos_y * @width ) + pos_x ]
     end
 
     def set_pixel( pos_x, pos_y, value )
-      @bits[ ( pos_y * @height ) + pos_x ] = value.to_i.zero? ? 0 : 1
+      @bits[ ( pos_y * @width ) + pos_x ] = value.to_i.zero? ? 0 : 1
     end
 
     def clear
