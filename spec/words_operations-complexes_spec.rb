@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TesttLanguageOperationsComplexes < MiniTest::Test
+class TesttLanguageOperationsComplexes < Minitest::Test
   include Types
 
   def test_re

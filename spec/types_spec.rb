@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl/types'
 
-class TestTypes < MiniTest::Test
+class TestTypes < Minitest::Test
   include Types
 
   def test_boolean

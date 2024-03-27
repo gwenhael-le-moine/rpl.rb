@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestParser < MiniTest::Test
+class TestParser < Minitest::Test
   include Types
 
   def test_stack_extract

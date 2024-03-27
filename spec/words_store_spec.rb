@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageStore < MiniTest::Test
+class TestLanguageStore < Minitest::Test
   include Types
 
   def test_sto

@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageString < MiniTest::Test
+class TestLanguageString < Minitest::Test
   include Types
 
   def test_to_string

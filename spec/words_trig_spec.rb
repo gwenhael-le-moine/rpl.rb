@@ -5,7 +5,7 @@ require 'minitest/autorun'
 require 'rpl'
 require 'rpl/types'
 
-class TesttLanguageOperations < MiniTest::Test
+class TesttLanguageOperations < Minitest::Test
   include Types
 
   def test_pi

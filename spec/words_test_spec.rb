@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageTest < MiniTest::Test
+class TestLanguageTest < Minitest::Test
   include Types
 
   def test_greater_than

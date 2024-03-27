@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageList < MiniTest::Test
+class TestLanguageList < Minitest::Test
   include Types
 
   def test_2list

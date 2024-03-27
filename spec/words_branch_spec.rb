@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageBranch < MiniTest::Test
+class TestLanguageBranch < Minitest::Test
   include Types
 
   def test_loop

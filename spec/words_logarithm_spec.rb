@@ -5,7 +5,7 @@ require 'minitest/autorun'
 require 'rpl'
 require 'rpl/types'
 
-class TesttLanguageLogarithm < MiniTest::Test
+class TesttLanguageLogarithm < Minitest::Test
   include Types
 
   def test_e

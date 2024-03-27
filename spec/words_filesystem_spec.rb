@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageFileSystem < MiniTest::Test
+class TestLanguageFileSystem < Minitest::Test
   include Types
 
   def test_fread

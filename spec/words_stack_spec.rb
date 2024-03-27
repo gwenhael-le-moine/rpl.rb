@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageStack < MiniTest::Test
+class TestLanguageStack < Minitest::Test
   include Types
 
   def test_swap

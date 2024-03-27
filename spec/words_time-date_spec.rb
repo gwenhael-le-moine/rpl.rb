@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TestLanguageTimeDate < MiniTest::Test
+class TestLanguageTimeDate < Minitest::Test
   include Types
 
   def test_time

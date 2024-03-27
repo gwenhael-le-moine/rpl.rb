@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TesttLanguageOperationsRealsAndComplexes < MiniTest::Test
+class TesttLanguageOperationsRealsAndComplexes < Minitest::Test
   include Types
 
   # TODO: test complexes

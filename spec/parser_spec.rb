@@ -5,7 +5,7 @@ require 'minitest/autorun'
 require 'rpl/parser'
 require 'rpl/types'
 
-class TestParser < MiniTest::Test
+class TestParser < Minitest::Test
   include Types
 
   def test_number

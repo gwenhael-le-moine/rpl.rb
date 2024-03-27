@@ -4,7 +4,7 @@ require 'minitest/autorun'
 
 require 'rpl'
 
-class TesttLanguageOperationsReals < MiniTest::Test
+class TesttLanguageOperationsReals < Minitest::Test
   include Types
 
   def test_percent
